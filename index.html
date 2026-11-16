@@ -2,7 +2,7 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Care Official Store - หน้าร้านค้าออนไลน์มินิมอล</title>
     
     <!-- PWA Meta Tags -->
@@ -11,11 +11,12 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Care Store">
     <link rel="apple-touch-icon" href="https://placehold.co/192x192/ffb6c1/593C47?text=CS">
+    <link id="pwa-manifest-link" rel="manifest" href="">
     
     <!-- Google Fonts: Prompt & Mitr -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@300;400;500;600&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -35,6 +36,7 @@
                             primary: 'var(--primary)',
                             primaryDark: 'var(--primary-dark)',
                             accent: 'var(--accent)',
+                            pink: 'var(--pink-accent)',
                             lime: 'var(--lime-accent)',
                             text: 'var(--text-main)',
                             muted: 'var(--text-muted)',
@@ -44,7 +46,7 @@
                     boxShadow: {
                         'cute': '0 8px 30px -4px var(--shadow-color)',
                         'float': '0 10px 25px -5px var(--shadow-strong)',
-                        'island': '0 10px 30px -5px rgba(224, 122, 140, 0.28)',
+                        'island': '0 12px 32px -4px rgba(22, 163, 74, 0.35)',
                     }
                 }
             }
@@ -52,18 +54,19 @@
     </script>
     <style>
         :root {
-            --bg-main: #FFFDF9;
+            --bg-main: #F2FBF5;
             --bg-card: #FFFFFF;
-            --bg-soft: #FFEFF2;
-            --primary: #ffb6c1;
-            --primary-dark: #e07a8c;
-            --accent: #b0e0e6;
-            --lime-accent: #dde874;
-            --text-main: #593C47;
-            --text-muted: #9E7B87;
-            --border-soft: #f5d0d7;
-            --shadow-color: rgba(224, 122, 140, 0.12);
-            --shadow-strong: rgba(224, 122, 140, 0.25);
+            --bg-soft: #E6F8ED;
+            --primary: #86efac;          /* Soft green */
+            --primary-dark: #16a34a;     /* Vibrant green */
+            --accent: #b0e0e6;           /* Blue accent */
+            --pink-accent: #ffb6c1;      /* Pink accent */
+            --lime-accent: #fef08a;
+            --text-main: #1e3a2f;
+            --text-muted: #5c7c6e;
+            --border-soft: #ffffff;      /* Heavy white borders */
+            --shadow-color: rgba(22, 163, 74, 0.14);
+            --shadow-strong: rgba(22, 163, 74, 0.28);
         }
 
         body {
@@ -72,340 +75,475 @@
             font-family: 'Prompt', sans-serif;
             -webkit-tap-highlight-color: transparent;
             overflow-x: hidden;
-            background-image: radial-gradient(var(--primary) 1.25px, transparent 1.25px);
-            background-size: 24px 24px;
+            /* 45-degree small dot background pattern */
+            background-image: radial-gradient(circle, #86efac 1.2px, transparent 1.2px);
+            background-size: 16px 16px;
+            background-position: 0 0, 8px 8px;
         }
 
         .font-cute {
             font-family: 'Mitr', 'Prompt', sans-serif;
         }
 
-        /* Pastel Checkered Gingham Pattern */
+        /* Pastel Checkered Gingham Pattern with Green/Pink/Blue accents */
         .banner-gingham {
             background-color: #ffffff;
             background-image:
-                linear-gradient(90deg, rgba(255, 182, 193, 0.45) 50%, transparent 50%),
-                linear-gradient(rgba(176, 224, 230, 0.45) 50%, transparent 50%);
+                linear-gradient(90deg, rgba(134, 239, 172, 0.35) 50%, transparent 50%),
+                linear-gradient(rgba(255, 182, 193, 0.35) 50%, transparent 50%);
             background-size: 28px 28px;
         }
 
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: var(--bg-main); }
-        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 999px; }
+        ::-webkit-scrollbar-thumb { background: var(--primary-dark); border-radius: 999px; }
 
-        .fade-in { animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+        .fade-in { animation: fadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Heavy White Borders across all cards & components */
         .cute-card {
             background-color: var(--bg-card);
-            border: 1.5px solid var(--border-soft);
-            border-radius: 1.5rem;
-            box-shadow: 0 6px 24px -4px var(--shadow-color);
+            border: 4px solid #ffffff;
+            border-radius: 1.75rem;
+            box-shadow: 0 8px 28px -4px var(--shadow-color);
         }
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Bouncing Heart Loader Animation */
+        @keyframes heartBounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            35% { transform: translateY(-22px) scale(1.12, 0.92); }
+            65% { transform: translateY(2px) scale(0.94, 1.08); }
+        }
+        @keyframes shadowPulse {
+            0%, 100% { transform: scale(1); opacity: 0.35; }
+            35% { transform: scale(0.55); opacity: 0.12; }
+        }
+        .animate-heart-bounce { animation: heartBounce 0.95s infinite cubic-bezier(0.28, 0.84, 0.42, 1); }
+        .animate-heart-shadow { animation: shadowPulse 0.95s infinite cubic-bezier(0.28, 0.84, 0.42, 1); }
+
+        /* Vinyl Disc Rotation */
+        @keyframes spinVinyl {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .vinyl-spinning { animation: spinVinyl 6s linear infinite; }
+        .vinyl-paused { animation: spinVinyl 6s linear infinite; animation-play-state: paused; }
+        .vinyl-grooves {
+            background: repeating-radial-gradient(
+                circle at center,
+                #2a2024 0px,
+                #2a2024 2px,
+                #3c2e34 3px,
+                #2a2024 4px
+            );
+        }
     </style>
 </head>
-<body class="min-h-screen pb-40">
+<body class="min-h-screen pb-36">
+
+    <!-- ==================== 1. BOUNCING HEART LOADER SCREEN ==================== -->
+    <div id="heart-loader-overlay" class="fixed inset-0 z-[200] bg-theme-bg flex flex-col items-center justify-center transition-opacity duration-500" style="background-image: radial-gradient(var(--primary) 2px, transparent 2px); background-size: 24px 24px;">
+        <div class="relative flex flex-col items-center">
+            <div class="animate-heart-bounce drop-shadow-md">
+                <svg class="w-20 h-20 text-theme-primaryDark" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+            </div>
+            <div class="w-12 h-2.5 rounded-full bg-theme-primaryDark/40 mt-2 animate-heart-shadow"></div>
+            <p class="font-cute text-sm font-medium text-theme-text mt-4 tracking-wide">กำลังเปิดร้าน Care Official Store...</p>
+            <div class="flex gap-1.5 mt-2">
+                <span class="w-2 h-2 rounded-full bg-theme-primary animate-bounce" style="animation-delay: 0s;"></span>
+                <span class="w-2 h-2 rounded-full bg-theme-accent animate-bounce" style="animation-delay: 0.15s;"></span>
+                <span class="w-2 h-2 rounded-full bg-theme-lime animate-bounce" style="animation-delay: 0.3s;"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 2. FROSTED GLASS WHITE TRANSLUCENT WELCOME POP-UP ==================== -->
+    <div id="welcome-popup-overlay" class="fixed inset-0 z-[180] hidden bg-theme-text/20 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="w-full max-w-sm bg-white/85 backdrop-blur-xl rounded-[2rem] border-[3px] border-white shadow-2xl p-6 text-center space-y-4 fade-in relative overflow-hidden">
+            <div class="w-14 h-14 mx-auto rounded-full bg-theme-soft border-[2.5px] border-theme-primary flex items-center justify-center text-theme-primaryDark shadow-xs">
+                <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </div>
+            <div class="space-y-2">
+                <h2 id="welcome-popup-title" class="font-cute text-lg font-semibold text-theme-text">ยินดีต้อนรับสู่ Care Official Store</h2>
+                <p id="welcome-popup-message" class="text-xs sm:text-sm text-theme-text/90 leading-relaxed whitespace-pre-line bg-white/70 p-3.5 rounded-2xl border-2 border-dotted border-theme-primary"></p>
+            </div>
+            <div class="pt-1">
+                <button onclick="dismissWelcomeAndPlayMusic()" class="w-full py-3.5 px-6 rounded-full bg-theme-primaryDark hover:bg-theme-primary text-white font-cute font-medium text-sm shadow-float border-[3px] border-white transition-all active:scale-95 flex items-center justify-center gap-2">
+                    <span>ถัดไป (เข้าสู่หน้าร้าน & เปิดเพลง)</span>
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background Soft Gentle Audio Element -->
+    <audio id="store-bg-audio" loop preload="auto"></audio>
 
     <!-- Toast Notification Container -->
-    <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[120] flex flex-col items-center gap-2 pointer-events-none w-11/12 max-w-sm"></div>
+    <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[190] flex flex-col items-center gap-2 pointer-events-none w-11/12 max-w-sm"></div>
 
-    <!-- Main Mobile-First Container -->
-    <div class="max-w-md mx-auto min-h-screen bg-theme-bg/95 backdrop-blur-xs relative sm:border-x-2 sm:border-theme-border shadow-cute">
+        <!-- Main Responsive Container -->
+        <div class="max-w-md md:max-w-3xl lg:max-w-5xl mx-auto min-h-screen bg-theme-bg/95 backdrop-blur-xs relative sm:border-x-4 sm:border-white shadow-cute transition-all">
 
-        <!-- Top Controls Bar (Aligned inside the frame) -->
-        <div class="px-4 pt-3 pb-1 z-30 flex items-center justify-between">
-            <button id="pwa-install-btn" onclick="installPWA()" class="hidden items-center gap-1.5 text-xs font-medium text-theme-text bg-white/95 backdrop-blur-md hover:bg-theme-lime px-3.5 py-2 rounded-full transition-all shadow-sm border border-theme-border">
-                <svg class="w-3.5 h-3.5 text-theme-primaryDark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                <span>ติดตั้งแอพ</span>
-            </button>
-            <div class="ml-auto">
-                <button onclick="openAdminModal()" class="w-9 h-9 rounded-full bg-white/95 backdrop-blur-md hover:bg-theme-soft text-theme-text flex items-center justify-center shadow-sm border border-theme-border transition-all" title="หลังบ้าน">
-                    <svg class="w-4 h-4 text-theme-primaryDark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        <!-- Top Controls Bar -->
+        <div class="px-4 sm:px-6 pt-3.5 pb-1.5 z-30 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+                <button id="pwa-install-btn" onclick="installPWA()" class="flex items-center gap-1.5 text-xs font-medium text-theme-text bg-white hover:bg-theme-soft px-3.5 py-2 rounded-full transition-all shadow-xs border-4 border-white">
+                    <svg class="w-3.5 h-3.5 text-theme-primaryDark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>ติดตั้งแอพลงเครื่อง</span>
+                </button>
+            </div>
+            <div class="flex items-center gap-2 ml-auto">
+                <button onclick="openAdminModal()" class="flex items-center gap-1.5 px-3.5 h-9 rounded-full bg-white hover:bg-theme-soft text-theme-text text-xs font-medium shadow-xs border-4 border-white transition-all" title="ระบบหลังบ้านแอดมิน">
+                    <svg class="w-3.5 h-3.5 text-theme-primaryDark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span class="hidden sm:inline">แอดมิน</span>
                 </button>
             </div>
         </div>
 
         <!-- ==================== VIEW: HOME (หน้าหลัก) ==================== -->
-        <div id="view-home" class="view-section space-y-5 pb-20 fade-in">
+        <div id="view-home" class="view-section space-y-6 pb-24 fade-in">
             
-            <!-- 1. Profile Card -->
-            <section class="px-3 pt-1">
-                <div class="bg-theme-card rounded-[2rem] border-2 border-theme-border shadow-cute overflow-hidden">
-                    <div class="w-full h-40 banner-gingham relative border-b border-theme-border">
+            <!-- 1. Profile Card & Vinyl Music Player -->
+            <section class="px-3 sm:px-6 pt-1">
+                <div class="bg-theme-card rounded-[2rem] border-4 border-white shadow-cute overflow-hidden">
+                    <!-- Cover Banner with Status Badge at Top-Right -->
+                    <div class="w-full h-36 sm:h-48 banner-gingham relative border-b-4 border-white">
                         <img id="home-banner" src="" alt="Banner" class="w-full h-full object-cover cursor-pointer" onclick="openLightbox(this.src)" onerror="this.style.display='none'">
+                        <!-- Status Badge (Green/Red glowing indicator) placed at Top-Right of banner -->
+                        <div id="store-status-badge" class="absolute top-3 right-3 z-20 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold border-4 border-white shadow-md transition-all">
+                            <span id="store-status-dot" class="w-2.5 h-2.5 rounded-full"></span>
+                            <span id="store-status-text">เปิดร้าน</span>
+                        </div>
                     </div>
                     
-                    <div class="px-5 pb-6 -mt-12 relative z-10 flex flex-col items-center text-center">
-                        <div class="w-24 h-24 rounded-full p-1 bg-white shadow-md border-2 border-theme-primary relative">
-                            <img id="home-avatar" src="" alt="Profile" class="w-full h-full rounded-full object-cover cursor-pointer" onclick="openLightbox(this.src)" onerror="this.src='https://placehold.co/200x200/ffb6c1/FFFFFF?text=CARE'">
-                            <span class="absolute bottom-0.5 right-0.5 w-6 h-6 rounded-full bg-theme-text text-white flex items-center justify-center text-[11px] font-bold border-2 border-white shadow-xs">✓</span>
+                    <div class="px-4 sm:px-8 pb-6 -mt-12 sm:-mt-14 relative z-10">
+                        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+                            <!-- Left/Center: Avatar & Name -->
+                            <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                                <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full p-1 bg-white shadow-md border-4 border-white relative">
+                                    <img id="home-avatar" src="" alt="Profile" class="w-full h-full rounded-full object-cover cursor-pointer" onclick="openLightbox(this.src)" onerror="this.src='https://placehold.co/200x200/86efac/1e3a2f?text=CARE'">
+                                    <span class="absolute bottom-0.5 right-0.5 w-6 h-6 rounded-full bg-theme-primaryDark text-white flex items-center justify-center text-[11px] font-bold border-2 border-white shadow-xs">✓</span>
+                                </div>
+                                
+                                <div class="mt-3">
+                                    <h1 id="home-store-name" class="font-cute text-lg sm:text-xl font-semibold text-theme-text">Care Official Store</h1>
+                                </div>
+
+                                <p id="home-store-desc" class="text-xs text-theme-muted mt-1 leading-relaxed whitespace-pre-line"></p>
+                            </div>
+
+                            <!-- Right: Relaxing Vinyl Record Music Player -->
+                            <div class="bg-white/95 border-4 border-white rounded-3xl p-3 flex items-center gap-3 self-center md:self-end w-full max-w-xs shadow-sm">
+                                <button onclick="toggleMusicPlay()" id="vinyl-disc-btn" class="relative w-14 h-14 rounded-full vinyl-grooves border-4 border-white flex items-center justify-center shrink-0 shadow-md cursor-pointer group vinyl-paused" title="กดเพื่อเล่น/หยุดเพลง">
+                                    <div class="w-6 h-6 rounded-full bg-theme-primary border-2 border-white flex items-center justify-center">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-theme-text"></div>
+                                    </div>
+                                </button>
+                                <div class="min-w-0 flex-1 text-left">
+                                    <div class="flex items-center gap-1">
+                                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-theme-primary/40 text-theme-text">Soft BGM</span>
+                                        <span id="music-status-label" class="text-[10px] text-theme-muted">หยุดชั่วคราว</span>
+                                    </div>
+                                    <p id="music-track-title" class="text-xs font-semibold text-theme-text truncate mt-1">Gentle Healing Lofi</p>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <button onclick="toggleMusicPlay()" id="music-play-text-btn" class="text-[11px] font-medium text-theme-primaryDark hover:underline">
+                                            กดเปิดเพลง
+                                        </button>
+                                        <span class="text-theme-border">•</span>
+                                        <button onclick="toggleMuteMusic()" id="music-mute-btn" class="text-[11px] text-theme-muted hover:text-theme-text">
+                                            เสียงเปิดอยู่
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <h1 id="home-store-name" class="font-cute text-lg font-medium text-theme-text mt-3">Care Official Store</h1>
-                        <p id="home-store-desc" class="text-xs text-theme-muted mt-1 leading-relaxed whitespace-pre-line"></p>
-                        
-                        <div class="flex items-center justify-center gap-2.5 mt-3.5">
-                            <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-medium bg-[#ffb6c1]/25 text-theme-primaryDark border border-theme-primary">
-                                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/></svg>
-                                Secure Credit
-                            </span>
-                            <button onclick="openAllReviewsModal()" class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-medium bg-[#b0e0e6]/40 text-theme-text border border-[#b0e0e6] hover:bg-[#dde874]/50 transition-colors">
-                                <svg class="w-3 h-3 text-theme-primaryDark" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                                <span id="review-pill-count">4</span> Reviews
-                            </button>
+
+                        <!-- ข้อความรายละเอียดใต้โปรไฟล์แบบเด่น ๆ (แก้ไขได้ในหลังบ้าน) -->
+                        <div class="mt-4 bg-gradient-to-r from-[#86efac]/30 via-[#ffb6c1]/25 to-[#b0e0e6]/30 p-3.5 sm:p-4 rounded-2xl border-4 border-white shadow-xs text-center">
+                            <p id="home-highlight-promo" class="font-cute text-xs sm:text-sm font-medium text-theme-text leading-relaxed whitespace-pre-line"></p>
+                        </div>
+
+                        <!-- ปุ่มกด 3 ปุ่มใต้โปรไฟล์: ( ติดต่อสั่งซื้อ ) ( เครดิตไอดี ) ( เครดิตแอพพรี ) -->
+                        <div class="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
+                            <a id="profile-btn-1" href="#" target="_blank" rel="noopener noreferrer" class="flex flex-col sm:flex-row items-center justify-center gap-1.5 py-2.5 px-2 sm:px-4 rounded-2xl bg-theme-primaryDark hover:bg-emerald-700 text-white font-cute font-medium text-xs shadow-float border-4 border-white transition-all active:scale-95 text-center">
+                                <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                                <span id="profile-btn-1-text" class="truncate">ติดต่อสั่งซื้อ</span>
+                            </a>
+                            <a id="profile-btn-2" href="#" target="_blank" rel="noopener noreferrer" class="flex flex-col sm:flex-row items-center justify-center gap-1.5 py-2.5 px-2 sm:px-4 rounded-2xl bg-[#b0e0e6] hover:bg-[#99d5dd] text-theme-text font-cute font-medium text-xs border-4 border-white transition-all active:scale-95 text-center">
+                                <svg class="w-4 h-4 text-theme-primaryDark shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L4 5v6.09c0 5.05 3.41 9.76 8 10.91 4.59-1.15 8-5.86 8-10.91V5l-8-3z"/></svg>
+                                <span id="profile-btn-2-text" class="truncate">เครดิตไอดี</span>
+                            </a>
+                            <a id="profile-btn-3" href="#" target="_blank" rel="noopener noreferrer" class="flex flex-col sm:flex-row items-center justify-center gap-1.5 py-2.5 px-2 sm:px-4 rounded-2xl bg-[#ffb6c1] hover:bg-[#f49fae] text-theme-text font-cute font-medium text-xs border-4 border-white transition-all active:scale-95 text-center">
+                                <svg class="w-4 h-4 text-white shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                <span id="profile-btn-3-text" class="truncate">เครดิตแอพพรี</span>
+                            </a>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- 2. Reviews Gallery -->
-            <section class="px-4 space-y-2.5">
+            <!-- 2. Reviews Gallery (1:1 Aspect Ratio) -->
+            <section class="px-4 sm:px-6 space-y-3">
                 <div class="flex items-center justify-between px-1">
                     <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-5 rounded-full bg-theme-primary"></span>
-                        <h2 class="font-cute text-sm font-medium text-theme-text">รีวิวการขายจริง</h2>
+                        <span class="w-3 h-5 rounded-full bg-theme-primaryDark"></span>
+                        <h2 class="font-cute text-sm sm:text-base font-medium text-theme-text">รีวิวการขายจริง (1:1)</h2>
                     </div>
-                    <button onclick="openAllReviewsModal()" class="text-xs font-medium text-theme-text bg-[#dde874]/60 hover:bg-[#dde874] px-3 py-1 rounded-full transition-colors border border-[#cddb5c]">
+                    <button onclick="openAllReviewsModal()" class="text-xs font-medium text-theme-text bg-white hover:bg-theme-soft px-3.5 py-1 rounded-full transition-colors border-4 border-white shadow-xs">
                         ดูทั้งหมด (<span id="review-count-badge">0</span>)
                     </button>
                 </div>
                 <div class="relative">
-                    <div id="home-reviews-carousel" class="flex gap-3 overflow-x-auto no-scrollbar pb-2 px-1 snap-x"></div>
+                    <div id="home-reviews-carousel" class="flex gap-3.5 overflow-x-auto no-scrollbar pb-2 px-1 snap-x"></div>
                 </div>
             </section>
 
             <!-- 3. Notice Box -->
-            <section class="px-4">
-                <div class="bg-[#b0e0e6]/25 rounded-3xl p-4 border-2 border-dashed border-[#b0e0e6] shadow-xs">
-                    <div class="flex items-start gap-2.5">
-                        <div class="w-7 h-7 rounded-full bg-white text-theme-primaryDark flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
-                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+            <section class="px-4 sm:px-6">
+                <div class="bg-white/90 rounded-3xl p-4 border-4 border-white shadow-xs">
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full bg-theme-soft text-theme-primaryDark border-2 border-white flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+                            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
                         </div>
-                        <p id="home-notice" class="text-xs leading-relaxed text-theme-text font-normal whitespace-pre-line"></p>
+                        <p id="home-notice" class="text-xs sm:text-sm leading-relaxed text-theme-text font-normal whitespace-pre-line"></p>
                     </div>
                 </div>
             </section>
 
             <!-- 4. Home Preview: Game IDs -->
-            <section class="px-4 space-y-2.5">
+            <section class="px-4 sm:px-6 space-y-3">
                 <div class="flex items-center justify-between px-1">
                     <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-5 rounded-full bg-[#b0e0e6]"></span>
-                        <h2 class="font-cute text-sm font-medium text-theme-text">ไอดีเกมแนะนำ</h2>
+                        <span class="w-3 h-5 rounded-full bg-[#b0e0e6] border-2 border-[#7ec4ce]"></span>
+                        <h2 class="font-cute text-sm sm:text-base font-medium text-theme-text">ไอดีเกมแนะนำ</h2>
                     </div>
-                    <button onclick="switchTab('ids')" class="text-xs font-medium text-theme-primaryDark bg-theme-soft hover:bg-theme-primary/30 px-3 py-1 rounded-full transition-colors border border-theme-border">
-                        ดูเพิ่มเติมทั้งหมด
+                    <button onclick="switchTab('ids')" class="text-xs font-medium text-theme-primaryDark bg-theme-soft hover:bg-theme-primary/30 px-3.5 py-1 rounded-full transition-colors border-[3px] border-theme-border">
+                        ดูทั้งหมด
                     </button>
                 </div>
-                <div id="home-ids-grid" class="grid grid-cols-2 gap-3"></div>
+                <div id="home-ids-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5"></div>
             </section>
 
             <!-- 5. Home Preview: Premium Apps -->
-            <section class="px-4 space-y-2.5">
+            <section class="px-4 sm:px-6 space-y-3">
                 <div class="flex items-center justify-between px-1">
                     <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-5 rounded-full bg-[#dde874]"></span>
-                        <h2 class="font-cute text-sm font-medium text-theme-text">แอพพรีเมียมยอดฮิต</h2>
+                        <span class="w-3 h-5 rounded-full bg-[#dde874] border-2 border-[#b9c746]"></span>
+                        <h2 class="font-cute text-sm sm:text-base font-medium text-theme-text">แอพพรีเมียมยอดฮิต</h2>
                     </div>
-                    <button onclick="switchTab('apps')" class="text-xs font-medium text-theme-primaryDark bg-theme-soft hover:bg-theme-primary/30 px-3 py-1 rounded-full transition-colors border border-theme-border">
-                        ดูเพิ่มเติมทั้งหมด
+                    <button onclick="switchTab('apps')" class="text-xs font-medium text-theme-primaryDark bg-theme-soft hover:bg-theme-primary/30 px-3.5 py-1 rounded-full transition-colors border-[3px] border-theme-border">
+                        ดูทั้งหมด
                     </button>
                 </div>
-                <div id="home-apps-grid" class="grid grid-cols-2 gap-3"></div>
+                <div id="home-apps-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5"></div>
             </section>
 
-            <!-- 6. Bank Account Section -->
-            <section class="px-4 space-y-3 pt-2">
+            <!-- 6. Showcase Section (หัวข้อ "ผลงาน" และแสดง "Coming soon ..." เมื่อยังไม่มีรายการ) -->
+            <section class="px-4 sm:px-6 space-y-3">
                 <div class="flex items-center justify-between px-1">
                     <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-5 rounded-full bg-theme-primary"></span>
-                        <h2 class="font-cute text-sm font-medium text-theme-text">ช่องทางการชำระเงิน</h2>
+                        <span class="w-3 h-5 rounded-full bg-theme-primaryDark"></span>
+                        <h2 id="showcase-section-heading" class="font-cute text-sm sm:text-base font-medium text-theme-text">ผลงาน</h2>
                     </div>
-                    <span id="banks-count-badge" class="text-[11px] bg-[#dde874]/60 text-theme-text px-2.5 py-0.5 rounded-full font-medium">2 บัญชี</span>
+                    <span class="text-[11px] bg-theme-soft text-theme-primaryDark px-3 py-0.5 rounded-full font-medium border-[3px] border-theme-border">Showcase</span>
                 </div>
-                <div id="home-bank-card" class="cute-card p-5 space-y-4"></div>
+                <div id="home-showcase-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5"></div>
             </section>
 
-            <!-- 7. Contact & Link Buttons -->
-            <section class="px-4 space-y-3 pt-4 pb-6">
-                <div class="text-center pb-1">
-                    <span class="text-xs font-cute font-medium text-theme-muted">ช่องทางติดต่อและเครดิตร้าน</span>
-                </div>
-                <a id="home-line-btn" href="#" target="_blank" rel="noopener noreferrer" class="w-full flex items-center justify-center gap-2 bg-theme-primaryDark hover:bg-theme-primary text-white font-cute font-medium text-sm py-3.5 px-5 rounded-full shadow-float transition-all active:scale-[0.98]">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-                    <span>ติดต่อด่วน (ลิงก์ LINE)</span>
-                </a>
-                <div class="grid grid-cols-2 gap-2.5">
-                    <a id="home-credit-btn" href="#" target="_blank" rel="noopener noreferrer" class="cute-card py-3 text-center text-xs font-medium text-theme-text hover:bg-[#b0e0e6]/30 transition-all">กลุ่มเครดิตร้าน</a>
-                    <a id="home-review-btn" href="#" target="_blank" rel="noopener noreferrer" class="cute-card py-3 text-center text-xs font-medium text-theme-text hover:bg-[#dde874]/40 transition-all">รีวิวเพิ่มเติม</a>
-                </div>
-            </section>
         </div>
 
-        <!-- ==================== VIEW: GAME IDS ==================== -->
-        <div id="view-ids" class="view-section hidden space-y-4 pt-4 pb-20 fade-in">
-            <div class="px-4">
-                <div class="flex items-center justify-between px-1 mb-2">
+        <!-- ==================== VIEW: GAME IDS (ไอดีเกม) ==================== -->
+        <div id="view-ids" class="view-section hidden space-y-4 pt-4 pb-24 fade-in">
+            <div class="px-4 sm:px-6">
+                <div class="flex items-center justify-between px-1 mb-2.5">
                     <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-5 rounded-full bg-[#b0e0e6]"></span>
-                        <h2 class="font-cute text-sm font-medium text-theme-text">คลังไอดีเกมทั้งหมด</h2>
+                        <span class="w-3 h-5 rounded-full bg-[#b0e0e6] border border-[#7ec4ce]"></span>
+                        <h2 class="font-cute text-sm sm:text-base font-medium text-theme-text">คลังไอดีเกมทั้งหมด</h2>
                     </div>
-                    <span id="ids-count-badge" class="text-[11px] text-theme-muted">0 รายการ</span>
+                    <span id="ids-count-badge" class="text-xs font-medium text-theme-muted">0 รายการ</span>
                 </div>
 
-                <div class="bg-[#b0e0e6]/25 p-3.5 rounded-2xl border border-[#b0e0e6] text-xs space-y-1 mb-3">
+                <div class="bg-[#b0e0e6]/25 p-4 rounded-3xl border-[2.5px] border-dotted border-[#7ec4ce] text-xs space-y-1 mb-3.5">
                     <p class="font-semibold text-theme-text">กฎและรายละเอียดการผ่อน / ซื้อขาย</p>
                     <p class="text-theme-muted leading-relaxed">วางดาวน์ตามกำหนด แจ้งสลิปในแชทเพื่อรับข้อมูลเปลี่ยนรหัสทันที ผ่อนครบรับไอดีถาวร ปลอดภัย 100%</p>
                 </div>
 
-                <div class="cute-card p-3 space-y-2.5 mb-3">
-                    <div class="relative">
-                        <svg class="w-4 h-4 text-theme-muted absolute left-3.5 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                        <input type="text" id="id-search-input" oninput="renderGameIdsSection()" placeholder="ค้นหารหัสเกม, ชื่อไอดี (TH / EN)..." class="w-full pl-10 pr-4 py-2 rounded-2xl bg-theme-bg border border-theme-border text-xs text-theme-text focus:outline-none focus:border-theme-primary">
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="flex-1 flex items-center gap-1 bg-theme-bg px-3 py-1.5 rounded-xl border border-theme-border">
-                            <span class="text-[10px] text-theme-muted shrink-0">ต่ำสุด:</span>
-                            <input type="number" id="filter-min-price" oninput="renderGameIdsSection()" placeholder="0" class="w-full bg-transparent text-xs text-theme-text focus:outline-none">
+                <div class="cute-card p-3.5 space-y-2.5 mb-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                        <div class="relative">
+                            <svg class="w-4 h-4 text-theme-muted absolute left-3.5 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            <input type="text" id="id-search-input" oninput="renderGameIdsSection()" placeholder="ค้นหารหัสไอดี, รายละเอียด..." class="w-full pl-10 pr-4 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border text-xs text-theme-text focus:outline-none focus:border-theme-primary">
                         </div>
-                        <span class="text-theme-muted">-</span>
-                        <div class="flex-1 flex items-center gap-1 bg-theme-bg px-3 py-1.5 rounded-xl border border-theme-border">
-                            <span class="text-[10px] text-theme-muted shrink-0">สูงสุด:</span>
-                            <input type="number" id="filter-max-price" oninput="renderGameIdsSection()" placeholder="9999" class="w-full bg-transparent text-xs text-theme-text focus:outline-none">
+                        <div class="flex items-center gap-2">
+                            <div class="flex-1 flex items-center gap-1 bg-theme-bg px-3 py-1.5 rounded-2xl border-2 border-theme-border">
+                                <span class="text-[10px] text-theme-muted shrink-0">ต่ำสุด:</span>
+                                <input type="number" id="filter-min-price" oninput="renderGameIdsSection()" placeholder="0" class="w-full bg-transparent text-xs text-theme-text focus:outline-none">
+                            </div>
+                            <span class="text-theme-muted">-</span>
+                            <div class="flex-1 flex items-center gap-1 bg-theme-bg px-3 py-1.5 rounded-2xl border-2 border-theme-border">
+                                <span class="text-[10px] text-theme-muted shrink-0">สูงสุด:</span>
+                                <input type="number" id="filter-max-price" oninput="renderGameIdsSection()" placeholder="9999" class="w-full bg-transparent text-xs text-theme-text focus:outline-none">
+                            </div>
+                            <button onclick="resetIdFilters()" class="px-3.5 py-1.5 rounded-2xl bg-theme-soft text-[11px] font-medium text-theme-primaryDark border-2 border-theme-border shrink-0">ล้าง</button>
                         </div>
-                        <button onclick="resetIdFilters()" class="px-3 py-1.5 rounded-xl bg-theme-soft text-[11px] font-medium text-theme-primaryDark border border-theme-border shrink-0">ล้าง</button>
                     </div>
                     <div id="id-filter-tags" class="flex gap-1.5 overflow-x-auto no-scrollbar pb-0.5"></div>
                 </div>
 
-                <div id="ids-grid-list" class="grid grid-cols-2 gap-3"></div>
+                <div id="ids-grid-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5"></div>
             </div>
         </div>
 
-        <!-- ==================== VIEW: PREMIUM APPS ==================== -->
-        <div id="view-apps" class="view-section hidden space-y-4 pt-4 pb-20 fade-in">
-            <div class="px-4">
-                <div class="flex items-center justify-between px-1 mb-2">
+        <!-- ==================== VIEW: PREMIUM APPS (แอพพรี) ==================== -->
+        <div id="view-apps" class="view-section hidden space-y-4 pt-4 pb-24 fade-in">
+            <div class="px-4 sm:px-6">
+                <div class="flex items-center justify-between px-1 mb-2.5">
                     <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-5 rounded-full bg-[#dde874]"></span>
-                        <h2 class="font-cute text-sm font-medium text-theme-text">แอพพรีเมียมราคาประหยัด</h2>
+                        <span class="w-3 h-5 rounded-full bg-[#dde874] border border-[#b9c746]"></span>
+                        <h2 class="font-cute text-sm sm:text-base font-medium text-theme-text">แอพพรีเมียมราคาประหยัด</h2>
                     </div>
-                    <span id="apps-count-badge" class="text-[11px] text-theme-muted">0 แอพ</span>
+                    <span id="apps-count-badge" class="text-xs font-medium text-theme-muted">0 แอพ</span>
                 </div>
 
-                <div class="relative mb-3">
+                <div class="relative mb-4 max-w-md">
                     <svg class="w-4 h-4 text-theme-muted absolute left-3.5 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    <input type="text" id="app-search-input" oninput="renderAppsSection()" placeholder="ค้นหาแอพพรีเมียม (TH / EN)..." class="w-full pl-10 pr-4 py-2 rounded-2xl bg-theme-card border border-theme-border text-xs text-theme-text focus:outline-none focus:border-theme-primary shadow-cute">
+                    <input type="text" id="app-search-input" oninput="renderAppsSection()" placeholder="ค้นหาแอพพรีเมียม (TH / EN)..." class="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-theme-card border-2 border-theme-border text-xs text-theme-text focus:outline-none focus:border-theme-primary shadow-cute">
                 </div>
 
-                <div id="apps-grid-list" class="grid grid-cols-2 gap-3"></div>
+                <div id="apps-grid-list" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5"></div>
             </div>
         </div>
 
-        <!-- ==================== FLOATING ISLAND BOTTOM NAVIGATION BAR ==================== -->
-        <div class="fixed bottom-5 left-0 right-0 z-40 flex justify-center px-4 pointer-events-none">
-            <nav class="pointer-events-auto w-[88%] max-w-xs bg-white/95 backdrop-blur-md border border-theme-border rounded-full px-6 py-2.5 flex items-center justify-between shadow-island">
-                <button onclick="switchTab('ids')" id="nav-btn-ids" class="flex flex-col items-center gap-0.5 text-xs font-medium text-theme-muted hover:text-theme-primaryDark transition-all">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4"/><path d="M8 10v4"/><circle cx="15" cy="12" r="1"/><circle cx="18" cy="10" r="1"/></svg>
-                    <span class="text-[10px]">ไอดีเกม</span>
-                </button>
-                <button onclick="switchTab('home')" id="nav-btn-home" class="flex flex-col items-center gap-0.5 text-xs font-medium text-theme-primaryDark group -translate-y-2.5">
-                    <div class="w-12 h-12 rounded-full bg-theme-primaryDark text-white flex items-center justify-center shadow-float ring-4 ring-white group-hover:scale-105 transition-transform">
-                        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <!-- ==================== VIEW: PAYMENT (ชำระ) ==================== -->
+        <div id="view-payment" class="view-section hidden space-y-4 pt-4 pb-24 fade-in">
+            <div class="px-4 sm:px-6 max-w-2xl mx-auto space-y-4">
+                <div class="flex items-center justify-between px-1">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-5 rounded-full bg-theme-primary border border-theme-primaryDark"></span>
+                        <h2 class="font-cute text-sm sm:text-base font-medium text-theme-text">ช่องทางการชำระเงินของร้าน</h2>
                     </div>
-                    <span class="text-[10px]">หน้าหลัก</span>
+                    <span id="banks-count-badge" class="text-xs bg-[#dde874]/70 text-theme-text px-3 py-0.5 rounded-full font-medium border border-[#c6d455]">2 บัญชี</span>
+                </div>
+                <div id="payment-bank-card" class="cute-card p-5 sm:p-6 space-y-4"></div>
+            </div>
+        </div>
+
+        <!-- ==================== FLOATING ISLAND BOTTOM NAVIGATION BAR (หน้าหลัก | ไอดีเกม | แอพพรี | ชำระ) ==================== -->
+        <div class="fixed bottom-4 left-0 right-0 z-40 flex justify-center px-3 pointer-events-none">
+            <nav class="pointer-events-auto w-full max-w-md bg-white/95 backdrop-blur-md border-4 border-white rounded-full px-4 py-2 grid grid-cols-4 items-center shadow-island">
+                <button onclick="switchTab('home')" id="nav-btn-home" class="flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-full text-xs font-medium transition-all">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                    <span class="text-[11px]">หน้าหลัก</span>
                 </button>
-                <button onclick="switchTab('apps')" id="nav-btn-apps" class="flex flex-col items-center gap-0.5 text-xs font-medium text-theme-muted hover:text-theme-primaryDark transition-all">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="m9 12 2 2 4-4"/></svg>
-                    <span class="text-[10px]">แอพพรี</span>
+                <button onclick="switchTab('ids')" id="nav-btn-ids" class="flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-full text-xs font-medium transition-all">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M6 12h4"/><path d="M8 10v4"/><circle cx="15" cy="12" r="1"/><circle cx="18" cy="10" r="1"/></svg>
+                    <span class="text-[11px]">ไอดีเกม</span>
+                </button>
+                <button onclick="switchTab('apps')" id="nav-btn-apps" class="flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-full text-xs font-medium transition-all">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4" ry="4"/><path d="m9 12 2 2 4-4"/></svg>
+                    <span class="text-[11px]">แอพพรี</span>
+                </button>
+                <button onclick="switchTab('payment')" id="nav-btn-payment" class="flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-full text-xs font-medium transition-all">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                    <span class="text-[11px]">ชำระ</span>
                 </button>
             </nav>
         </div>
     </div>
 
     <!-- ==================== MODALS ==================== -->
+
+    <!-- All Reviews Modal (1:1 Aspect Ratio) -->
     <div id="modal-all-reviews" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-        <div class="bg-theme-card w-full max-w-md h-[85vh] rounded-3xl flex flex-col shadow-2xl border-2 border-theme-border fade-in overflow-hidden">
-            <div class="px-5 py-4 border-b border-theme-border flex items-center justify-between shrink-0">
-                <h3 class="font-cute font-medium text-sm text-theme-text">รีวิวการขายทั้งหมด</h3>
-                <button onclick="closeModal('modal-all-reviews')" class="p-1.5 rounded-full bg-theme-soft text-theme-muted hover:text-theme-text">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <div class="bg-theme-card w-full max-w-2xl h-[85vh] rounded-3xl flex flex-col shadow-2xl border-[3px] border-theme-border fade-in overflow-hidden">
+            <div class="px-5 py-4 border-b-2 border-theme-border flex items-center justify-between shrink-0">
+                <h3 class="font-cute font-medium text-sm text-theme-text">รีวิวการขายทั้งหมด (ขนาด 1:1)</h3>
+                <button onclick="closeModal('modal-all-reviews')" class="p-1.5 rounded-full bg-theme-soft text-theme-muted hover:text-theme-text border border-theme-border">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
             </div>
-            <div class="p-4 overflow-y-auto grid grid-cols-2 gap-3" id="all-reviews-grid-container"></div>
+            <div class="p-4 overflow-y-auto grid grid-cols-2 sm:grid-cols-3 gap-3.5" id="all-reviews-grid-container"></div>
         </div>
     </div>
 
-    <div id="modal-order-id" class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-theme-card w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col shadow-xl border-2 border-theme-border fade-in">
-            <div class="px-5 py-4 border-b border-theme-border flex items-center justify-between shrink-0">
-                <h3 class="font-cute font-medium text-sm text-theme-text">สั่งซื้อ / ชำระเงิน (ไอดีเกม)</h3>
-                <button onclick="closeModal('modal-order-id')" class="p-1.5 rounded-full bg-theme-soft text-theme-muted hover:text-theme-text">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    <!-- Game ID Inquiry / Order Modal (พิกัดฟอร์มตามบรรทัดที่ขอ) -->
+    <div id="modal-order-id" class="fixed inset-0 z-50 hidden bg-black/45 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-theme-card w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col shadow-xl border-[3px] border-theme-border fade-in">
+            <div class="px-5 py-4 border-b-2 border-theme-border flex items-center justify-between shrink-0">
+                <h3 class="font-cute font-medium text-sm text-theme-text">แบบฟอร์มสอบถาม / สั่งซื้อไอดีเกม</h3>
+                <button onclick="closeModal('modal-order-id')" class="p-1.5 rounded-full bg-theme-soft text-theme-muted hover:text-theme-text border border-theme-border">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
             </div>
             <div class="p-5 overflow-y-auto space-y-4 text-xs">
-                <div class="bg-theme-bg p-3.5 rounded-2xl border border-theme-border flex items-center gap-3">
-                    <img id="order-id-img" src="" alt="" class="w-16 h-16 rounded-2xl object-cover border border-theme-border shrink-0 cursor-pointer" onclick="openLightbox(this.src)">
+                <div class="bg-theme-bg p-3.5 rounded-2xl border-2 border-theme-border flex items-center gap-3">
+                    <img id="order-id-img" src="" alt="" class="w-16 h-16 rounded-2xl object-cover border-2 border-theme-border shrink-0 cursor-pointer" onclick="openLightbox(this.src)">
                     <div class="min-w-0 flex-1">
-                        <span id="order-id-code-badge" class="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-theme-primaryDark text-white mb-1"></span>
+                        <span id="order-id-code-badge" class="inline-block text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-theme-primaryDark text-white mb-1"></span>
                         <p id="order-id-title" class="font-semibold text-theme-text truncate"></p>
                         <p id="order-id-prices" class="text-theme-primaryDark font-medium mt-0.5"></p>
                     </div>
                 </div>
 
-                <div class="bg-theme-card p-3.5 rounded-2xl border border-theme-border space-y-3">
-                    <div class="flex items-center justify-between">
-                        <span class="font-medium text-theme-text">เลือกบัญชีโอนเงิน</span>
-                        <select id="modal-id-bank-select" class="px-2.5 py-1 rounded-xl bg-theme-soft border border-theme-border text-[11px] font-medium text-theme-primaryDark focus:outline-none"></select>
-                    </div>
-                    <div class="flex flex-col items-center bg-[#b0e0e6]/20 p-3 rounded-2xl">
-                        <img id="order-id-qr" src="" alt="QR" class="w-36 h-36 object-contain rounded-xl bg-white border border-theme-border p-1.5 cursor-pointer" onclick="openLightbox(this.src)">
-                        <button onclick="downloadModalQR()" class="mt-2 text-[11px] text-theme-primaryDark underline font-medium">บันทึกรูป QR Code</button>
-                    </div>
-                    <div class="space-y-2 pt-1 border-t border-theme-border">
-                        <p class="font-semibold text-theme-text text-[11px]">บัญชีสำหรับโอน (กดคัดลอกเลขหรือโน้ตสลิปได้ทันที):</p>
-                        <div id="modal-id-banks-list" class="space-y-2"></div>
-                    </div>
-                </div>
-
-                <div class="space-y-2.5">
-                    <p class="font-semibold text-theme-text">กรอกแบบฟอร์มเพื่อคัดลอกส่งในแชท</p>
-                    <div><label class="block text-theme-muted mb-1">ชื่อลูกค้า / เฟส / ไลน์</label><input type="text" id="form-id-customer" placeholder="ระบุชื่อของคุณ..." class="w-full px-3.5 py-2.5 rounded-2xl bg-theme-bg border border-theme-border focus:outline-none focus:border-theme-primary"></div>
+                <div class="space-y-3">
                     <div>
-                        <label class="block text-theme-muted mb-1">รูปแบบการสั่งซื้อ</label>
-                        <select id="form-id-type" class="w-full px-3.5 py-2.5 rounded-2xl bg-theme-bg border border-theme-border focus:outline-none focus:border-theme-primary">
+                        <label class="block text-theme-text font-medium mb-1">รูปแบบการสั่งซื้อ</label>
+                        <select id="form-id-type" class="w-full px-3.5 py-2.5 rounded-2xl bg-theme-bg border-2 border-theme-border text-theme-text font-medium focus:outline-none focus:border-theme-primary">
+                            <option value="สอบถาม (ขอส่วนลด)">สอบถาม (ขอส่วนลด)</option>
                             <option value="ซื้อสด (โอนเต็มจำนวน)">ซื้อสด (โอนเต็มจำนวน)</option>
                             <option value="ผ่อนชำระ (วางดาวน์)">ผ่อนชำระ (วางดาวน์)</option>
                         </select>
                     </div>
-                    <div><label class="block text-theme-muted mb-1">ช่องทางติดต่อกลับ / เบอร์โทร</label><input type="text" id="form-id-contact" placeholder="เช่น ID Line..." class="w-full px-3.5 py-2.5 rounded-2xl bg-theme-bg border border-theme-border focus:outline-none focus:border-theme-primary"></div>
+                    <div>
+                        <label class="block text-theme-text font-medium mb-1">ชื่อลูกค้า</label>
+                        <input type="text" id="form-id-customer" placeholder="ระบุชื่อเล่น / ชื่อเฟส / ชื่อไลน์..." class="w-full px-3.5 py-2.5 rounded-2xl bg-theme-bg border-2 border-theme-border focus:outline-none focus:border-theme-primary">
+                    </div>
+                    <div>
+                        <label class="block text-theme-text font-medium mb-1">ติดต่อ</label>
+                        <input type="text" id="form-id-contact" placeholder="ระบุไอดีไลน์ / เฟสบุ๊ค / เบอร์โทร..." class="w-full px-3.5 py-2.5 rounded-2xl bg-theme-bg border-2 border-theme-border focus:outline-none focus:border-theme-primary">
+                    </div>
+                </div>
+
+                <div class="bg-[#dde874]/30 p-3.5 rounded-2xl border-[3px] border-dotted border-[#b9c746] text-center text-[11px] text-theme-text space-y-1">
+                    <p class="font-semibold">ชำระเงินและรับไอดีในแชทส่วนตัวค่ะ</p>
+                    <p>กดคัดลอกฟอร์มด้านล่างแล้วกดปุ่มทักแชทได้เลย</p>
                 </div>
             </div>
-            <div class="p-4 border-t border-theme-border bg-theme-card shrink-0">
-                <button onclick="copyGameIdOrderForm()" class="w-full py-3 rounded-full bg-theme-primaryDark hover:bg-theme-primary text-white font-medium text-xs shadow-float flex items-center justify-center gap-2 transition-all active:scale-98">
-                    <span>คัดลอกแบบฟอร์มสั่งซื้อเพื่อส่งในแชท</span>
+
+            <div class="p-4 border-t-[3px] border-theme-border bg-theme-card shrink-0 space-y-2.5">
+                <button onclick="copyGameIdOrderForm()" class="w-full py-3 rounded-full bg-theme-primaryDark hover:bg-theme-primary text-white font-cute font-medium text-xs shadow-float border-[3px] border-white flex items-center justify-center gap-2 transition-all active:scale-95">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    <span>คัดลอกแบบฟอร์ม ( คัดลอก )</span>
                 </button>
+                <a id="order-id-contact-link" href="#" target="_blank" rel="noopener noreferrer" class="w-full py-3 rounded-full bg-[#b0e0e6] hover:bg-[#99d5dd] text-theme-text font-cute font-medium text-xs border-[3px] border-[#7ec4ce] flex items-center justify-center gap-2 transition-all active:scale-95">
+                    <svg class="w-4 h-4 text-theme-primaryDark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                    <span>ไปที่ช่องทางการติดต่อสั่งซื้อเลย</span>
+                </a>
             </div>
         </div>
     </div>
 
-    <div id="modal-order-app" class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-theme-card w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col shadow-xl border-2 border-theme-border fade-in">
-            <div class="px-5 py-4 border-b border-theme-border flex items-center justify-between shrink-0">
+    <!-- Premium App Order Modal -->
+    <div id="modal-order-app" class="fixed inset-0 z-50 hidden bg-black/45 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-theme-card w-full max-w-md rounded-t-3xl sm:rounded-3xl max-h-[92vh] flex flex-col shadow-xl border-[3px] border-theme-border fade-in">
+            <div class="px-5 py-4 border-b-2 border-theme-border flex items-center justify-between shrink-0">
                 <h3 class="font-cute font-medium text-sm text-theme-text">ชำระเงิน (แอพพรีเมียม)</h3>
-                <button onclick="closeModal('modal-order-app')" class="p-1.5 rounded-full bg-theme-soft text-theme-muted hover:text-theme-text">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <button onclick="closeModal('modal-order-app')" class="p-1.5 rounded-full bg-theme-soft text-theme-muted hover:text-theme-text border border-theme-border">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
             </div>
             <div class="p-5 overflow-y-auto space-y-4 text-xs">
-                <div class="bg-theme-soft/80 p-4 rounded-2xl border border-theme-border flex items-center justify-between">
+                <div class="bg-theme-soft/80 p-4 rounded-2xl border-2 border-theme-border flex items-center justify-between">
                     <div>
                         <span class="text-[11px] text-theme-muted">รายการที่เลือก</span>
                         <h4 id="order-app-name" class="font-semibold text-sm text-theme-text mt-0.5"></h4>
@@ -417,13 +555,13 @@
                     </div>
                 </div>
 
-                <div class="bg-theme-card p-4 rounded-2xl border border-theme-border space-y-3">
+                <div class="bg-theme-card p-4 rounded-2xl border-2 border-theme-border space-y-3">
                     <div class="flex items-center justify-between">
                         <span class="font-medium text-theme-text">เลือกบัญชีโอนเงิน</span>
-                        <select id="modal-app-bank-select" class="px-2.5 py-1 rounded-xl bg-theme-soft border border-theme-border text-[11px] font-medium text-theme-primaryDark focus:outline-none"></select>
+                        <select id="modal-app-bank-select" class="px-2.5 py-1 rounded-xl bg-theme-soft border-2 border-theme-border text-[11px] font-medium text-theme-primaryDark focus:outline-none"></select>
                     </div>
-                    <div class="flex flex-col items-center bg-[#b0e0e6]/20 p-3 rounded-2xl">
-                        <img id="order-app-qr" alt="QR" class="w-36 h-36 object-contain rounded-xl bg-white border border-theme-border p-1.5 cursor-pointer" onclick="openLightbox(this.src)">
+                    <div class="flex flex-col items-center bg-[#b0e0e6]/20 p-3 rounded-2xl border-2 border-dotted border-[#7ec4ce]">
+                        <img id="order-app-qr" alt="QR" class="w-36 h-36 object-contain rounded-xl bg-white border-2 border-theme-border p-1.5 cursor-pointer" onclick="openLightbox(this.src)">
                         <button onclick="downloadModalQR()" class="mt-2 text-[11px] text-theme-primaryDark underline font-medium">บันทึกรูป QR Code</button>
                     </div>
                     <div class="space-y-2 pt-1 border-t border-theme-border">
@@ -432,42 +570,63 @@
                     </div>
                 </div>
             </div>
-            <div class="p-4 border-t border-theme-border bg-theme-card shrink-0">
-                <button onclick="copyAppOrderSummary()" class="w-full py-3 rounded-full bg-theme-primaryDark hover:bg-theme-primary text-white font-medium text-xs shadow-float flex items-center justify-center gap-2 transition-all active:scale-98">
+            <div class="p-4 border-t-2 border-theme-border bg-theme-card shrink-0 space-y-2">
+                <button onclick="copyAppOrderSummary()" class="w-full py-3 rounded-full bg-theme-primaryDark hover:bg-theme-primary text-white font-medium text-xs shadow-float flex items-center justify-center gap-2 transition-all active:scale-95">
                     <span>คัดลอกข้อมูลสั่งซื้อเพื่อส่งในแชท</span>
                 </button>
+                <a id="order-app-contact-link" href="#" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 rounded-full bg-[#b0e0e6] hover:bg-[#99d5dd] text-theme-text font-medium text-xs border-2 border-[#7ec4ce] flex items-center justify-center gap-1.5 transition-all">
+                    <span>ไปที่ช่องทางการติดต่อส่งสลิป</span>
+                </a>
             </div>
         </div>
     </div>
 
-    <div id="modal-lightbox" onclick="closeModal('modal-lightbox')" class="fixed inset-0 z-[70] hidden bg-black/80 backdrop-blur-xs flex items-center justify-center p-4">
-        <div class="relative max-w-md w-full" onclick="event.stopPropagation()">
-            <button onclick="closeModal('modal-lightbox')" class="absolute -top-11 right-0 text-white bg-white/20 hover:bg-white/30 p-2 rounded-full">
-                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
-            <img id="lightbox-img" src="" alt="Preview" class="w-full max-h-[80vh] object-contain rounded-3xl bg-white shadow-2xl">
+    <!-- iOS PWA Install Guide Modal -->
+    <div id="modal-ios-pwa" class="fixed inset-0 z-[150] hidden bg-black/55 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-theme-card w-full max-w-sm rounded-3xl p-5 border-[3px] border-theme-border shadow-2xl space-y-3.5 text-xs fade-in">
+            <div class="flex items-center justify-between">
+                <h3 class="font-cute font-semibold text-sm text-theme-text">วิธีติดตั้งแอพลงหน้าจอโฮม</h3>
+                <button onclick="closeModal('modal-ios-pwa')" class="p-1.5 rounded-full bg-theme-soft text-theme-muted">✕</button>
+            </div>
+            <p class="text-theme-muted leading-relaxed">แอดมินและลูกค้าสามารถบันทึกหน้าร้านนี้เป็นแอพบนหน้าจอโทรศัพท์ได้ง่าย ๆ ดังนี้:</p>
+            <div class="bg-theme-bg p-3.5 rounded-2xl border-2 border-dotted border-theme-primary space-y-2 text-theme-text">
+                <p><b>1. สำหรับ iPhone / iPad (Safari):</b> แตะที่ปุ่ม <b>แชร์ (Share)</b> ด้านล่างหน้าจอ แล้วเลือก <b>"เพิ่มไปยังหน้าจอโฮม" (Add to Home Screen)</b></p>
+                <p><b>2. สำหรับ Android (Chrome):</b> แตะที่จุด 3 จุดมุมขวาบน แล้วเลือก <b>"ติดตั้งแอป" (Install App)</b> หรือ <b>"เพิ่มลงในหน้าจอหลัก"</b></p>
+            </div>
+            <button onclick="closeModal('modal-ios-pwa')" class="w-full py-2.5 rounded-full bg-theme-primaryDark text-white font-medium">เข้าใจแล้ว</button>
         </div>
     </div>
 
-    <!-- ADMIN PANEL -->
+    <!-- Image Lightbox Modal -->
+    <div id="modal-lightbox" onclick="closeModal('modal-lightbox')" class="fixed inset-0 z-[160] hidden bg-black/80 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="relative max-w-md w-full" onclick="event.stopPropagation()">
+            <button onclick="closeModal('modal-lightbox')" class="absolute -top-11 right-0 text-white bg-white/20 hover:bg-white/30 p-2 rounded-full">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <img id="lightbox-img" src="" alt="Preview" class="w-full max-h-[80vh] object-contain rounded-3xl bg-white shadow-2xl border-2 border-white">
+        </div>
+    </div>
+
+    <!-- ==================== ADMIN PANEL ==================== -->
     <div id="modal-admin" class="fixed inset-0 z-50 hidden bg-black/50 backdrop-blur-xs flex items-center justify-center p-0 sm:p-4">
-        <div class="bg-theme-bg w-full max-w-lg h-full sm:h-[92vh] sm:rounded-3xl flex flex-col shadow-2xl border-2 border-theme-border overflow-hidden fade-in">
-            <div class="bg-theme-card px-5 py-3.5 border-b border-theme-border flex items-center justify-between shrink-0">
+        <div class="bg-theme-bg w-full max-w-2xl h-full sm:h-[92vh] sm:rounded-3xl flex flex-col shadow-2xl border-[3px] border-theme-border overflow-hidden fade-in">
+            <div class="bg-theme-card px-5 py-3.5 border-b-2 border-theme-border flex items-center justify-between shrink-0">
                 <div class="flex items-center gap-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-theme-primaryDark"></span>
+                    <span class="w-3 h-3 rounded-full bg-theme-primaryDark"></span>
                     <h2 class="font-cute font-medium text-sm text-theme-text">ระบบหลังบ้าน (Admin Panel)</h2>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button id="admin-logout-btn" onclick="adminLogout()" class="hidden text-[11px] text-theme-muted hover:text-theme-primaryDark px-2.5 py-1 rounded-full bg-theme-soft">ล็อกเอาท์</button>
-                    <button onclick="closeModal('modal-admin')" class="p-1.5 rounded-full bg-theme-soft text-theme-muted hover:text-theme-text">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    <button id="admin-logout-btn" onclick="adminLogout()" class="hidden text-[11px] text-theme-muted hover:text-theme-primaryDark px-3 py-1 rounded-full bg-theme-soft border border-theme-border">ล็อกเอาท์</button>
+                    <button onclick="closeModal('modal-admin')" class="p-1.5 rounded-full bg-theme-soft text-theme-muted hover:text-theme-text border border-theme-border">
+                        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     </button>
                 </div>
             </div>
 
+            <!-- Admin Login -->
             <div id="admin-login-screen" class="flex-1 flex flex-col items-center justify-center p-6 text-center space-y-4">
-                <div class="w-16 h-16 rounded-3xl bg-theme-card border-2 border-theme-border flex items-center justify-center text-theme-primaryDark shadow-cute">
-                    <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <div class="w-16 h-16 rounded-3xl bg-theme-card border-[2.5px] border-theme-border flex items-center justify-center text-theme-primaryDark shadow-cute">
+                    <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                 </div>
                 <div>
                     <h3 class="font-cute font-medium text-base text-theme-text">เข้าสู่ระบบจัดการร้านค้า</h3>
@@ -479,51 +638,114 @@
                 </div>
             </div>
 
+            <!-- Admin Dashboard -->
             <div id="admin-dashboard-screen" class="hidden flex-1 flex flex-col overflow-hidden">
-                <div class="bg-theme-card px-3 py-2.5 border-b border-theme-border flex gap-1.5 overflow-x-auto no-scrollbar shrink-0">
-                    <button onclick="switchAdminTab('store')" id="atab-store" class="admin-tab-btn px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-theme-primaryDark text-white">ข้อมูลร้าน & ลิงก์</button>
-                    <button onclick="switchAdminTab('reviews')" id="atab-reviews" class="admin-tab-btn px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-theme-soft text-theme-text">รูปรีวิว</button>
+                <div class="bg-theme-card px-3 py-2.5 border-b-2 border-theme-border flex gap-1.5 overflow-x-auto no-scrollbar shrink-0">
+                    <button onclick="switchAdminTab('store')" id="atab-store" class="admin-tab-btn px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-theme-primaryDark text-white">โปรไฟล์ & สถานะ & ปุ่ม</button>
+                    <button onclick="switchAdminTab('welcome')" id="atab-welcome" class="admin-tab-btn px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-theme-soft text-theme-text">ป๊อปอัป & เพลง</button>
+                    <button onclick="switchAdminTab('reviews')" id="atab-reviews" class="admin-tab-btn px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-theme-soft text-theme-text">รูปรีวิว (1:1)</button>
                     <button onclick="switchAdminTab('ids')" id="atab-ids" class="admin-tab-btn px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-theme-soft text-theme-text">ไอดีเกม</button>
                     <button onclick="switchAdminTab('apps')" id="atab-apps" class="admin-tab-btn px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-theme-soft text-theme-text">แอพพรีเมียม</button>
+                    <button onclick="switchAdminTab('showcase')" id="atab-showcase" class="admin-tab-btn px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-theme-soft text-theme-text">ผลงาน</button>
                     <button onclick="switchAdminTab('bank')" id="atab-bank" class="admin-tab-btn px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-theme-soft text-theme-text">QR และบัญชี</button>
                     <button onclick="switchAdminTab('theme')" id="atab-theme" class="admin-tab-btn px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-theme-soft text-theme-text">ตั้งค่าสี</button>
                 </div>
 
                 <div class="flex-1 overflow-y-auto p-4 space-y-4 text-xs">
+                    <!-- TAB 1: STORE PROFILE, STATUS & 3 BUTTONS -->
                     <div id="apanel-store" class="admin-panel space-y-3">
                         <div class="cute-card p-4 space-y-3">
-                            <h4 class="font-cute font-medium text-sm text-theme-text">ข้อมูลโปรไฟล์ร้านแคร์</h4>
-                            <div><label class="block text-theme-muted mb-1">ชื่อร้านค้า</label><input type="text" id="adm-store-name" class="w-full px-3.5 py-2 rounded-2xl bg-theme-bg border border-theme-border"></div>
+                            <h4 class="font-cute font-medium text-sm text-theme-text">สถานะเปิด-ปิดร้าน (ไฟเขียว / ไฟแดง)</h4>
+                            <div class="flex gap-2">
+                                <button type="button" onclick="setStoreOpenStatus(true)" id="adm-status-open-btn" class="flex-1 py-2.5 rounded-2xl font-medium border-2 flex items-center justify-center gap-2 transition-all">
+                                    <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                                    <span>เปิดร้าน (ไฟสีเขียว)</span>
+                                </button>
+                                <button type="button" onclick="setStoreOpenStatus(false)" id="adm-status-close-btn" class="flex-1 py-2.5 rounded-2xl font-medium border-2 flex items-center justify-center gap-2 transition-all">
+                                    <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                                    <span>ปิดร้าน (ไฟสีแดง)</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="cute-card p-4 space-y-3">
+                            <h4 class="font-cute font-medium text-sm text-theme-text">ข้อมูลโปรไฟล์ & ข้อความเด่นใต้โปรไฟล์</h4>
+                            <div><label class="block text-theme-muted mb-1">ชื่อร้านค้า</label><input type="text" id="adm-store-name" class="w-full px-3.5 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
                             <div>
-                                <label class="block text-theme-muted mb-1">รูปหน้าปก (เว้นว่างเพื่อใช้ลายตารางพาสเทลอัตโนมัติ)</label>
+                                <label class="block text-theme-muted mb-1">รูปหน้าปก (เว้นว่างเพื่อใช้ลายตารางพาสเทล)</label>
                                 <div class="flex gap-2">
-                                    <input type="text" id="adm-store-banner" class="flex-1 px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border">
-                                    <label class="px-3.5 py-2 rounded-2xl bg-theme-soft text-theme-primaryDark font-medium cursor-pointer shrink-0 border border-theme-border">เลือกรูป<input type="file" accept="image/*" class="hidden" onchange="handleAlbumUpload(this, 'adm-store-banner')"></label>
+                                    <input type="text" id="adm-store-banner" class="flex-1 px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border">
+                                    <label class="px-3.5 py-2 rounded-2xl bg-theme-soft text-theme-primaryDark font-medium cursor-pointer shrink-0 border-2 border-theme-border">เลือกรูป<input type="file" accept="image/*" class="hidden" onchange="handleAlbumUpload(this, 'adm-store-banner')"></label>
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-theme-muted mb-1">รูปโปรไฟล์</label>
                                 <div class="flex gap-2">
-                                    <input type="text" id="adm-store-avatar" class="flex-1 px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border">
-                                    <label class="px-3.5 py-2 rounded-2xl bg-theme-soft text-theme-primaryDark font-medium cursor-pointer shrink-0 border border-theme-border">เลือกรูป<input type="file" accept="image/*" class="hidden" onchange="handleAlbumUpload(this, 'adm-store-avatar')"></label>
+                                    <input type="text" id="adm-store-avatar" class="flex-1 px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border">
+                                    <label class="px-3.5 py-2 rounded-2xl bg-theme-soft text-theme-primaryDark font-medium cursor-pointer shrink-0 border-2 border-theme-border">เลือกรูป<input type="file" accept="image/*" class="hidden" onchange="handleAlbumUpload(this, 'adm-store-avatar')"></label>
                                 </div>
                             </div>
-                            <div><label class="block text-theme-muted mb-1">รายละเอียดร้าน</label><textarea id="adm-store-desc" rows="2" class="w-full px-3.5 py-2 rounded-2xl bg-theme-bg border border-theme-border"></textarea></div>
-                            <div><label class="block text-theme-muted mb-1">หมายเหตุหน้าร้าน</label><textarea id="adm-store-notice" rows="3" class="w-full px-3.5 py-2 rounded-2xl bg-theme-bg border border-theme-border"></textarea></div>
-                            <div><label class="block text-theme-muted mb-1">ลิงก์ LINE ติดต่อด่วน</label><input type="text" id="adm-line-url" class="w-full px-3.5 py-2 rounded-2xl bg-theme-bg border border-theme-border"></div>
-                            <div><label class="block text-theme-muted mb-1">ลิงก์กลุ่มเครดิตร้าน (ปุ่มล่างซ้าย)</label><input type="text" id="adm-credit-url" class="w-full px-3.5 py-2 rounded-2xl bg-theme-bg border border-theme-border" placeholder="https://facebook.com/..."></div>
-                            <div><label class="block text-theme-muted mb-1">ลิงก์รีวิวเพิ่มเติม (ปุ่มล่างขวา)</label><input type="text" id="adm-review-url-btn" class="w-full px-3.5 py-2 rounded-2xl bg-theme-bg border border-theme-border" placeholder="https://instagram.com/..."></div>
-                            <button onclick="saveStoreSettings()" class="w-full py-2.5 rounded-full bg-theme-primaryDark text-white font-medium shadow-float">บันทึกข้อมูลร้าน</button>
+                            <div><label class="block text-theme-muted mb-1">คำทักทายสั้น ๆ ใต้ชื่อร้าน</label><textarea id="adm-store-desc" rows="2" class="w-full px-3.5 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></textarea></div>
+                            <div>
+                                <label class="block text-theme-primaryDark font-semibold mb-1">ข้อความเด่นใต้โปรไฟล์ (ลูกค้าเห็นชัดเจน)</label>
+                                <textarea id="adm-store-highlight" rows="3" class="w-full px-3.5 py-2 rounded-2xl bg-theme-bg border-2 border-theme-primary"></textarea>
+                            </div>
+                            <div><label class="block text-theme-muted mb-1">หมายเหตุหน้าร้าน (กล่องเส้นประสีฟ้า)</label><textarea id="adm-store-notice" rows="3" class="w-full px-3.5 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></textarea></div>
                         </div>
+
+                        <div class="cute-card p-4 space-y-3">
+                            <h4 class="font-cute font-medium text-sm text-theme-text">ปุ่มกด 3 ปุ่มใต้โปรไฟล์: ( ติดต่อสั่งซื้อ ) ( เครดิตไอดี ) ( เครดิตแอพพรี )</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <div><label class="block text-theme-muted mb-1">ชื่อปุ่มที่ 1</label><input type="text" id="adm-btn1-label" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                                <div class="sm:col-span-2"><label class="block text-theme-muted mb-1">ลิงก์ปุ่มที่ 1</label><input type="text" id="adm-btn1-url" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <div><label class="block text-theme-muted mb-1">ชื่อปุ่มที่ 2</label><input type="text" id="adm-btn2-label" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                                <div class="sm:col-span-2"><label class="block text-theme-muted mb-1">ลิงก์ปุ่มที่ 2</label><input type="text" id="adm-btn2-url" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <div><label class="block text-theme-muted mb-1">ชื่อปุ่มที่ 3</label><input type="text" id="adm-btn3-label" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                                <div class="sm:col-span-2"><label class="block text-theme-muted mb-1">ลิงก์ปุ่มที่ 3</label><input type="text" id="adm-btn3-url" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                            </div>
+                            <button onclick="saveStoreSettings()" class="w-full py-3 rounded-full bg-theme-primaryDark text-white font-medium shadow-float">บันทึกข้อมูลโปรไฟล์และปุ่มทั้งหมด</button>
+                        </div>
+
                         <div class="cute-card p-4 space-y-2">
                             <h4 class="font-cute font-medium text-xs text-rose-500">รีเซ็ตข้อมูล</h4>
-                            <button onclick="resetAllStoreData()" class="w-full py-2 rounded-full bg-rose-50 text-rose-600 font-medium border border-rose-200">รีเซ็ตข้อมูลทั้งหมดกลับเป็นค่าเริ่มต้นร้านแคร์</button>
+                            <button onclick="resetAllStoreData()" class="w-full py-2 rounded-full bg-rose-50 text-rose-600 font-medium border-2 border-rose-200">รีเซ็ตข้อมูลทั้งหมดกลับเป็นค่าเริ่มต้นร้านแคร์</button>
                         </div>
                     </div>
 
+                    <!-- TAB 2: WELCOME POPUP & SOFT MUSIC -->
+                    <div id="apanel-welcome" class="admin-panel hidden space-y-3">
+                        <div class="cute-card p-4 space-y-3">
+                            <h4 class="font-cute font-medium text-sm text-theme-text">ตั้งค่า Pop-up ต้อนรับขาวขุ่นตอนเข้าเว็บ</h4>
+                            <div><label class="block text-theme-muted mb-1">หัวข้อ Pop-up</label><input type="text" id="adm-welcome-title" class="w-full px-3.5 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                            <div><label class="block text-theme-muted mb-1">ข้อความต้อนรับใน Pop-up</label><textarea id="adm-welcome-msg" rows="3" class="w-full px-3.5 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></textarea></div>
+                        </div>
+
+                        <div class="cute-card p-4 space-y-3">
+                            <h4 class="font-cute font-medium text-sm text-theme-text">ตั้งค่าเพลงละมุน ๆ (Soft BGM)</h4>
+                            <div><label class="block text-theme-muted mb-1">ชื่อเพลง</label><input type="text" id="adm-music-title" placeholder="Gentle Healing Lofi..." class="w-full px-3.5 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                            <div>
+                                <label class="block text-theme-muted mb-1">ลิงก์ไฟล์เพลง (.mp3)</label>
+                                <input type="text" id="adm-music-url" placeholder="https://..." class="w-full px-3.5 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border">
+                            </div>
+                            <div>
+                                <label class="block text-theme-muted mb-1">อัปโหลดไฟล์เพลง MP3 จากเครื่อง</label>
+                                <label class="w-full py-2.5 px-4 rounded-2xl bg-theme-soft text-theme-primaryDark font-medium cursor-pointer flex items-center justify-center gap-2 border-2 border-dashed border-theme-primary">
+                                    <span>เลือกไฟล์เสียง MP3 ละมุน ๆ</span>
+                                    <input type="file" accept="audio/*" class="hidden" onchange="handleAudioUpload(this)">
+                                </label>
+                            </div>
+                            <button onclick="saveWelcomeAndMusicSettings()" class="w-full py-3 rounded-full bg-theme-primaryDark text-white font-medium shadow-float">บันทึกข้อความต้อนรับและเพลง</button>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: REVIEWS (1:1) -->
                     <div id="apanel-reviews" class="admin-panel hidden space-y-3">
                         <div class="cute-card p-4 space-y-3">
-                            <h4 class="font-cute font-medium text-sm text-theme-text">เพิ่มรูปรีวิว</h4>
+                            <h4 class="font-cute font-medium text-sm text-theme-text">เพิ่มรูปรีวิว (แสดงผลขนาด 1:1 จัตุรัส)</h4>
                             <label class="w-full py-4 rounded-2xl bg-theme-soft hover:bg-theme-accent/40 text-theme-primaryDark font-medium flex flex-col items-center justify-center gap-1.5 cursor-pointer border-2 border-dashed border-theme-primary">
                                 <span>เลือกภาพรีวิวจากอัลบั้ม (เลือกได้หลายรูป)</span>
                                 <input type="file" accept="image/*" multiple class="hidden" onchange="handleMultipleReviewUpload(this)">
@@ -531,98 +753,125 @@
                             <div class="pt-2 border-t border-theme-border">
                                 <label class="block text-theme-muted mb-1">หรือวางลิงก์รูปภาพ (URL)</label>
                                 <div class="flex gap-2">
-                                    <input type="text" id="adm-review-url" placeholder="https://..." class="flex-1 px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border">
+                                    <input type="text" id="adm-review-url" placeholder="https://..." class="flex-1 px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border">
                                     <button onclick="addReviewByUrl()" class="px-4 py-2 rounded-2xl bg-theme-primaryDark text-white font-medium shrink-0">เพิ่มรูป</button>
                                 </div>
                             </div>
                         </div>
                         <div class="cute-card p-4 space-y-2.5">
-                            <h4 class="font-cute font-medium text-sm text-theme-text">รายการรูปรีวิวทั้งหมด</h4>
-                            <div id="adm-reviews-list" class="grid grid-cols-3 gap-2"></div>
+                            <h4 class="font-cute font-medium text-sm text-theme-text">รายการรูปรีวิวทั้งหมด (1:1)</h4>
+                            <div id="adm-reviews-list" class="grid grid-cols-3 sm:grid-cols-4 gap-2.5"></div>
                         </div>
                     </div>
 
+                    <!-- TAB 4: GAME IDS (1:1 Container) -->
                     <div id="apanel-ids" class="admin-panel hidden space-y-3">
                         <div class="cute-card p-4 space-y-2.5">
-                            <h4 id="adm-id-form-title" class="font-cute font-medium text-sm text-theme-text">เพิ่มไอดีเกม</h4>
+                            <h4 id="adm-id-form-title" class="font-cute font-medium text-sm text-theme-text">เพิ่ม / แก้ไขไอดีเกม</h4>
                             <input type="hidden" id="adm-id-edit-index" value="-1">
                             <div class="grid grid-cols-3 gap-2">
-                                <div><label class="block text-theme-muted mb-1">รหัสเกม</label><input type="text" id="adm-id-code" placeholder="#ID-01" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border"></div>
-                                <div class="col-span-2"><label class="block text-theme-muted mb-1">ชื่อไอดี</label><input type="text" id="adm-id-name" placeholder="ชื่อไอดี..." class="w-full px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border"></div>
+                                <div><label class="block text-theme-muted mb-1">รหัสไอดี</label><input type="text" id="adm-id-code" placeholder="#ID-01" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                                <div class="col-span-2"><label class="block text-theme-muted mb-1">รายละเอียดตัวเล็ก ๆ (เช่น ROV สกินแรร์)</label><input type="text" id="adm-id-name" placeholder="ROV แรงค์คอน สกินแรร์..." class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
                             </div>
                             <div>
-                                <label class="block text-theme-muted mb-1">รูปสินค้า</label>
+                                <label class="block text-theme-muted mb-1">รูปสินค้า (ขนาด 1:1)</label>
                                 <div class="flex gap-2">
-                                    <input type="text" id="adm-id-img" class="flex-1 px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border">
-                                    <label class="px-3.5 py-2 rounded-2xl bg-theme-soft text-theme-primaryDark font-medium cursor-pointer shrink-0 border border-theme-border">เลือกรูป<input type="file" accept="image/*" class="hidden" onchange="handleAlbumUpload(this, 'adm-id-img')"></label>
+                                    <input type="text" id="adm-id-img" class="flex-1 px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border">
+                                    <label class="px-3.5 py-2 rounded-2xl bg-theme-soft text-theme-primaryDark font-medium cursor-pointer shrink-0 border-2 border-theme-border">เลือกรูป<input type="file" accept="image/*" class="hidden" onchange="handleAlbumUpload(this, 'adm-id-img')"></label>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-2">
-                                <div><label class="block text-theme-muted mb-1">ราคา (บาท)</label><input type="number" id="adm-id-price" placeholder="1290" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border"></div>
-                                <div><label class="block text-theme-muted mb-1">ราคาดาวน์/ผ่อน</label><input type="text" id="adm-id-down" placeholder="ดาวน์ 400" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border"></div>
+                                <div><label class="block text-theme-muted mb-1">ราคา (บาท)</label><input type="number" id="adm-id-price" placeholder="1490" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                                <div><label class="block text-theme-muted mb-1">ราคาดาวน์</label><input type="text" id="adm-id-down" placeholder="ดาวน์ 450" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
                             </div>
-                            <div><label class="block text-theme-muted mb-1">แท็ก (คั่นด้วยคอมม่า)</label><input type="text" id="adm-id-tags" placeholder="สกินแรร์, ผ่อนได้, พร้อมเปลี่ยนรหัส" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border"></div>
-                            <div><label class="block text-theme-muted mb-1">สถานะ</label><select id="adm-id-status" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border"><option value="ว่าง">ว่าง</option><option value="ติดจอง">ติดจอง</option><option value="ขายแล้ว">ขายแล้ว</option></select></div>
+                            <div><label class="block text-theme-muted mb-1">แท็กสำหรับค้นหา (คั่นด้วยคอมม่า)</label><input type="text" id="adm-id-tags" placeholder="สกินแรร์, ผ่อนได้, พร้อมเปลี่ยนรหัส" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                            <div><label class="block text-theme-muted mb-1">สถานะ</label><select id="adm-id-status" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"><option value="ว่าง">ว่าง</option><option value="ติดจอง">ติดจอง</option><option value="ขายแล้ว">ขายแล้ว</option></select></div>
                             <div class="flex gap-2 pt-1">
                                 <button onclick="saveGameIdItem()" class="flex-1 py-2.5 rounded-full bg-theme-primaryDark text-white font-medium shadow-float">บันทึกไอดีเกม</button>
-                                <button onclick="resetGameIdForm()" class="px-4 py-2.5 rounded-full bg-theme-soft text-theme-text">ล้างฟอร์ม</button>
+                                <button onclick="resetGameIdForm()" class="px-4 py-2.5 rounded-full bg-theme-soft text-theme-text border border-theme-border">ล้างฟอร์ม</button>
                             </div>
                         </div>
                         <div class="space-y-2"><div id="adm-ids-list" class="space-y-2"></div></div>
                     </div>
 
+                    <!-- TAB 5: PREMIUM APPS (1:1 Container) -->
                     <div id="apanel-apps" class="admin-panel hidden space-y-3">
                         <div class="cute-card p-4 space-y-2.5">
-                            <h4 id="adm-app-form-title" class="font-cute font-medium text-sm text-theme-text">เพิ่มแอพพรีเมียม</h4>
+                            <h4 id="adm-app-form-title" class="font-cute font-medium text-sm text-theme-text">เพิ่ม / แก้ไขแอพพรีเมียม</h4>
                             <input type="hidden" id="adm-app-edit-index" value="-1">
-                            <div><label class="block text-theme-muted mb-1">ชื่อแอพ</label><input type="text" id="adm-app-name" placeholder="Netflix 4K..." class="w-full px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border"></div>
+                            <div><label class="block text-theme-muted mb-1">ชื่อแอพ</label><input type="text" id="adm-app-name" placeholder="Netflix 4K..." class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
                             <div>
-                                <label class="block text-theme-muted mb-1">รูปแอพ</label>
+                                <label class="block text-theme-muted mb-1">รูปแอพ (ขนาด 1:1)</label>
                                 <div class="flex gap-2">
-                                    <input type="text" id="adm-app-img" class="flex-1 px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border">
-                                    <label class="px-3.5 py-2 rounded-2xl bg-theme-soft text-theme-primaryDark font-medium cursor-pointer shrink-0 border border-theme-border">เลือกรูป<input type="file" accept="image/*" class="hidden" onchange="handleAlbumUpload(this, 'adm-app-img')"></label>
+                                    <input type="text" id="adm-app-img" class="flex-1 px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border">
+                                    <label class="px-3.5 py-2 rounded-2xl bg-theme-soft text-theme-primaryDark font-medium cursor-pointer shrink-0 border-2 border-theme-border">เลือกรูป<input type="file" accept="image/*" class="hidden" onchange="handleAlbumUpload(this, 'adm-app-img')"></label>
                                 </div>
                             </div>
                             <div class="space-y-2">
-                                <div class="flex items-center justify-between"><label class="font-medium">แพ็กเกจ (วัน / ราคา)</label><button type="button" onclick="addPackageRow()" class="text-[11px] bg-theme-soft text-theme-primaryDark px-3 py-1 rounded-full font-medium">+ เพิ่มแพ็กเกจ</button></div>
+                                <div class="flex items-center justify-between"><label class="font-medium">แพ็กเกจ (วัน / ราคา)</label><button type="button" onclick="addPackageRow()" class="text-[11px] bg-theme-soft text-theme-primaryDark px-3 py-1 rounded-full font-medium border border-theme-border">+ เพิ่มแพ็กเกจ</button></div>
                                 <div id="adm-app-packages-container" class="space-y-2"></div>
                             </div>
                             <div class="flex gap-2 pt-2">
                                 <button onclick="savePremiumAppItem()" class="flex-1 py-2.5 rounded-full bg-theme-primaryDark text-white font-medium shadow-float">บันทึกแอพ</button>
-                                <button onclick="resetAppForm()" class="px-4 py-2.5 rounded-full bg-theme-soft text-theme-text">ล้างฟอร์ม</button>
+                                <button onclick="resetAppForm()" class="px-4 py-2.5 rounded-full bg-theme-soft text-theme-text border border-theme-border">ล้างฟอร์ม</button>
                             </div>
                         </div>
                         <div class="space-y-2"><div id="adm-apps-list" class="space-y-2"></div></div>
                     </div>
 
+                    <!-- TAB 6: SHOWCASE (ผลงาน) -->
+                    <div id="apanel-showcase" class="admin-panel hidden space-y-3">
+                        <div class="cute-card p-4 space-y-2.5">
+                            <h4 class="font-cute font-medium text-sm text-theme-text">เพิ่มรายการผลงาน</h4>
+                            <input type="hidden" id="adm-showcase-edit-index" value="-1">
+                            <div><label class="block text-theme-muted mb-1">ชื่อผลงาน</label><input type="text" id="adm-showcase-title" placeholder="เช่น รีวิวงานแต่งป้าย..." class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                            <div>
+                                <label class="block text-theme-muted mb-1">รูปภาพ (ขนาด 1:1)</label>
+                                <div class="flex gap-2">
+                                    <input type="text" id="adm-showcase-img" class="flex-1 px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border">
+                                    <label class="px-3.5 py-2 rounded-2xl bg-theme-soft text-theme-primaryDark font-medium cursor-pointer shrink-0 border-2 border-theme-border">เลือกรูป<input type="file" accept="image/*" class="hidden" onchange="handleAlbumUpload(this, 'adm-showcase-img')"></label>
+                                </div>
+                            </div>
+                            <div><label class="block text-theme-muted mb-1">รายละเอียดสั้น ๆ</label><input type="text" id="adm-showcase-desc" placeholder="ผลงานร้านแคร์..." class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                            <div><label class="block text-theme-muted mb-1">ป้ายกำกับ (Badge)</label><input type="text" id="adm-showcase-badge" placeholder="ผลงาน" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                            <div class="flex gap-2 pt-1">
+                                <button onclick="saveShowcaseItem()" class="flex-1 py-2.5 rounded-full bg-theme-primaryDark text-white font-medium shadow-float">บันทึกผลงาน</button>
+                                <button onclick="resetShowcaseForm()" class="px-4 py-2.5 rounded-full bg-theme-soft text-theme-text border border-theme-border">ล้างฟอร์ม</button>
+                            </div>
+                        </div>
+                        <div id="adm-showcase-list" class="space-y-2"></div>
+                    </div>
+
+                    <!-- TAB 7: BANK & QR -->
                     <div id="apanel-bank" class="admin-panel hidden space-y-3">
                         <div class="cute-card p-4 space-y-3">
                             <h4 class="font-cute font-medium text-sm text-theme-text">ตั้งค่ารูป QR Code หลักของร้าน</h4>
                             <div>
                                 <label class="block text-theme-muted mb-1">รูป QR Code / พร้อมเพย์</label>
                                 <div class="flex gap-2">
-                                    <input type="text" id="adm-main-qr" class="flex-1 px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border" placeholder="https://...">
-                                    <label class="px-3.5 py-2 rounded-2xl bg-theme-soft text-theme-primaryDark font-medium cursor-pointer shrink-0 border border-theme-border">เลือกรูป<input type="file" accept="image/*" class="hidden" onchange="handleAlbumUpload(this, 'adm-main-qr')"></label>
+                                    <input type="text" id="adm-main-qr" class="flex-1 px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border" placeholder="https://...">
+                                    <label class="px-3.5 py-2 rounded-2xl bg-theme-soft text-theme-primaryDark font-medium cursor-pointer shrink-0 border-2 border-theme-border">เลือกรูป<input type="file" accept="image/*" class="hidden" onchange="handleAlbumUpload(this, 'adm-main-qr')"></label>
                                 </div>
                             </div>
-                            <button onclick="saveMainQrSettings()" class="w-full py-2 rounded-full bg-theme-primaryDark text-white font-medium shadow-xs">บันทึก QR Code หลัก</button>
+                            <button onclick="saveMainQrSettings()" class="w-full py-2.5 rounded-full bg-theme-primaryDark text-white font-medium shadow-xs">บันทึก QR Code หลัก</button>
                         </div>
 
                         <div class="cute-card p-4 space-y-3">
                             <h4 id="adm-bank-form-title" class="font-cute font-medium text-sm text-theme-text">เพิ่ม/แก้ไขเลขบัญชีธนาคาร</h4>
                             <input type="hidden" id="adm-bank-edit-index" value="-1">
-                            <div><label class="block text-theme-muted mb-1">ชื่อธนาคาร</label><input type="text" id="adm-bank-title" placeholder="ธนาคารกสิกรไทย" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border"></div>
-                            <div><label class="block text-theme-muted mb-1">ชื่อบัญชี</label><input type="text" id="adm-bank-name" placeholder="น.ส. แคร์ สโตร์" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border"></div>
-                            <div><label class="block text-theme-muted mb-1">เลขบัญชี / พร้อมเพย์</label><input type="text" id="adm-bank-number" placeholder="098-765-4321" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border"></div>
-                            <div><label class="block text-theme-muted mb-1">โน้ตสลิป (ข้อความสำหรับให้ลูกค้ากดคัดลอก)</label><input type="text" id="adm-bank-slip" placeholder="โอนค่าสินค้าแคร์สโตร์" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border border-theme-border"></div>
+                            <div><label class="block text-theme-muted mb-1">ชื่อธนาคาร</label><input type="text" id="adm-bank-title" placeholder="ธนาคารกสิกรไทย" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                            <div><label class="block text-theme-muted mb-1">ชื่อบัญชี</label><input type="text" id="adm-bank-name" placeholder="น.ส. แคร์ สโตร์" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                            <div><label class="block text-theme-muted mb-1">เลขบัญชี / พร้อมเพย์</label><input type="text" id="adm-bank-number" placeholder="098-765-4321" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
+                            <div><label class="block text-theme-muted mb-1">โน้ตสลิป (ข้อความสำหรับให้ลูกค้ากดคัดลอก)</label><input type="text" id="adm-bank-slip" placeholder="โอนค่าสินค้าแคร์สโตร์" class="w-full px-3 py-2 rounded-2xl bg-theme-bg border-2 border-theme-border"></div>
                             <div class="flex gap-2 pt-1">
                                 <button onclick="saveBankAccountItem()" class="flex-1 py-2.5 rounded-full bg-theme-primaryDark text-white font-medium shadow-float">บันทึกบัญชี</button>
-                                <button onclick="resetBankForm()" class="px-4 py-2.5 rounded-full bg-theme-soft text-theme-text">ล้างฟอร์ม</button>
+                                <button onclick="resetBankForm()" class="px-4 py-2.5 rounded-full bg-theme-soft text-theme-text border border-theme-border">ล้างฟอร์ม</button>
                             </div>
                         </div>
                         <div class="space-y-2"><div id="adm-banks-list" class="space-y-2"></div></div>
                     </div>
 
+                    <!-- TAB 8: THEME COLORS -->
                     <div id="apanel-theme" class="admin-panel hidden space-y-4">
                         <div class="cute-card p-4 space-y-3">
                             <h4 class="font-cute font-medium text-sm text-theme-text">เซตคู่สีพาสเทล 3 สีหลัก</h4>
@@ -631,12 +880,12 @@
                         <div class="cute-card p-4 space-y-3">
                             <h4 class="font-cute font-medium text-sm text-theme-text">ปรับแต่งสีอิสระ</h4>
                             <div class="grid grid-cols-2 gap-3">
-                                <label class="flex items-center justify-between bg-theme-bg p-2.5 rounded-2xl border border-theme-border cursor-pointer"><span>พื้นหลังหลัก</span><input type="color" id="clr-bg-main" oninput="previewCustomColor()" class="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"></label>
-                                <label class="flex items-center justify-between bg-theme-bg p-2.5 rounded-2xl border border-theme-border cursor-pointer"><span>พื้นหลังการ์ด</span><input type="color" id="clr-bg-card" oninput="previewCustomColor()" class="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"></label>
-                                <label class="flex items-center justify-between bg-theme-bg p-2.5 rounded-2xl border border-theme-border cursor-pointer"><span>สีชมพู (#ffb6c1)</span><input type="color" id="clr-primary" oninput="previewCustomColor()" class="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"></label>
-                                <label class="flex items-center justify-between bg-theme-bg p-2.5 rounded-2xl border border-theme-border cursor-pointer"><span>สีปุ่มเด่น</span><input type="color" id="clr-primary-dark" oninput="previewCustomColor()" class="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"></label>
-                                <label class="flex items-center justify-between bg-theme-bg p-2.5 rounded-2xl border border-theme-border cursor-pointer"><span>สีฟ้า (#b0e0e6)</span><input type="color" id="clr-accent" oninput="previewCustomColor()" class="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"></label>
-                                <label class="flex items-center justify-between bg-theme-bg p-2.5 rounded-2xl border border-theme-border cursor-pointer"><span>สีเหลืองเขียว (#dde874)</span><input type="color" id="clr-lime" oninput="previewCustomColor()" class="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"></label>
+                                <label class="flex items-center justify-between bg-theme-bg p-2.5 rounded-2xl border-2 border-theme-border cursor-pointer"><span>พื้นหลังหลัก</span><input type="color" id="clr-bg-main" oninput="previewCustomColor()" class="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"></label>
+                                <label class="flex items-center justify-between bg-theme-bg p-2.5 rounded-2xl border-2 border-theme-border cursor-pointer"><span>พื้นหลังการ์ด</span><input type="color" id="clr-bg-card" oninput="previewCustomColor()" class="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"></label>
+                                <label class="flex items-center justify-between bg-theme-bg p-2.5 rounded-2xl border-2 border-theme-border cursor-pointer"><span>สีชมพู (#ffb6c1)</span><input type="color" id="clr-primary" oninput="previewCustomColor()" class="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"></label>
+                                <label class="flex items-center justify-between bg-theme-bg p-2.5 rounded-2xl border-2 border-theme-border cursor-pointer"><span>สีปุ่มเด่น</span><input type="color" id="clr-primary-dark" oninput="previewCustomColor()" class="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"></label>
+                                <label class="flex items-center justify-between bg-theme-bg p-2.5 rounded-2xl border-2 border-theme-border cursor-pointer"><span>สีฟ้า (#b0e0e6)</span><input type="color" id="clr-accent" oninput="previewCustomColor()" class="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"></label>
+                                <label class="flex items-center justify-between bg-theme-bg p-2.5 rounded-2xl border-2 border-theme-border cursor-pointer"><span>สีเหลืองเขียว (#dde874)</span><input type="color" id="clr-lime" oninput="previewCustomColor()" class="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent"></label>
                             </div>
                             <button onclick="saveCustomThemeColors()" class="w-full py-2.5 rounded-full bg-theme-primaryDark text-white font-medium shadow-float">บันทึกโทนสีที่ปรับแต่ง</button>
                         </div>
@@ -647,6 +896,35 @@
     </div>
 
     <script>
+        // ==================== PWA MANIFEST & SERVICE WORKER ====================
+        (function setupPWA() {
+            try {
+                const manifestObj = {
+                    name: "Care Official Store",
+                    short_name: "Care Store",
+                    description: "หน้าร้านค้าออนไลน์ Care Official Store",
+                    start_url: window.location.href,
+                    display: "standalone",
+                    background_color: "#FFFDF9",
+                    theme_color: "#ffb6c1",
+                    icons: [
+                        { src: "https://placehold.co/192x192/ffb6c1/593C47.png?text=CS", sizes: "192x192", type: "image/png" },
+                        { src: "https://placehold.co/512x512/ffb6c1/593C47.png?text=CARE", sizes: "512x512", type: "image/png" }
+                    ]
+                };
+                const blob = new Blob([JSON.stringify(manifestObj)], { type: 'application/json' });
+                const manifestURL = URL.createObjectURL(blob);
+                const linkEl = document.getElementById('pwa-manifest-link');
+                if (linkEl) linkEl.setAttribute('href', manifestURL);
+
+                if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost')) {
+                    const swCode = `self.addEventListener('install', e => self.skipWaiting()); self.addEventListener('activate', e => e.waitUntil(clients.claim()));`;
+                    const swBlob = new Blob([swCode], { type: 'application/javascript' });
+                    navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+                }
+            } catch (err) {}
+        })();
+
         const COLOR_PRESETS = [
             {
                 name: "เซต 3 สีพาสเทล (#ffb6c1 / #b0e0e6 / #dde874)",
@@ -664,19 +942,29 @@
 
         const SUGGESTED_ID_TAGS = ["ทั้งหมด", "waveครบ", "งบน้อย", "สกินแรร์", "แรงค์สูง", "พร้อมเปลี่ยนรหัส", "ผ่อนได้", "ไอดีสะอาด"];
 
-        // Default Store Data: Care Official Store
+        // Default Store Data
         const DEFAULT_DATA = {
             theme: COLOR_PRESETS[0],
             store: {
                 name: "Care Official Store",
+                isOpen: true,
                 banner: "",
                 avatar: "https://placehold.co/200x200/ffb6c1/593C47?text=CARE",
                 desc: "ยินดีต้อนรับลูกค้าทุกท่านนะครับ 🧸𖠚໊ ꔛ ร้านแคร์ยินดีให้บริการ",
+                highlightPromo: "รับซื้อไอดีราคาร้อน ข้อมูล เบอร์ เมล บัตร รับตัวแทนจำหน่าย เช็คเครดิตมั่นใจก่อนได้ ปลอดภัย ยินดีผ่านกลาง",
                 notice: "หมายเหตุ : ส่องหน้าร้านแคร์ เช็คเครดิตมั่นใจแล้ว เลือกซื้อสินค้า สั่งซื้อ ต้องทักแชทแคร์ เพื่อรับสินค้ากับแคร์ทั้งหมดนะคะ หากตอบช้ากดโทรตามได้เลยค่ะ",
-                lineUrl: "https://line.me",
-                creditGroupUrl: "https://facebook.com",
-                reviewExtraUrl: "https://instagram.com",
-                mainQrUrl: "https://placehold.co/320x320/FFFFFF/e07a8c?text=PromptPay+QR"
+                btn1Label: "ติดต่อสั่งซื้อ",
+                btn1Url: "https://line.me",
+                btn2Label: "เครดิตไอดี",
+                btn2Url: "https://facebook.com",
+                btn3Label: "เครดิตแอพพรี",
+                btn3Url: "https://instagram.com",
+                mainQrUrl: "https://placehold.co/320x320/FFFFFF/e07a8c?text=PromptPay+QR",
+                welcomeTitle: "ยินดีต้อนรับสู่ Care Official Store",
+                welcomeMessage: "สวัสดีค่า ยินดีต้อนรับสู่ร้านแคร์นะคะ 🧸💗\nเช็คเครดิตและเลือกดูไอดีเกม / แอพพรีเมียมได้เลยค่ะ กดถัดไปเพื่อเข้าชมร้านและฟังเพลงละมุน ๆ กันเลย!",
+                musicTitle: "Gentle Healing Lofi (Soft BGM)",
+                // Soft relaxing gentle lofi audio stream / file
+                musicUrl: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf7f6.mp3?filename=lofi-study-112191.mp3"
             },
             banks: [
                 {
@@ -699,7 +987,7 @@
                     id: "id-1",
                     code: "#ID-01",
                     name: "ROV แรงค์คอน สกินแรร์ 52 ตัว",
-                    img: "https://placehold.co/400x320/ffb6c1/593C47?text=ROV+ID-01",
+                    img: "https://placehold.co/400x400/ffb6c1/593C47?text=ROV+ID-01",
                     price: 1490,
                     downPrice: "ดาวน์ 450",
                     tags: ["waveครบ", "สกินแรร์", "แรงค์สูง", "ผ่อนได้"],
@@ -709,7 +997,7 @@
                     id: "id-2",
                     code: "#ID-02",
                     name: "ROV งบน้อย สกินสวย 28 ตัว",
-                    img: "https://placehold.co/400x320/b0e0e6/593C47?text=ROV+ID-02",
+                    img: "https://placehold.co/400x400/b0e0e6/593C47?text=ROV+ID-02",
                     price: 590,
                     downPrice: "ดาวน์ 200",
                     tags: ["งบน้อย", "ผ่อนได้", "พร้อมเปลี่ยนรหัส"],
@@ -720,38 +1008,47 @@
                 {
                     id: "app-1",
                     name: "Netflix Ultra HD 4K",
-                    img: "https://placehold.co/300x200/ffb6c1/593C47?text=NETFLIX+4K",
+                    img: "https://placehold.co/400x400/ffb6c1/593C47?text=NETFLIX+4K",
                     desc: "จอส่วนตัว ภาษาไทย 4K คมชัด",
                     packages: [{ days: "1 วัน", price: "19" }, { days: "30 วัน", price: "129" }]
                 },
                 {
                     id: "app-2",
                     name: "YouTube Premium",
-                    img: "https://placehold.co/300x200/dde874/593C47?text=YOUTUBE",
+                    img: "https://placehold.co/400x400/dde874/593C47?text=YOUTUBE",
                     desc: "ดูไม่มีโฆษณา ใช้เมลตัวเอง",
                     packages: [{ days: "30 วัน", price: "45" }, { days: "1 ปี", price: "390" }]
                 }
             ],
+            showcaseItems: [],
             reviews: [
-                "https://placehold.co/400x500/ffb6c1/593C47?text=REVIEW+01",
-                "https://placehold.co/400x500/b0e0e6/593C47?text=REVIEW+02",
-                "https://placehold.co/400x500/dde874/593C47?text=REVIEW+03",
-                "https://placehold.co/400x500/ffb6c1/593C47?text=REVIEW+04"
+                "https://placehold.co/400x400/ffb6c1/593C47?text=REVIEW+01",
+                "https://placehold.co/400x400/b0e0e6/593C47?text=REVIEW+02",
+                "https://placehold.co/400x400/dde874/593C47?text=REVIEW+03",
+                "https://placehold.co/400x400/ffb6c1/593C47?text=REVIEW+04"
             ]
         };
 
-        const STORAGE_KEY = "care_storefront_island_v10";
+        const STORAGE_KEY = "care_storefront_v13";
         let appData = loadAppData();
         let selectedPackages = {};
         let selectedIdTag = "ทั้งหมด";
         let currentTab = "home";
         let deferredPrompt = null;
         let isAdminAuthenticated = false;
+        let isMusicPlaying = false;
 
         function loadAppData() {
             try {
                 const raw = localStorage.getItem(STORAGE_KEY);
-                if (raw) return { ...JSON.parse(JSON.stringify(DEFAULT_DATA)), ...JSON.parse(raw) };
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    return {
+                        ...JSON.parse(JSON.stringify(DEFAULT_DATA)),
+                        ...parsed,
+                        store: { ...DEFAULT_DATA.store, ...(parsed.store || {}) }
+                    };
+                }
             } catch (e) {}
             return JSON.parse(JSON.stringify(DEFAULT_DATA));
         }
@@ -762,18 +1059,16 @@
                 applyThemeColors(appData.theme);
                 renderAll();
             } catch (e) {
-                showToast("พื้นที่เก็บข้อมูลเต็ม กรุณาลบบางรูป");
+                showToast("พื้นที่เก็บข้อมูลเต็ม กรุณาลบบางรูปหรือใช้ลิงก์ URL");
             }
         }
 
         function resetAllStoreData() {
-            if (confirm("ต้องการรีเซ็ตข้อมูลทั้งหมดกลับเป็นค่าเริ่มต้นร้านแคร์ใช่หรือไม่?")) {
-                localStorage.removeItem(STORAGE_KEY);
-                appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
-                saveAppData();
-                showAdminDashboard();
-                showToast("รีเซ็ตเป็นร้านแคร์เรียบร้อยแล้ว!");
-            }
+            localStorage.removeItem(STORAGE_KEY);
+            appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+            saveAppData();
+            showAdminDashboard();
+            showToast("รีเซ็ตเป็นค่าเริ่มต้นร้านแคร์เรียบร้อย!");
         }
 
         function applyThemeColors(t) {
@@ -788,8 +1083,8 @@
             root.style.setProperty("--lime-accent", t.limeAccent || "#dde874");
             root.style.setProperty("--text-main", t.textMain);
             root.style.setProperty("--border-soft", t.borderSoft);
-            root.style.setProperty("--shadow-color", hexToRgba(t.primaryDark, 0.12));
-            root.style.setProperty("--shadow-strong", hexToRgba(t.primaryDark, 0.25));
+            root.style.setProperty("--shadow-color", hexToRgba(t.primaryDark, 0.14));
+            root.style.setProperty("--shadow-strong", hexToRgba(t.primaryDark, 0.28));
         }
 
         function hexToRgba(hex, alpha) {
@@ -801,10 +1096,10 @@
         function showToast(msg) {
             const container = document.getElementById("toast-container");
             const toast = document.createElement("div");
-            toast.className = "bg-theme-text text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-lg flex items-center gap-2 fade-in";
+            toast.className = "bg-theme-text text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-lg border-2 border-white flex items-center gap-2 fade-in";
             toast.innerHTML = `<span>${msg}</span>`;
             container.appendChild(toast);
-            setTimeout(() => toast.remove(), 2500);
+            setTimeout(() => toast.remove(), 2600);
         }
 
         function copyStringToClipboard(text, msg) {
@@ -837,29 +1132,117 @@
             showToast("กำลังบันทึกรูป...");
         }
 
+        // ==================== LOADER, WELCOME POPUP & SOFT MUSIC ====================
+        function initLoaderAndWelcome() {
+            const s = appData.store;
+            document.getElementById("welcome-popup-title").innerText = s.welcomeTitle || "ยินดีต้อนรับสู่ Care Official Store";
+            document.getElementById("welcome-popup-message").innerText = s.welcomeMessage || "";
+            
+            const audioEl = document.getElementById("store-bg-audio");
+            if (s.musicUrl) {
+                audioEl.src = s.musicUrl;
+            }
+
+            setTimeout(() => {
+                const loader = document.getElementById("heart-loader-overlay");
+                loader.classList.add("opacity-0", "pointer-events-none");
+                setTimeout(() => {
+                    loader.classList.add("hidden");
+                    document.getElementById("welcome-popup-overlay").classList.remove("hidden");
+                }, 400);
+            }, 1350);
+        }
+
+        function dismissWelcomeAndPlayMusic() {
+            document.getElementById("welcome-popup-overlay").classList.add("hidden");
+            playStoreMusic();
+        }
+
+        function playStoreMusic() {
+            const audioEl = document.getElementById("store-bg-audio");
+            if (!audioEl.src && appData.store.musicUrl) {
+                audioEl.src = appData.store.musicUrl;
+            }
+            if (!audioEl.src) {
+                showToast("ยังไม่ได้ตั้งค่าไฟล์เพลงในระบบหลังบ้าน");
+                return;
+            }
+            audioEl.play().then(() => {
+                isMusicPlaying = true;
+                updateVinylUI();
+            }).catch(() => {
+                isMusicPlaying = false;
+                updateVinylUI();
+            });
+        }
+
+        function toggleMusicPlay() {
+            const audioEl = document.getElementById("store-bg-audio");
+            if (!audioEl.src && appData.store.musicUrl) {
+                audioEl.src = appData.store.musicUrl;
+            }
+            if (isMusicPlaying) {
+                audioEl.pause();
+                isMusicPlaying = false;
+            } else {
+                audioEl.play().then(() => {
+                    isMusicPlaying = true;
+                    updateVinylUI();
+                }).catch(() => {
+                    showToast("ไม่สามารถเล่นเพลงได้ กรุณาตรวจสอบลิงก์เพลง");
+                });
+            }
+            updateVinylUI();
+        }
+
+        function toggleMuteMusic() {
+            const audioEl = document.getElementById("store-bg-audio");
+            audioEl.muted = !audioEl.muted;
+            document.getElementById("music-mute-btn").innerText = audioEl.muted ? "ปิดเสียงอยู่" : "เสียงเปิดอยู่";
+        }
+
+        function updateVinylUI() {
+            const disc = document.getElementById("vinyl-disc-btn");
+            const label = document.getElementById("music-status-label");
+            const btnText = document.getElementById("music-play-text-btn");
+            if (isMusicPlaying) {
+                disc.classList.remove("vinyl-paused");
+                disc.classList.add("vinyl-spinning");
+                label.innerText = "กำลังเล่นเพลง ♪";
+                label.className = "text-[10px] font-medium text-theme-primaryDark";
+                btnText.innerText = "หยุดเพลง";
+            } else {
+                disc.classList.remove("vinyl-spinning");
+                disc.classList.add("vinyl-paused");
+                label.innerText = "หยุดชั่วคราว";
+                label.className = "text-[10px] text-theme-muted";
+                btnText.innerText = "กดเปิดเพลง";
+            }
+        }
+
+        // ==================== NAVIGATION (หน้าหลัก | ไอดีเกม | แอพพรี | ชำระ) ====================
         function switchTab(tabName) {
             currentTab = tabName;
-            ["home", "ids", "apps"].forEach(t => {
+            ["home", "ids", "apps", "payment"].forEach(t => {
                 const el = document.getElementById(`view-${t}`);
                 if (el) el.classList.toggle("hidden", t !== tabName);
+
+                const btn = document.getElementById(`nav-btn-${t}`);
+                if (btn) {
+                    if (t === tabName) {
+                        btn.className = "flex flex-col items-center justify-center gap-0.5 py-1.5 px-2 rounded-full text-xs font-semibold bg-theme-primaryDark text-white shadow-xs transition-all";
+                    } else {
+                        btn.className = "flex flex-col items-center justify-center gap-0.5 py-1.5 px-2 rounded-full text-xs font-medium text-theme-muted hover:text-theme-primaryDark transition-all";
+                    }
+                }
             });
-
-            const btnHome = document.getElementById("nav-btn-home");
-            const btnIds = document.getElementById("nav-btn-ids");
-            const btnApps = document.getElementById("nav-btn-apps");
-
-            btnIds.className = `flex flex-col items-center gap-0.5 text-xs font-medium transition-all ${tabName === 'ids' ? 'text-theme-primaryDark font-bold scale-105' : 'text-theme-muted hover:text-theme-primaryDark'}`;
-            btnApps.className = `flex flex-col items-center gap-0.5 text-xs font-medium transition-all ${tabName === 'apps' ? 'text-theme-primaryDark font-bold scale-105' : 'text-theme-muted hover:text-theme-primaryDark'}`;
-            btnHome.className = `flex flex-col items-center gap-0.5 text-xs font-medium group -translate-y-2.5 ${tabName === 'home' ? 'text-theme-primaryDark font-bold' : 'text-theme-muted'}`;
-
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // ==================== PWA INSTALL PROMPT ====================
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            document.getElementById("pwa-install-btn").classList.remove("hidden");
-            document.getElementById("pwa-install-btn").classList.add("flex");
         });
 
         function installPWA() {
@@ -868,17 +1251,18 @@
                 deferredPrompt.userChoice.then((choiceResult) => {
                     if (choiceResult.outcome === 'accepted') showToast("ติดตั้งแอพสำเร็จแล้ว!");
                     deferredPrompt = null;
-                    document.getElementById("pwa-install-btn").classList.add("hidden");
                 });
             } else {
-                showToast("สามารถติดตั้งแอพได้จากเมนูของเบราว์เซอร์");
+                document.getElementById("modal-ios-pwa").classList.remove("hidden");
             }
         }
 
+        // ==================== RENDER FUNCTIONS ====================
         function renderAll() {
             renderProfile();
             renderReviewsCarousel();
             renderHomePreviews();
+            renderShowcaseSection();
             renderGameIdsSection();
             renderAppsSection();
             renderBankSection();
@@ -897,13 +1281,42 @@
             document.getElementById("home-avatar").src = s.avatar;
             document.getElementById("home-store-name").innerText = s.name;
             document.getElementById("home-store-desc").innerText = s.desc;
+            document.getElementById("home-highlight-promo").innerText = s.highlightPromo || "";
             document.getElementById("home-notice").innerText = s.notice;
-            document.getElementById("home-line-btn").href = s.lineUrl || "#";
-            document.getElementById("home-credit-btn").href = s.creditGroupUrl || "https://facebook.com";
-            document.getElementById("home-review-btn").href = s.reviewExtraUrl || "https://instagram.com";
-            document.getElementById("review-pill-count").innerText = appData.reviews.length;
+            document.getElementById("music-track-title").innerText = s.musicTitle || "Gentle Healing Lofi";
+
+            // Status Badge (Green/Red glowing indicator) placed at Top-Right of banner
+            const badge = document.getElementById("store-status-badge");
+            const dot = document.getElementById("store-status-dot");
+            const statusText = document.getElementById("store-status-text");
+            if (s.isOpen !== false) {
+                badge.className = "absolute top-3 right-3 z-20 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border-[3px] border-emerald-300 shadow-md";
+                dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]";
+                statusText.innerText = "เปิดร้าน";
+            } else {
+                badge.className = "absolute top-3 right-3 z-20 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border-[3px] border-rose-300 shadow-md";
+                dot.className = "w-2.5 h-2.5 rounded-full bg-rose-500 shadow-[0_0_8px_#f43f5e]";
+                statusText.innerText = "ปิดร้าน";
+            }
+
+            // 3 Profile Buttons: ( ติดต่อสั่งซื้อ ) ( เครดิตไอดี ) ( เครดิตแอพพรี )
+            const b1 = document.getElementById("profile-btn-1");
+            b1.href = s.btn1Url || "#";
+            document.getElementById("profile-btn-1-text").innerText = s.btn1Label || "ติดต่อสั่งซื้อ";
+
+            const b2 = document.getElementById("profile-btn-2");
+            b2.href = s.btn2Url || "#";
+            document.getElementById("profile-btn-2-text").innerText = s.btn2Label || "เครดิตไอดี";
+
+            const b3 = document.getElementById("profile-btn-3");
+            b3.href = s.btn3Url || "#";
+            document.getElementById("profile-btn-3-text").innerText = s.btn3Label || "เครดิตแอพพรี";
+
+            document.getElementById("order-id-contact-link").href = s.btn1Url || "#";
+            document.getElementById("order-app-contact-link").href = s.btn1Url || "#";
         }
 
+        // Reviews Carousel (1:1 Aspect Ratio)
         function renderReviewsCarousel() {
             document.getElementById("review-count-badge").innerText = appData.reviews.length;
             const container = document.getElementById("home-reviews-carousel");
@@ -912,8 +1325,8 @@
                 return;
             }
             container.innerHTML = appData.reviews.map(url => `
-                <div onclick="openLightbox('${url}')" class="w-32 h-44 shrink-0 rounded-2xl overflow-hidden border border-theme-border bg-theme-bg cursor-pointer snap-start shadow-xs hover:scale-105 transition-transform">
-                    <img src="${url}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/300x400/ffb6c1/593C47?text=Review'">
+                <div onclick="openLightbox('${url}')" class="w-36 h-36 sm:w-44 sm:h-44 aspect-square shrink-0 rounded-3xl overflow-hidden border-[3px] border-theme-border bg-theme-bg cursor-pointer snap-start shadow-xs hover:scale-105 transition-transform">
+                    <img src="${url}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/400x400/ffb6c1/593C47?text=Review+1:1'">
                 </div>
             `).join("");
         }
@@ -921,51 +1334,53 @@
         function openAllReviewsModal() {
             const grid = document.getElementById("all-reviews-grid-container");
             grid.innerHTML = appData.reviews.map(url => `
-                <div onclick="openLightbox('${url}')" class="aspect-[4/5] rounded-2xl overflow-hidden border border-theme-border bg-theme-bg cursor-pointer hover:scale-102 transition-transform">
+                <div onclick="openLightbox('${url}')" class="aspect-square rounded-3xl overflow-hidden border-[3px] border-theme-border bg-theme-bg cursor-pointer hover:scale-102 transition-transform">
                     <img src="${url}" class="w-full h-full object-cover">
                 </div>
             `).join("");
             document.getElementById("modal-all-reviews").classList.remove("hidden");
         }
 
+        // Game ID Card Template (1:1 Image Aspect Ratio + showing only ID code, price, down price, and small details)
+        function renderGameIdCardHTML(item, originalIdx) {
+            return `
+                <div class="cute-card overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="relative aspect-square bg-theme-soft border-b-[3px] border-theme-border">
+                            <img src="${item.img}" onclick="openLightbox('${item.img}')" class="w-full h-full object-cover cursor-pointer" onerror="this.src='https://placehold.co/400x400/ffb6c1/593C47?text=ID+1:1'">
+                            <span class="absolute top-2 left-2 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-theme-primaryDark text-white border-2 border-white shadow-2xs">${item.code || '#ID'}</span>
+                            <span class="absolute top-2 right-2 text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#dde874] text-theme-text border-2 border-white">${item.status}</span>
+                        </div>
+                        <div class="p-2.5 pb-1.5">
+                            <p class="text-[11px] text-theme-muted leading-snug line-clamp-2">${item.name}</p>
+                        </div>
+                    </div>
+                    <div class="p-2.5 pt-1 space-y-2">
+                        <div class="bg-theme-bg px-2.5 py-2 rounded-2xl flex items-baseline justify-between border-[3px] border-theme-border/80">
+                            <span class="text-xs sm:text-sm font-bold text-theme-primaryDark">${item.price} ฿</span>
+                            <span class="text-[10px] font-medium text-theme-text bg-theme-soft px-2 py-0.5 rounded-full">${item.downPrice || '-'}</span>
+                        </div>
+                        <button onclick="openGameIdOrderModal(${originalIdx})" ${item.status === 'ขายแล้ว' ? 'disabled' : ''} class="w-full py-2 rounded-full text-[11px] font-cute font-medium border-[3px] border-white transition-all active:scale-95 ${item.status === 'ขายแล้ว' ? 'bg-gray-200 text-gray-400' : 'bg-theme-primaryDark hover:bg-theme-primary text-white shadow-xs'}">
+                            ${item.status === 'ขายแล้ว' ? 'ขายแล้ว' : 'สอบถามสั่งซื้อ'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
         function renderHomePreviews() {
             const idsContainer = document.getElementById("home-ids-grid");
             const topIds = appData.gameIds.slice(0, 4);
             if (topIds.length === 0) {
-                idsContainer.innerHTML = `<div class="col-span-2 text-center text-xs text-theme-muted py-2">ยังไม่มีไอดีเกม</div>`;
+                idsContainer.innerHTML = `<div class="col-span-full text-center text-xs text-theme-muted py-4">ยังไม่มีไอดีเกม</div>`;
             } else {
-                idsContainer.innerHTML = topIds.map((item, originalIdx) => `
-                    <div class="cute-card overflow-hidden flex flex-col justify-between">
-                        <div>
-                            <div class="relative h-28 bg-theme-soft">
-                                <img src="${item.img}" onclick="openLightbox('${item.img}')" class="w-full h-full object-cover cursor-pointer" onerror="this.src='https://placehold.co/300x200/ffb6c1/593C47?text=ID'">
-                                <span class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-theme-primaryDark text-white">${item.code || '#ID'}</span>
-                                <span class="absolute top-2 right-2 text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#dde874] text-theme-text">${item.status}</span>
-                            </div>
-                            <div class="p-2.5 space-y-1">
-                                <h3 class="text-xs font-semibold text-theme-text line-clamp-1">${item.name}</h3>
-                                <div class="flex flex-wrap gap-1">
-                                     ${(item.tags || []).slice(0, 2).map(t => `<span class="text-[9px] px-2 py-0.2 rounded-full bg-[#b0e0e6]/40 text-theme-text">${t}</span>`).join("")}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-2.5 pt-0 space-y-2">
-                            <div class="bg-theme-bg p-2 rounded-xl flex items-baseline justify-between text-xs border border-theme-border/60">
-                                <span class="font-bold text-theme-primaryDark">${item.price} ฿</span>
-                                <span class="text-[10px] text-theme-muted">${item.downPrice}</span>
-                            </div>
-                            <button onclick="openGameIdOrderModal(${originalIdx})" ${item.status === 'ขายแล้ว' ? 'disabled' : ''} class="w-full py-2 rounded-full text-[11px] font-medium ${item.status === 'ขายแล้ว' ? 'bg-gray-100 text-gray-400' : 'bg-theme-primaryDark text-white shadow-xs'}">
-                                ${item.status === 'ขายแล้ว' ? 'ขายแล้ว' : 'สั่งซื้อ / ผ่อน'}
-                            </button>
-                        </div>
-                    </div>
-                `).join("");
+                idsContainer.innerHTML = topIds.map((item, idx) => renderGameIdCardHTML(item, idx)).join("");
             }
 
             const appsContainer = document.getElementById("home-apps-grid");
             const topApps = appData.premiumApps.slice(0, 4);
             if (topApps.length === 0) {
-                appsContainer.innerHTML = `<div class="col-span-2 text-center text-xs text-theme-muted py-2">ยังไม่มีแอพพรีเมียม</div>`;
+                appsContainer.innerHTML = `<div class="col-span-full text-center text-xs text-theme-muted py-4">ยังไม่มีแอพพรีเมียม</div>`;
             } else {
                 appsContainer.innerHTML = topApps.map((app, appIdx) => {
                     if (selectedPackages[appIdx] === undefined || selectedPackages[appIdx] >= app.packages.length) selectedPackages[appIdx] = 0;
@@ -975,26 +1390,26 @@
                     return `
                         <div class="cute-card overflow-hidden flex flex-col justify-between">
                             <div>
-                                <div class="relative h-28 bg-theme-soft">
-                                    <img src="${app.img}" onclick="openLightbox('${app.img}')" class="w-full h-full object-cover cursor-pointer" onerror="this.src='https://placehold.co/300x200/b0e0e6/593C47?text=APP'">
-                                    <span class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#b0e0e6] text-theme-text">APP</span>
+                                <div class="relative aspect-square bg-theme-soft border-b-[3px] border-theme-border">
+                                    <img src="${app.img}" onclick="openLightbox('${app.img}')" class="w-full h-full object-cover cursor-pointer" onerror="this.src='https://placehold.co/400x400/b0e0e6/593C47?text=APP+1:1'">
+                                    <span class="absolute top-2 left-2 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#b0e0e6] text-theme-text border-2 border-white">APP</span>
                                 </div>
                                 <div class="p-2.5 space-y-1">
                                     <h3 class="text-xs font-semibold text-theme-text line-clamp-1">${app.name}</h3>
                                     <p class="text-[10px] text-theme-muted line-clamp-1">${app.desc}</p>
                                     <div class="flex flex-wrap gap-1 pt-1">
                                         ${app.packages.map((pkg, pIdx) => `
-                                            <button onclick="selectAppPackage(${appIdx}, ${pIdx})" class="px-2 py-0.5 rounded-lg text-[9px] font-medium border ${pIdx === activePkgIdx ? 'bg-theme-primaryDark text-white border-theme-primaryDark' : 'bg-theme-bg text-theme-text border-theme-border'}">${pkg.days}</button>
+                                            <button onclick="selectAppPackage(${appIdx}, ${pIdx})" class="px-2 py-0.5 rounded-lg text-[9px] font-medium border-[2.5px] ${pIdx === activePkgIdx ? 'bg-theme-primaryDark text-white border-theme-primaryDark' : 'bg-theme-bg text-theme-text border-theme-border'}">${pkg.days}</button>
                                         `).join("")}
                                     </div>
                                 </div>
                             </div>
                             <div class="p-2.5 pt-0 space-y-2">
-                                <div class="bg-theme-bg p-2 rounded-xl flex items-baseline justify-between text-xs border border-theme-border/60">
+                                <div class="bg-theme-bg p-2 rounded-2xl flex items-baseline justify-between text-xs border-[3px] border-theme-border/80">
                                     <span class="font-bold text-theme-primaryDark">${activePkg.price} ฿</span>
                                     <span class="text-[10px] text-theme-muted">${activePkg.days}</span>
                                 </div>
-                                <button onclick="openAppOrderModal(${appIdx})" class="w-full py-2 rounded-full text-[11px] font-medium bg-theme-primaryDark text-white shadow-xs">
+                                <button onclick="openAppOrderModal(${appIdx})" class="w-full py-2 rounded-full text-[11px] font-cute font-medium bg-theme-primaryDark hover:bg-theme-primary text-white border-[3px] border-white shadow-xs transition-all active:scale-95">
                                     สั่งซื้อแพ็กเกจนี้
                                 </button>
                             </div>
@@ -1004,10 +1419,44 @@
             }
         }
 
+        // Showcase Section ("ผลงาน") - Displays "Coming soon ..." when empty
+        function renderShowcaseSection() {
+            const grid = document.getElementById("home-showcase-grid");
+            const items = appData.showcaseItems || [];
+            if (items.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full cute-card min-h-[130px] p-6 flex flex-col items-center justify-center text-center space-y-2">
+                        <p class="font-cute text-sm font-semibold text-theme-primaryDark tracking-wider">Coming soon ...</p>
+                        <p class="text-xs text-theme-muted">ผลงานและสินค้าใหม่ ๆ จะมาเร็ว ๆ นี้ค่ะ</p>
+                    </div>
+                `;
+                return;
+            }
+            grid.innerHTML = items.map(item => `
+                <div class="cute-card overflow-hidden flex flex-col justify-between">
+                    <div>
+                        <div class="relative aspect-square bg-theme-soft border-b-[3px] border-theme-border">
+                            <img src="${item.img}" onclick="openLightbox('${item.img}')" class="w-full h-full object-cover cursor-pointer" onerror="this.src='https://placehold.co/400x400/dde874/593C47?text=SHOWCASE'">
+                            ${item.badge ? `<span class="absolute top-2 left-2 text-[10px] font-semibold px-2.5 py-0.5 rounded-full bg-theme-lime text-theme-text border-2 border-white shadow-2xs">${item.badge}</span>` : ''}
+                        </div>
+                        <div class="p-3 space-y-1">
+                            <h3 class="text-xs font-semibold text-theme-text line-clamp-1">${item.title}</h3>
+                            <p class="text-[11px] text-theme-muted line-clamp-2 leading-snug">${item.desc}</p>
+                        </div>
+                    </div>
+                    <div class="p-3 pt-0">
+                        <a href="${appData.store.btn1Url || '#'}" target="_blank" rel="noopener noreferrer" class="block w-full py-1.5 rounded-full text-center text-[11px] font-medium bg-theme-soft hover:bg-theme-primary/30 text-theme-primaryDark border-[3px] border-theme-border transition-colors">
+                            สอบถามเพิ่มเติม
+                        </a>
+                    </div>
+                </div>
+            `).join("");
+        }
+
         function renderGameIdsSection() {
             const tagsEl = document.getElementById("id-filter-tags");
             tagsEl.innerHTML = SUGGESTED_ID_TAGS.map(t => `
-                <button onclick="setSelectedIdTag('${t}')" class="px-3 py-1 rounded-full text-[11px] font-medium whitespace-nowrap border transition-all ${selectedIdTag === t ? 'bg-theme-primaryDark text-white border-theme-primaryDark' : 'bg-theme-card text-theme-text border-theme-border'}">${t}</button>
+                <button onclick="setSelectedIdTag('${t}')" class="px-3 py-1 rounded-full text-[11px] font-medium whitespace-nowrap border-2 transition-all ${selectedIdTag === t ? 'bg-theme-primaryDark text-white border-theme-primaryDark' : 'bg-theme-card text-theme-text border-theme-border'}">${t}</button>
             `).join("");
 
             const search = (document.getElementById("id-search-input")?.value || "").toLowerCase().trim();
@@ -1027,36 +1476,11 @@
 
             const list = document.getElementById("ids-grid-list");
             if (filtered.length === 0) {
-                list.innerHTML = `<div class="col-span-2 cute-card p-6 text-center text-xs text-theme-muted">ไม่พบไอดีเกมตามเงื่อนไข</div>`;
+                list.innerHTML = `<div class="col-span-full cute-card p-6 text-center text-xs text-theme-muted">ไม่พบไอดีเกมตามเงื่อนไข</div>`;
                 return;
             }
 
-            list.innerHTML = filtered.map(item => `
-                <div class="cute-card overflow-hidden flex flex-col justify-between">
-                    <div>
-                        <div class="relative h-28 bg-theme-soft">
-                            <img src="${item.img}" onclick="openLightbox('${item.img}')" class="w-full h-full object-cover cursor-pointer" onerror="this.src='https://placehold.co/300x200/ffb6c1/593C47?text=ID'">
-                            <span class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-theme-primaryDark text-white">${item.code || '#ID'}</span>
-                            <span class="absolute top-2 right-2 text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#dde874] text-theme-text">${item.status}</span>
-                        </div>
-                        <div class="p-2.5 space-y-1">
-                            <h3 class="text-xs font-semibold text-theme-text line-clamp-1">${item.name}</h3>
-                            <div class="flex flex-wrap gap-1">
-                                ${(item.tags || []).map(t => `<span class="text-[9px] px-2 py-0.2 rounded-full bg-[#b0e0e6]/40 text-theme-text">${t}</span>`).join("")}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-2.5 pt-0 space-y-2">
-                        <div class="bg-theme-bg p-2 rounded-xl flex items-baseline justify-between text-xs border border-theme-border/60">
-                            <span class="font-bold text-theme-primaryDark">${item.price} ฿</span>
-                            <span class="text-[10px] text-theme-muted">${item.downPrice}</span>
-                        </div>
-                        <button onclick="openGameIdOrderModal(${item.originalIdx})" ${item.status === 'ขายแล้ว' ? 'disabled' : ''} class="w-full py-2 rounded-full text-[11px] font-medium ${item.status === 'ขายแล้ว' ? 'bg-gray-100 text-gray-400' : 'bg-theme-primaryDark text-white shadow-xs'}">
-                            ${item.status === 'ขายแล้ว' ? 'ขายแล้ว' : 'สั่งซื้อ / ผ่อน'}
-                        </button>
-                    </div>
-                </div>
-            `).join("");
+            list.innerHTML = filtered.map(item => renderGameIdCardHTML(item, item.originalIdx)).join("");
         }
 
         function setSelectedIdTag(tag) {
@@ -1083,7 +1507,7 @@
             const list = document.getElementById("apps-grid-list");
 
             if (filtered.length === 0) {
-                list.innerHTML = `<div class="col-span-2 cute-card p-6 text-center text-xs text-theme-muted">ไม่พบแอพพรีเมียม</div>`;
+                list.innerHTML = `<div class="col-span-full cute-card p-6 text-center text-xs text-theme-muted">ไม่พบแอพพรีเมียม</div>`;
                 return;
             }
 
@@ -1096,26 +1520,26 @@
                 return `
                     <div class="cute-card overflow-hidden flex flex-col justify-between">
                         <div>
-                            <div class="relative h-28 bg-theme-soft">
-                                <img src="${app.img}" onclick="openLightbox('${app.img}')" class="w-full h-full object-cover cursor-pointer" onerror="this.src='https://placehold.co/300x200/b0e0e6/593C47?text=APP'">
-                                <span class="absolute top-2 left-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#b0e0e6] text-theme-text">APP</span>
+                            <div class="relative aspect-square bg-theme-soft border-b-[3px] border-theme-border">
+                                <img src="${app.img}" onclick="openLightbox('${app.img}')" class="w-full h-full object-cover cursor-pointer" onerror="this.src='https://placehold.co/400x400/b0e0e6/593C47?text=APP+1:1'">
+                                <span class="absolute top-2 left-2 text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-[#b0e0e6] text-theme-text border-2 border-white">APP</span>
                             </div>
                             <div class="p-2.5 space-y-1">
                                 <h3 class="text-xs font-semibold text-theme-text line-clamp-1">${app.name}</h3>
                                 <p class="text-[10px] text-theme-muted line-clamp-1">${app.desc}</p>
                                 <div class="flex flex-wrap gap-1 pt-1">
                                     ${app.packages.map((pkg, pIdx) => `
-                                        <button onclick="selectAppPackage(${appIdx}, ${pIdx})" class="px-2 py-0.5 rounded-lg text-[9px] font-medium border ${pIdx === activePkgIdx ? 'bg-theme-primaryDark text-white border-theme-primaryDark' : 'bg-theme-bg text-theme-text border-theme-border'}">${pkg.days}</button>
+                                        <button onclick="selectAppPackage(${appIdx}, ${pIdx})" class="px-2 py-0.5 rounded-lg text-[9px] font-medium border-[2.5px] ${pIdx === activePkgIdx ? 'bg-theme-primaryDark text-white border-theme-primaryDark' : 'bg-theme-bg text-theme-text border-theme-border'}">${pkg.days}</button>
                                     `).join("")}
                                 </div>
                             </div>
                         </div>
                         <div class="p-2.5 pt-0 space-y-2">
-                            <div class="bg-theme-bg p-2 rounded-xl flex items-baseline justify-between text-xs border border-theme-border/60">
+                            <div class="bg-theme-bg p-2 rounded-2xl flex items-baseline justify-between text-xs border-[3px] border-theme-border/80">
                                 <span class="font-bold text-theme-primaryDark">${activePkg.price} ฿</span>
                                 <span class="text-[10px] text-theme-muted">${activePkg.days}</span>
                             </div>
-                            <button onclick="openAppOrderModal(${appIdx})" class="w-full py-2 rounded-full text-[11px] font-medium bg-theme-primaryDark text-white shadow-xs">
+                            <button onclick="openAppOrderModal(${appIdx})" class="w-full py-2 rounded-full text-[11px] font-cute font-medium bg-theme-primaryDark hover:bg-theme-primary text-white border-[3px] border-white shadow-xs transition-all active:scale-95">
                                 สั่งซื้อแพ็กเกจนี้
                             </button>
                         </div>
@@ -1130,10 +1554,11 @@
             renderHomePreviews();
         }
 
+        // Payment Section ("ชำระ")
         function renderBankSection() {
             const banks = appData.banks || [];
             document.getElementById("banks-count-badge").innerText = `${banks.length} บัญชี`;
-            const card = document.getElementById("home-bank-card");
+            const card = document.getElementById("payment-bank-card");
             
             if (banks.length === 0) {
                 card.innerHTML = `<p class="text-center text-xs text-theme-muted py-4">ยังไม่ได้เพิ่มบัญชีธนาคาร</p>`;
@@ -1143,37 +1568,37 @@
             const qrUrl = appData.store.mainQrUrl || "https://placehold.co/320x320/FFFFFF/e07a8c?text=PromptPay+QR";
 
             card.innerHTML = `
-                <div class="flex items-center justify-between border-b border-theme-border pb-2.5">
+                <div class="flex items-center justify-between border-b-2 border-theme-border pb-2.5">
                     <span class="text-xs font-semibold text-theme-primaryDark">พร้อมเพย์ / QR Code หลักของร้าน</span>
-                    <span class="text-[11px] bg-[#b0e0e6]/50 text-theme-text px-2.5 py-0.5 rounded-full font-medium">สแกนโอนง่าย</span>
+                    <span class="text-[11px] bg-[#b0e0e6]/50 text-theme-text px-2.5 py-0.5 rounded-full font-medium border border-[#7ec4ce]">สแกนโอนง่าย</span>
                 </div>
-                <div class="flex flex-col items-center bg-[#b0e0e6]/15 rounded-2xl p-4 border border-[#b0e0e6]">
-                    <div class="w-40 h-40 bg-white p-2 rounded-2xl shadow-xs border border-theme-border flex items-center justify-center">
+                <div class="flex flex-col items-center bg-[#b0e0e6]/15 rounded-3xl p-4 border-[2.5px] border-dotted border-[#7ec4ce]">
+                    <div class="w-44 h-44 bg-white p-2 rounded-2xl shadow-xs border-2 border-theme-border flex items-center justify-center">
                         <img src="${qrUrl}" class="w-full h-full object-contain cursor-pointer" onclick="openLightbox(this.src)" onerror="this.src='https://placehold.co/300x300/FFFFFF/e07a8c?text=QR'">
                     </div>
-                    <button onclick="triggerDownloadUrl('${qrUrl}', 'Store-QR.png')" class="mt-3 bg-white hover:bg-theme-soft text-theme-primaryDark border border-theme-border text-xs font-medium px-4 py-1.5 rounded-full shadow-xs">บันทึกรูป QR Code</button>
+                    <button onclick="triggerDownloadUrl('${qrUrl}', 'Store-QR.png')" class="mt-3 bg-white hover:bg-theme-soft text-theme-primaryDark border-2 border-theme-border text-xs font-medium px-4 py-1.5 rounded-full shadow-xs">บันทึกรูป QR Code</button>
                 </div>
                 <div class="space-y-3 pt-2">
-                    <p class="font-semibold text-theme-text text-[11px] px-1">เลขบัญชีธนาคารทั้งหมด (${banks.length} บัญชี):</p>
-                    <div class="space-y-2.5">
+                    <p class="font-semibold text-theme-text text-xs px-1">เลขบัญชีธนาคารทั้งหมด (${banks.length} บัญชี):</p>
+                    <div class="space-y-3">
                         ${banks.map((b, i) => `
-                            <div class="bg-theme-bg p-3.5 rounded-2xl border border-theme-border space-y-2 text-xs">
+                            <div class="bg-theme-bg p-4 rounded-2xl border-2 border-theme-border space-y-2 text-xs">
                                 <div class="flex items-center justify-between font-semibold text-theme-primaryDark">
                                     <span>${b.bankTitle}</span>
-                                    <span class="text-[10px] font-normal text-theme-muted">${b.accountName}</span>
+                                    <span class="text-[11px] font-normal text-theme-muted">${b.accountName}</span>
                                 </div>
                                 <div class="flex items-center justify-between">
                                     <span class="text-theme-muted text-[11px]">เลขบัญชี:</span>
                                     <div class="flex items-center gap-2">
                                         <span id="bank-acc-${i}" class="font-bold text-theme-text">${b.accountNumber}</span>
-                                        <button onclick="copyTextById('bank-acc-${i}', 'คัดลอกเลขบัญชีแล้ว')" class="bg-theme-soft hover:bg-theme-primary/40 px-2.5 py-0.5 rounded-lg text-[10px] font-medium text-theme-primaryDark border border-theme-border">คัดลอกเลข</button>
+                                        <button onclick="copyTextById('bank-acc-${i}', 'คัดลอกเลขบัญชีแล้ว')" class="bg-theme-soft hover:bg-theme-primary/40 px-2.5 py-0.5 rounded-xl text-[10px] font-medium text-theme-primaryDark border-2 border-theme-border">คัดลอกเลข</button>
                                     </div>
                                 </div>
                                 <div class="flex items-start justify-between pt-1.5 border-t border-theme-border/60 gap-2">
                                     <span class="text-theme-muted text-[11px] shrink-0">โน้ตสลิป:</span>
                                     <div class="flex items-center justify-end gap-2 flex-1 min-w-0">
                                         <span id="bank-slip-${i}" class="font-medium text-theme-text text-right break-all leading-relaxed">${b.slipNote || '-'}</span>
-                                        <button onclick="copyTextById('bank-slip-${i}', 'คัดลอกโน้ตสลิปแล้ว')" class="bg-[#dde874]/70 hover:bg-[#dde874] px-2.5 py-0.5 rounded-lg text-[10px] font-medium text-theme-text border border-[#cddb5c] shrink-0">คัดลอกโน้ต</button>
+                                        <button onclick="copyTextById('bank-slip-${i}', 'คัดลอกโน้ตสลิปแล้ว')" class="bg-[#dde874]/70 hover:bg-[#dde874] px-2.5 py-0.5 rounded-xl text-[10px] font-medium text-theme-text border-2 border-[#cddb5c] shrink-0">คัดลอกโน้ต</button>
                                     </div>
                                 </div>
                             </div>
@@ -1183,6 +1608,7 @@
             `;
         }
 
+        // ==================== ORDER MODALS & FORM COPY (จัดบรรทัดตามที่ขอ) ====================
         let currentOrderingGameId = null;
         function openGameIdOrderModal(idx) {
             const item = appData.gameIds[idx];
@@ -1191,9 +1617,9 @@
             document.getElementById("order-id-img").src = item.img;
             document.getElementById("order-id-code-badge").innerText = item.code || "#ID";
             document.getElementById("order-id-title").innerText = item.name;
-            document.getElementById("order-id-prices").innerText = `ราคา ${item.price} ฿ | ${item.downPrice}`;
+            document.getElementById("order-id-prices").innerText = `ราคา ${item.price} ฿ | ${item.downPrice || '-'}`;
+            document.getElementById("order-id-contact-link").href = appData.store.btn1Url || "#";
 
-            setupModalOrderData('id');
             document.getElementById("modal-order-id").classList.remove("hidden");
         }
 
@@ -1202,11 +1628,11 @@
             const cust = document.getElementById("form-id-customer").value.trim() || "-";
             const type = document.getElementById("form-id-type").value;
             const contact = document.getElementById("form-id-contact").value.trim() || "-";
-            const bankIdx = parseInt(document.getElementById("modal-id-bank-select").value) || 0;
-            const bank = appData.banks[bankIdx] || {};
             
-            const text = `แบบฟอร์มสั่งซื้อไอดีเกม (${appData.store.name})\nรหัส: ${currentOrderingGameId.code} | ${currentOrderingGameId.name}\nราคา: ${currentOrderingGameId.price} ฿ (${type})\nโอนเข้าธนาคาร: ${bank.bankTitle} (${bank.accountNumber})\nโน้ตสลิป: ${bank.slipNote || '-'}\nชื่อลูกค้า: ${cust}\nติดต่อ: ${contact}\nโอนแล้วส่งสลิปในแชทค่ะ`;
-            copyStringToClipboard(text, "คัดลอกแบบฟอร์มสำเร็จ นำไปวางในแชทได้เลย");
+            const formattedType = type === "สอบถาม (ขอส่วนลด)" ? "(สอบถาม( ขอส่วนลด )" : `(${type})`;
+
+            const text = `แบบฟอร์มสั่งซื้อไอดีเกม \n(${appData.store.name})\nรหัส: ${currentOrderingGameId.code} | ${currentOrderingGameId.name} \nราคา: ${currentOrderingGameId.price} ฿ \n${formattedType}\n\nชื่อลูกค้า: ${cust}\nติดต่อ: ${contact}\n\nชำระเงินและรับไอดีในแชทส่วนตัวค่ะ\nกดคัดลอกฟอร์มด้านล่างแล้วกดปุ่มทักแชทได้เลย\n\nยืนยันการซื้อ ☑️\n( คัดลอก )`;
+            copyStringToClipboard(text, "คัดลอกแบบฟอร์มแล้ว กดปุ่มไปที่ช่องทางติดต่อด้านล่างได้เลย!");
         }
 
         let currentOrderingApp = null;
@@ -1220,31 +1646,18 @@
             document.getElementById("order-app-name").innerText = app.name;
             document.getElementById("order-app-pkg").innerText = `แพ็กเกจ: ${pkg.days}`;
             document.getElementById("order-app-price").innerText = `${pkg.price} ฿`;
+            document.getElementById("order-app-contact-link").href = appData.store.btn1Url || "#";
 
-            setupModalOrderData('app');
-            document.getElementById("modal-order-app").classList.remove("hidden");
-        }
-
-        function copyAppOrderSummary() {
-            if (!currentOrderingApp) return;
-            const { app, pkg } = currentOrderingApp;
-            const bankIdx = parseInt(document.getElementById("modal-app-bank-select").value) || 0;
-            const bank = appData.banks[bankIdx] || {};
-            const text = `สั่งซื้อแอพพรีเมียม (${appData.store.name})\nแอพ: ${app.name} (${pkg.days})\nยอดโอน: ${pkg.price} ฿\nธนาคาร: ${bank.bankTitle} (${bank.accountNumber})\nโน้ตสลิป: ${bank.slipNote || '-'}\nโอนเรียบร้อยแนบสลิปค่ะ`;
-            copyStringToClipboard(text, "คัดลอกข้อมูลสั่งซื้อสำเร็จ");
-        }
-
-        function setupModalOrderData(type) {
             const qrUrl = appData.store.mainQrUrl || "https://placehold.co/320x320/FFFFFF/e07a8c?text=PromptPay+QR";
-            document.getElementById(`order-${type}-qr`).src = qrUrl;
+            document.getElementById("order-app-qr").src = qrUrl;
 
-            const select = document.getElementById(`modal-${type}-bank-select`);
+            const select = document.getElementById("modal-app-bank-select");
             const banks = appData.banks || [];
             select.innerHTML = banks.map((b, i) => `<option value="${i}">${b.bankTitle} - ${b.accountNumber}</option>`).join("");
 
-            const listContainer = document.getElementById(`modal-${type}-banks-list`);
+            const listContainer = document.getElementById("modal-app-banks-list");
             listContainer.innerHTML = banks.map((b, i) => `
-                <div class="bg-theme-bg p-2.5 rounded-xl border border-theme-border space-y-1 text-[11px]">
+                <div class="bg-theme-bg p-2.5 rounded-xl border-2 border-theme-border space-y-1 text-[11px]">
                     <div class="flex justify-between font-semibold"><span>${b.bankTitle}</span><span>${b.accountNumber}</span></div>
                     <div class="flex items-start justify-between text-theme-muted gap-2">
                         <span class="break-all">โน้ต: ${b.slipNote || '-'}</span>
@@ -1255,6 +1668,17 @@
                     </div>
                 </div>
             `).join("");
+
+            document.getElementById("modal-order-app").classList.remove("hidden");
+        }
+
+        function copyAppOrderSummary() {
+            if (!currentOrderingApp) return;
+            const { app, pkg } = currentOrderingApp;
+            const bankIdx = parseInt(document.getElementById("modal-app-bank-select").value) || 0;
+            const bank = appData.banks[bankIdx] || {};
+            const text = `สั่งซื้อแอพพรีเมียม (${appData.store.name})\nแอพ: ${app.name} (${pkg.days})\nยอดโอน: ${pkg.price} ฿\nธนาคาร: ${bank.bankTitle} (${bank.accountNumber})\nโน้ตสลิป: ${bank.slipNote || '-'}\nโอนเรียบร้อยแนบสลิปค่ะ`;
+            copyStringToClipboard(text, "คัดลอกข้อมูลสั่งซื้อสำเร็จ");
         }
 
         function downloadModalQR() {
@@ -1271,6 +1695,7 @@
             document.getElementById(id).classList.add("hidden");
         }
 
+        // ==================== ADMIN PANEL FUNCTIONS ====================
         function openAdminModal() {
             document.getElementById("modal-admin").classList.remove("hidden");
             if (isAdminAuthenticated) showAdminDashboard();
@@ -1305,24 +1730,57 @@
 
             renderThemePresets();
             syncColorPickers(appData.theme);
+            syncAdminStatusButtons();
 
-            document.getElementById("adm-store-name").value = appData.store.name;
-            document.getElementById("adm-store-banner").value = appData.store.banner || "";
-            document.getElementById("adm-store-avatar").value = appData.store.avatar;
-            document.getElementById("adm-store-desc").value = appData.store.desc;
-            document.getElementById("adm-store-notice").value = appData.store.notice;
-            document.getElementById("adm-line-url").value = appData.store.lineUrl;
-            document.getElementById("adm-credit-url").value = appData.store.creditGroupUrl || "";
-            document.getElementById("adm-review-url-btn").value = appData.store.reviewExtraUrl || "";
-            document.getElementById("adm-main-qr").value = appData.store.mainQrUrl || "";
+            const s = appData.store;
+            document.getElementById("adm-store-name").value = s.name;
+            document.getElementById("adm-store-banner").value = s.banner || "";
+            document.getElementById("adm-store-avatar").value = s.avatar;
+            document.getElementById("adm-store-desc").value = s.desc;
+            document.getElementById("adm-store-highlight").value = s.highlightPromo || "";
+            document.getElementById("adm-store-notice").value = s.notice;
+            
+            document.getElementById("adm-btn1-label").value = s.btn1Label || "ติดต่อสั่งซื้อ";
+            document.getElementById("adm-btn1-url").value = s.btn1Url || "";
+            document.getElementById("adm-btn2-label").value = s.btn2Label || "เครดิตไอดี";
+            document.getElementById("adm-btn2-url").value = s.btn2Url || "";
+            document.getElementById("adm-btn3-label").value = s.btn3Label || "เครดิตแอพพรี";
+            document.getElementById("adm-btn3-url").value = s.btn3Url || "";
+
+            document.getElementById("adm-welcome-title").value = s.welcomeTitle || "";
+            document.getElementById("adm-welcome-msg").value = s.welcomeMessage || "";
+            document.getElementById("adm-music-title").value = s.musicTitle || "";
+            document.getElementById("adm-music-url").value = s.musicUrl || "";
+            document.getElementById("adm-main-qr").value = s.mainQrUrl || "";
 
             resetAppForm();
             resetBankForm();
+            resetShowcaseForm();
             renderAdminLists();
         }
 
+        function syncAdminStatusButtons() {
+            const isOpen = appData.store.isOpen !== false;
+            const openBtn = document.getElementById("adm-status-open-btn");
+            const closeBtn = document.getElementById("adm-status-close-btn");
+            if (isOpen) {
+                openBtn.className = "flex-1 py-2.5 rounded-2xl font-semibold border-2 border-emerald-500 bg-emerald-50 text-emerald-700 flex items-center justify-center gap-2";
+                closeBtn.className = "flex-1 py-2.5 rounded-2xl font-medium border-2 border-theme-border bg-white text-theme-muted flex items-center justify-center gap-2";
+            } else {
+                openBtn.className = "flex-1 py-2.5 rounded-2xl font-medium border-2 border-theme-border bg-white text-theme-muted flex items-center justify-center gap-2";
+                closeBtn.className = "flex-1 py-2.5 rounded-2xl font-semibold border-2 border-rose-500 bg-rose-50 text-rose-700 flex items-center justify-center gap-2";
+            }
+        }
+
+        function setStoreOpenStatus(statusBool) {
+            appData.store.isOpen = statusBool;
+            syncAdminStatusButtons();
+            saveAppData();
+            showToast(statusBool ? "เปลี่ยนสถานะเป็น เปิดร้าน (ไฟเขียว) แล้ว" : "เปลี่ยนสถานะเป็น ปิดร้าน (ไฟแดง) แล้ว");
+        }
+
         function switchAdminTab(tab) {
-            ["store", "reviews", "ids", "apps", "bank", "theme"].forEach(t => {
+            ["store", "welcome", "reviews", "ids", "apps", "showcase", "bank", "theme"].forEach(t => {
                 document.getElementById(`atab-${t}`).className = `admin-tab-btn px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap ${t === tab ? 'bg-theme-primaryDark text-white' : 'bg-theme-soft text-theme-text'}`;
                 document.getElementById(`apanel-${t}`).classList.toggle("hidden", t !== tab);
             });
@@ -1330,7 +1788,7 @@
 
         function renderThemePresets() {
             document.getElementById("preset-themes-grid").innerHTML = COLOR_PRESETS.map((p, idx) => `
-                <button type="button" onclick="applyPresetTheme(${idx})" class="flex items-center justify-between p-2.5 rounded-2xl border border-theme-border bg-white text-left">
+                <button type="button" onclick="applyPresetTheme(${idx})" class="flex items-center justify-between p-2.5 rounded-2xl border-2 border-theme-border bg-white text-left">
                     <span class="text-[11px] font-medium text-gray-700 truncate">${p.name}</span>
                     <div class="flex -space-x-1 shrink-0">
                         <span class="w-4 h-4 rounded-full border border-white" style="background:${p.primary}"></span>
@@ -1400,10 +1858,28 @@
                     if (w > maxW) { h *= maxW / w; w = maxW; }
                     canvas.width = w; canvas.height = h;
                     canvas.getContext("2d").drawImage(img, 0, 0, w, h);
-                    document.getElementById(targetId).value = canvas.toDataURL("image/jpeg", 0.8);
+                    document.getElementById(targetId).value = canvas.toDataURL("image/jpeg", 0.82);
                     showToast("อัปโหลดรูปสำเร็จ");
                 };
                 img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleAudioUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+            if (file.size > 3.5 * 1024 * 1024) {
+                showToast("ไฟล์เพลงใหญ่เกิน 3.5MB แนะนำให้ใช้ลิงก์ MP3 แทน");
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = e => {
+                document.getElementById("adm-music-url").value = e.target.result;
+                if (!document.getElementById("adm-music-title").value.trim()) {
+                    document.getElementById("adm-music-title").value = file.name.replace(/\.[^/.]+$/, "");
+                }
+                showToast("โหลดไฟล์เพลงเรียบร้อย กดบันทึกด้านล่างได้เลย");
             };
             reader.readAsDataURL(file);
         }
@@ -1413,12 +1889,34 @@
             appData.store.banner = document.getElementById("adm-store-banner").value.trim();
             appData.store.avatar = document.getElementById("adm-store-avatar").value.trim();
             appData.store.desc = document.getElementById("adm-store-desc").value.trim();
+            appData.store.highlightPromo = document.getElementById("adm-store-highlight").value.trim();
             appData.store.notice = document.getElementById("adm-store-notice").value.trim();
-            appData.store.lineUrl = document.getElementById("adm-line-url").value.trim();
-            appData.store.creditGroupUrl = document.getElementById("adm-credit-url").value.trim();
-            appData.store.reviewExtraUrl = document.getElementById("adm-review-url-btn").value.trim();
+
+            appData.store.btn1Label = document.getElementById("adm-btn1-label").value.trim() || "ติดต่อสั่งซื้อ";
+            appData.store.btn1Url = document.getElementById("adm-btn1-url").value.trim() || "#";
+            appData.store.btn2Label = document.getElementById("adm-btn2-label").value.trim() || "เครดิตไอดี";
+            appData.store.btn2Url = document.getElementById("adm-btn2-url").value.trim() || "#";
+            appData.store.btn3Label = document.getElementById("adm-btn3-label").value.trim() || "เครดิตแอพพรี";
+            appData.store.btn3Url = document.getElementById("adm-btn3-url").value.trim() || "#";
+
             saveAppData();
-            showToast("บันทึกข้อมูลร้านสำเร็จ");
+            showToast("บันทึกข้อมูลโปรไฟล์และปุ่ม 3 ปุ่มสำเร็จ");
+        }
+
+        function saveWelcomeAndMusicSettings() {
+            appData.store.welcomeTitle = document.getElementById("adm-welcome-title").value.trim();
+            appData.store.welcomeMessage = document.getElementById("adm-welcome-msg").value.trim();
+            appData.store.musicTitle = document.getElementById("adm-music-title").value.trim() || "Gentle Healing Lofi";
+            const newMusicUrl = document.getElementById("adm-music-url").value.trim();
+            appData.store.musicUrl = newMusicUrl;
+
+            const audioEl = document.getElementById("store-bg-audio");
+            if (newMusicUrl && audioEl.src !== newMusicUrl) {
+                audioEl.src = newMusicUrl;
+                if (isMusicPlaying) audioEl.play().catch(() => {});
+            }
+            saveAppData();
+            showToast("บันทึกข้อความต้อนรับและเพลงสำเร็จ");
         }
 
         function saveMainQrSettings() {
@@ -1460,13 +1958,13 @@
                 id: "id-" + Date.now(),
                 code: document.getElementById("adm-id-code").value.trim() || "#ID",
                 name: document.getElementById("adm-id-name").value.trim(),
-                img: document.getElementById("adm-id-img").value.trim() || "https://placehold.co/400x300/ffb6c1/593C47?text=ID",
+                img: document.getElementById("adm-id-img").value.trim() || "https://placehold.co/400x400/ffb6c1/593C47?text=ID+1:1",
                 price: parseFloat(document.getElementById("adm-id-price").value) || 0,
                 downPrice: document.getElementById("adm-id-down").value.trim() || "-",
                 tags: document.getElementById("adm-id-tags").value.split(",").map(t => t.trim()).filter(Boolean),
                 status: document.getElementById("adm-id-status").value
             };
-            if (!item.name) { showToast("กรุณากรอกชื่อไอดี"); return; }
+            if (!item.name) { showToast("กรุณากรอกรายละเอียดไอดี"); return; }
             if (editIdx >= 0) appData.gameIds[editIdx] = item;
             else appData.gameIds.unshift(item);
             resetGameIdForm();
@@ -1506,8 +2004,8 @@
             const row = document.createElement("div");
             row.className = "flex items-center gap-2 pkg-row";
             row.innerHTML = `
-                <input type="text" placeholder="จำนวนวัน" value="${days}" class="pkg-days flex-1 px-3 py-1.5 rounded-xl bg-theme-bg border border-theme-border">
-                <input type="text" placeholder="ราคา" value="${price}" class="pkg-price w-24 px-3 py-1.5 rounded-xl bg-theme-bg border border-theme-border">
+                <input type="text" placeholder="จำนวนวัน" value="${days}" class="pkg-days flex-1 px-3 py-1.5 rounded-xl bg-theme-bg border-2 border-theme-border">
+                <input type="text" placeholder="ราคา" value="${price}" class="pkg-price w-24 px-3 py-1.5 rounded-xl bg-theme-bg border-2 border-theme-border">
                 <button type="button" onclick="this.parentElement.remove()" class="text-rose-500 p-1">ลบ</button>
             `;
             container.appendChild(row);
@@ -1516,7 +2014,7 @@
         function savePremiumAppItem() {
             const editIdx = parseInt(document.getElementById("adm-app-edit-index").value);
             const name = document.getElementById("adm-app-name").value.trim();
-            const img = document.getElementById("adm-app-img").value.trim() || "https://placehold.co/300x200/b0e0e6/593C47?text=APP";
+            const img = document.getElementById("adm-app-img").value.trim() || "https://placehold.co/400x400/b0e0e6/593C47?text=APP+1:1";
             const packages = [];
             document.querySelectorAll(".pkg-row").forEach(r => {
                 const d = r.querySelector(".pkg-days").value.trim();
@@ -1553,6 +2051,48 @@
             document.getElementById("adm-app-img").value = "";
             document.getElementById("adm-app-packages-container").innerHTML = "";
             addPackageRow("30 วัน", "129");
+        }
+
+        // Showcase Admin Functions
+        function saveShowcaseItem() {
+            const editIdx = parseInt(document.getElementById("adm-showcase-edit-index").value);
+            const title = document.getElementById("adm-showcase-title").value.trim();
+            if (!title) { showToast("กรุณากรอกชื่อผลงาน"); return; }
+            const item = {
+                id: "show-" + Date.now(),
+                title,
+                img: document.getElementById("adm-showcase-img").value.trim() || "https://placehold.co/400x400/dde874/593C47?text=SHOWCASE",
+                desc: document.getElementById("adm-showcase-desc").value.trim() || "ผลงานร้านแคร์",
+                badge: document.getElementById("adm-showcase-badge").value.trim() || "ผลงาน"
+            };
+            if (!appData.showcaseItems) appData.showcaseItems = [];
+            if (editIdx >= 0) appData.showcaseItems[editIdx] = item;
+            else appData.showcaseItems.unshift(item);
+            resetShowcaseForm();
+            saveAppData();
+            showToast("บันทึกผลงานสำเร็จ");
+        }
+
+        function editShowcaseItem(i) {
+            const item = appData.showcaseItems[i];
+            document.getElementById("adm-showcase-edit-index").value = i;
+            document.getElementById("adm-showcase-title").value = item.title;
+            document.getElementById("adm-showcase-img").value = item.img;
+            document.getElementById("adm-showcase-desc").value = item.desc;
+            document.getElementById("adm-showcase-badge").value = item.badge || "";
+        }
+
+        function deleteShowcaseItem(i) {
+            appData.showcaseItems.splice(i, 1);
+            saveAppData();
+        }
+
+        function resetShowcaseForm() {
+            document.getElementById("adm-showcase-edit-index").value = "-1";
+            document.getElementById("adm-showcase-title").value = "";
+            document.getElementById("adm-showcase-img").value = "";
+            document.getElementById("adm-showcase-desc").value = "";
+            document.getElementById("adm-showcase-badge").value = "";
         }
 
         function saveBankAccountItem() {
@@ -1597,29 +2137,36 @@
         function renderAdminLists() {
             document.getElementById("adm-ids-list").innerHTML = appData.gameIds.map((item, i) => `
                 <div class="cute-card p-3 flex items-center justify-between">
-                    <div><p class="font-medium"><b>${item.code}</b> ${item.name}</p><p class="text-[11px] text-theme-muted">${item.price} ฿</p></div>
-                    <div class="flex gap-1"><button onclick="editGameIdItem(${i})" class="px-2 py-1 rounded bg-theme-soft">แก้ไข</button><button onclick="deleteGameIdItem(${i})" class="px-2 py-1 rounded bg-rose-50 text-rose-500">ลบ</button></div>
+                    <div><p class="font-medium"><b>${item.code}</b> ${item.name}</p><p class="text-[11px] text-theme-muted">${item.price} ฿ | ${item.downPrice}</p></div>
+                    <div class="flex gap-1"><button onclick="editGameIdItem(${i})" class="px-2.5 py-1 rounded-xl bg-theme-soft border border-theme-border">แก้ไข</button><button onclick="deleteGameIdItem(${i})" class="px-2.5 py-1 rounded-xl bg-rose-50 text-rose-500 border border-rose-200">ลบ</button></div>
                 </div>
             `).join("");
 
             document.getElementById("adm-apps-list").innerHTML = appData.premiumApps.map((app, i) => `
                 <div class="cute-card p-3 flex items-center justify-between">
                     <div><p class="font-medium">${app.name}</p></div>
-                    <div class="flex gap-1"><button onclick="editPremiumAppItem(${i})" class="px-2 py-1 rounded bg-theme-soft">แก้ไข</button><button onclick="deletePremiumAppItem(${i})" class="px-2 py-1 rounded bg-rose-50 text-rose-500">ลบ</button></div>
+                    <div class="flex gap-1"><button onclick="editPremiumAppItem(${i})" class="px-2.5 py-1 rounded-xl bg-theme-soft border border-theme-border">แก้ไข</button><button onclick="deletePremiumAppItem(${i})" class="px-2.5 py-1 rounded-xl bg-rose-50 text-rose-500 border border-rose-200">ลบ</button></div>
+                </div>
+            `).join("");
+
+            document.getElementById("adm-showcase-list").innerHTML = (appData.showcaseItems || []).map((item, i) => `
+                <div class="cute-card p-3 flex items-center justify-between">
+                    <div><p class="font-medium">${item.title}</p><p class="text-[11px] text-theme-muted">${item.desc}</p></div>
+                    <div class="flex gap-1"><button onclick="editShowcaseItem(${i})" class="px-2.5 py-1 rounded-xl bg-theme-soft border border-theme-border">แก้ไข</button><button onclick="deleteShowcaseItem(${i})" class="px-2.5 py-1 rounded-xl bg-rose-50 text-rose-500 border border-rose-200">ลบ</button></div>
                 </div>
             `).join("");
 
             document.getElementById("adm-banks-list").innerHTML = (appData.banks || []).map((b, i) => `
                 <div class="cute-card p-3 flex items-center justify-between">
                     <div><p class="font-medium">${b.bankTitle}</p><p class="text-[11px] text-theme-muted">${b.accountNumber} | โน้ต: ${b.slipNote || '-'}</p></div>
-                    <div class="flex gap-1"><button onclick="editBankAccountItem(${i})" class="px-2 py-1 rounded bg-theme-soft">แก้ไข</button><button onclick="deleteBankAccountItem(${i})" class="px-2 py-1 rounded bg-rose-50 text-rose-500">ลบ</button></div>
+                    <div class="flex gap-1"><button onclick="editBankAccountItem(${i})" class="px-2.5 py-1 rounded-xl bg-theme-soft border border-theme-border">แก้ไข</button><button onclick="deleteBankAccountItem(${i})" class="px-2.5 py-1 rounded-xl bg-rose-50 text-rose-500 border border-rose-200">ลบ</button></div>
                 </div>
             `).join("");
 
             document.getElementById("adm-reviews-list").innerHTML = appData.reviews.map((url, i) => `
-                <div class="relative aspect-square rounded-xl overflow-hidden border">
+                <div class="relative aspect-square rounded-2xl overflow-hidden border-2 border-theme-border">
                     <img src="${url}" class="w-full h-full object-cover cursor-pointer" onclick="openLightbox('${url}')">
-                    <button onclick="deleteReviewItem(${i})" class="absolute top-1 right-1 bg-rose-500 text-white rounded-full p-1 text-[10px]">ลบ</button>
+                    <button onclick="deleteReviewItem(${i})" class="absolute top-1.5 right-1.5 bg-rose-500 text-white rounded-full px-2 py-0.5 text-[10px] shadow">ลบ</button>
                 </div>
             `).join("");
         }
@@ -1628,6 +2175,7 @@
             applyThemeColors(appData.theme);
             switchTab('home');
             renderAll();
+            initLoaderAndWelcome();
         };
     </script>
 </body>
