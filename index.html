@@ -73,7 +73,9 @@
         }
 
         body {
-            background-color: var(--bg-main);
+            /* ไล่สีพื้นหลังละมุนๆ */
+            background: linear-gradient(135deg, #FEFEF8 0%, #F9E4EE 50%, #EBF4E5 100%);
+            background-attachment: fixed;
             color: var(--text-main);
             font-family: 'Prompt', sans-serif;
             -webkit-tap-highlight-color: transparent;
@@ -90,12 +92,12 @@
             background-image: 
                 radial-gradient(#BEE39E 1.25px, transparent 1.25px),
                 radial-gradient(#FDEAEC 1.25px, transparent 1.25px);
-            background-size: 24px 24px;
-            background-position: 0 0, 12px 12px;
+            background-size: 28px 28px;
+            background-position: 0 0, 14px 14px;
             transform: rotate(45deg);
             z-index: -1;
             pointer-events: none;
-            opacity: 0.8;
+            opacity: 0.6;
         }
 
         .font-cute {
@@ -111,7 +113,7 @@
         }
 
         ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: var(--bg-main); }
+        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 999px; }
 
         .fade-in { animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -143,14 +145,6 @@
         }
         .vinyl-spinning { animation: vinylSpin 5s linear infinite; }
 
-        @keyframes dash-animation {
-            from { stroke-dashoffset: 24; }
-            to { stroke-dashoffset: 0; }
-        }
-        .animate-dash {
-            stroke-dasharray: 12 12;
-            animation: dash-animation 1s linear infinite;
-        }
         .virtual-card {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -176,7 +170,7 @@
 
     <!-- ==================== WELCOME POPUP ==================== -->
     <div id="modal-welcome" class="fixed inset-0 z-[150] hidden bg-black/25 backdrop-blur-xs flex items-center justify-center p-4">
-        <div class="bg-white/95 backdrop-blur-md w-full max-w-sm rounded-[2rem] p-6 text-center space-y-4 border-2 border-theme-border shadow-2xl fade-in">
+        <div class="bg-white/95 backdrop-blur-md w-full max-w-sm rounded-[2.5rem] p-6 text-center space-y-4 border-2 border-theme-border shadow-2xl fade-in">
             <div class="w-12 h-12 mx-auto rounded-full bg-[#FDEAEC] border-2 border-theme-border flex items-center justify-center text-theme-primaryDark">
                 <svg class="w-6 h-6 text-[#E07A8C]" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -198,10 +192,10 @@
     <!-- Audio Player -->
     <audio id="store-audio-player" loop preload="auto"></audio>
 
-    <div class="max-w-md md:max-w-3xl lg:max-w-5xl mx-auto min-h-screen bg-white relative md:my-4 md:rounded-[2.5rem] shadow-cute">
+    <div class="max-w-md md:max-w-3xl lg:max-w-5xl mx-auto min-h-screen bg-white/95 backdrop-blur-sm relative md:my-4 md:rounded-[2.5rem] shadow-cute border-2 border-theme-border">
 
         <!-- Top Controls Bar -->
-        <div class="px-4 md:px-6 pt-3 pb-1 z-30 flex items-center justify-between gap-2">
+        <div class="px-4 md:px-6 pt-4 pb-2 z-30 flex items-center justify-between gap-2">
             <div class="flex items-center gap-2.5 bg-white px-3.5 py-2 rounded-full border-2 border-theme-border shadow-xs max-w-[70%] sm:max-w-xs">
                 <button onclick="toggleStoreMusic()" id="vinyl-disc-btn" class="w-8 h-8 rounded-full bg-theme-text border-2 border-theme-primary flex items-center justify-center shrink-0 relative overflow-hidden shadow-2xs vinyl-spinning" title="เปิด/ปิดเพลง">
                     <div class="w-3 h-3 rounded-full bg-[#FDEAEC] border-2 border-white z-10"></div>
@@ -227,7 +221,7 @@
             <section class="px-3 md:px-6 pt-1">
                 <div class="bg-white rounded-[2.5rem] border-2 border-theme-border shadow-cute overflow-hidden">
                     <div class="w-full h-40 md:h-52 banner-pattern relative border-b-2 border-theme-border">
-                        <img id="home-banner" src="https://pin.it/4FhFnc7ZC" alt="Banner" class="w-full h-full object-cover cursor-pointer" onclick="openLightbox(this.src)" onerror="this.style.display='none'">
+                        <img id="home-banner" src="" alt="Banner" class="w-full h-full object-cover cursor-pointer" onclick="openLightbox(this.src)" onerror="this.style.display='none'">
                         
                         <div id="store-status-badge" class="absolute top-3 right-3 z-20 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-medium border-2 border-theme-border bg-white/95 backdrop-blur-xs shadow-xs">
                             <span id="store-status-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -263,24 +257,6 @@
                             </a>
                         </div>
                     </div>
-                </div>
-            </section>
-
-            <!-- Movie Guide Section -->
-            <section class="px-4 md:px-6">
-                <div class="cute-card p-4 bg-gradient-to-r from-[#FDEAEC]/60 to-[#BEE39E]/40 flex items-center justify-between rounded-[2.5rem]">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-white border-2 border-theme-border flex items-center justify-center text-theme-primaryDark shadow-xs">
-                            🎬
-                        </div>
-                        <div>
-                            <h3 class="font-cute text-xs font-medium text-theme-text">แนะนำหนัง / ซีรีส์ยอดฮิต</h3>
-                            <p class="text-[11px] text-theme-muted">กดที่ชื่อหนังเพื่อลิงก์ไปหน้าแอพสตรีมมิ่งทันที</p>
-                        </div>
-                    </div>
-                    <button onclick="openMovieGuideModal()" class="px-4 py-2 rounded-full bg-white hover:bg-theme-soft text-theme-primaryDark font-medium text-xs border-2 border-theme-border shadow-xs">
-                        ดูรายชื่อหนัง
-                    </button>
                 </div>
             </section>
 
@@ -340,6 +316,24 @@
                 <div id="home-apps-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3"></div>
             </section>
 
+            <!-- Movie Guide Section (Moved close to apps) -->
+            <section class="px-4 md:px-6">
+                <div class="cute-card p-4 bg-gradient-to-r from-[#FDEAEC]/60 to-[#BEE39E]/40 flex items-center justify-between rounded-[2.5rem]">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-white border-2 border-theme-border flex items-center justify-center text-theme-primaryDark shadow-xs">
+                            🎬
+                        </div>
+                        <div>
+                            <h3 class="font-cute text-xs font-medium text-theme-text">แนะนำหนัง / ซีรีส์ยอดฮิต</h3>
+                            <p class="text-[11px] text-theme-muted">กดที่ชื่อหนังเพื่อลิงก์ไปหน้าแอพสตรีมมิ่งทันที</p>
+                        </div>
+                    </div>
+                    <button onclick="openMovieGuideModal()" class="px-4 py-2 rounded-full bg-white hover:bg-theme-soft text-theme-primaryDark font-medium text-xs border-2 border-theme-border shadow-xs">
+                        ดูรายชื่อหนัง
+                    </button>
+                </div>
+            </section>
+
             <!-- Showcase Section -->
             <section class="px-4 md:px-6 space-y-2.5 pb-4">
                 <div class="flex items-center justify-between px-1">
@@ -395,9 +389,10 @@
 
         <!-- ==================== VIEW: PREMIUM APPS ==================== -->
         <div id="view-apps" class="view-section hidden space-y-4 pt-4 pb-24 fade-in">
-            <div class="px-4 md:px-6">
+            <div class="px-4 md:px-6 space-y-4">
+                
                 <!-- Movie Guide Link Box in Premium Apps Page -->
-                <div class="cute-card p-4 mb-3 rounded-[2.5rem] bg-gradient-to-r from-[#BEE39E]/30 to-[#FDEAEC]/50 flex items-center justify-between">
+                <div class="cute-card p-4 bg-gradient-to-r from-[#BEE39E]/30 to-[#FDEAEC]/50 flex items-center justify-between rounded-[2.5rem]">
                     <div class="flex items-center gap-2.5">
                         <span class="text-xl">🎬</span>
                         <div>
@@ -551,9 +546,9 @@
         </div>
     </div>
 
-    <!-- Game ID Order Modal -->
+    <!-- Game ID Order Modal (Fixed rounded bottom) -->
     <div id="modal-order-id" class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-theme-card w-full max-w-md rounded-t-[2.5rem] sm:rounded-[2.5rem] max-h-[92vh] flex flex-col shadow-xl border-2 border-theme-border fade-in">
+        <div class="bg-theme-card w-full max-w-md rounded-t-[2.5rem] rounded-b-[2.5rem] max-h-[92vh] flex flex-col shadow-xl border-2 border-theme-border fade-in overflow-hidden">
             <div class="px-5 py-4 border-b-2 border-theme-border flex items-center justify-between shrink-0">
                 <div class="flex items-center gap-2">
                     <button onclick="closeModal('modal-order-id')" class="w-8 h-8 rounded-full bg-[#FDEAEC] hover:bg-[#F4B8C1] border-2 border-[#F4B8C1] text-theme-text flex items-center justify-center text-xs shadow-xs transition-all active:scale-95" title="ย้อนกลับ">
@@ -600,10 +595,10 @@
         </div>
     </div>
 
-    <!-- App Order Modal -->
+    <!-- App Order Modal (Payment Style & Fixed rounded bottom) -->
     <div id="modal-order-app" class="fixed inset-0 z-50 hidden bg-black/40 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-theme-card w-full max-w-md rounded-t-[2.5rem] sm:rounded-[2.5rem] max-h-[92vh] flex flex-col shadow-xl border-2 border-theme-border fade-in">
-            <div class="px-5 py-4 border-b-2 border-theme-border flex items-center justify-between shrink-0">
+        <div class="bg-theme-card w-full max-w-md rounded-t-[2.5rem] rounded-b-[2.5rem] max-h-[92vh] flex flex-col shadow-xl border-2 border-theme-border fade-in overflow-hidden">
+            <div class="px-5 py-4 border-b-2 border-theme-border flex items-center justify-between shrink-0 bg-[#FDEAEC]/40">
                 <div class="flex items-center gap-2">
                     <button onclick="closeModal('modal-order-app')" class="w-8 h-8 rounded-full bg-[#FDEAEC] hover:bg-[#F4B8C1] border-2 border-[#F4B8C1] text-theme-text flex items-center justify-center text-xs shadow-xs transition-all active:scale-95" title="ย้อนกลับ">
                         <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
@@ -614,38 +609,56 @@
             </div>
             <div class="p-5 overflow-y-auto space-y-4 text-xs">
                 
-                <div class="bg-[#BEE39E]/25 p-3.5 rounded-[2.5rem] border-2 border-theme-border space-y-1">
-                    <p class="font-semibold text-theme-text">วิธีสั่งซื้อ:</p>
-                    <p class="text-theme-text leading-relaxed">พิมพ์ชื่อสินค้าพร้อมแปะโอน หรือกำกับสลิป ส่งในแชท รอจัดส่งใน 5-10 นาที</p>
+                <div class="text-center pb-1">
+                    <h1 class="text-xl font-bold tracking-tight text-chocolate flex items-center justify-center gap-2 font-cute">
+                        <span>❤</span> rose payment <span>❤</span>
+                    </h1>
                 </div>
 
-                <div class="bg-white p-4 rounded-[2.5rem] border-2 border-theme-border flex items-center justify-between">
+                <div class="bg-white p-4 rounded-[2rem] border-2 border-theme-border flex items-center justify-between shadow-xs">
                     <div>
-                        <span class="text-[11px] text-theme-muted">รายการที่เลือก</span>
+                        <span class="text-[10px] text-theme-muted uppercase tracking-wider">รายการที่เลือก</span>
                         <h4 id="order-app-name" class="font-semibold text-sm text-theme-text mt-0.5"></h4>
                         <p id="order-app-pkg" class="text-theme-primaryDark font-medium mt-0.5"></p>
                         <p id="order-app-platform" class="text-[11px] text-theme-text mt-0.5 font-medium"></p>
                     </div>
                     <div class="text-right">
-                        <span class="text-[11px] text-theme-muted">ยอดโอน</span>
+                        <span class="text-[10px] text-theme-muted uppercase tracking-wider">ยอดโอน</span>
                         <p id="order-app-price" class="text-xl font-extrabold text-theme-primaryDark"></p>
                     </div>
                 </div>
 
-                <div class="bg-white p-4 rounded-[2.5rem] border-2 border-theme-border space-y-3">
-                    <div class="flex items-center justify-between">
-                        <span class="font-medium text-theme-text">บัญชีโอนเงินของร้าน</span>
+                <!-- QR Code Demo Box -->
+                <div class="p-5 bg-white/80 rounded-[2rem] border-2 border-dashed border-candyPink text-center space-y-1 shadow-xs">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-10 h-10 mx-auto text-candyPink">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 3.75 9.375v-4.5ZM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 0 1-1.125-1.125v-4.5ZM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0 1 13.5 9.375v-4.5Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 6.75h.008v.008H6.75V6.75Zm0 9.75h.008v.008H6.75v-.008Zm9.75-9.75h.008v.008H16.5V6.75Zm-3.75 3.75h.008v.008H12.75v-.008Zm0 3h.008v.008H12.75v-.008Zm3.75 3.75h.008v.008H16.5v-.008Zm0-3h.008v.008H16.5v-.008Zm3.75-3.75h.008v.008H20.25V10.5Zm0 3h.008v.008H20.25v-.008Z" />
+                    </svg>
+                    <p class="text-[11px] font-medium text-chocolate">QR Code Demo (ระบบจำลอง)</p>
+                </div>
+
+                <div class="space-y-3">
+                    <p class="text-xs font-semibold leading-relaxed text-chocolate text-center">
+                        ชื่อบัญชี <span class="text-chocolate font-bold bg-[#F5D5E5]/65 px-2.5 py-0.5 rounded-lg border border-candyPink/30 inline-block">สมชาย ใจดีงาม</span> เท่านั้น !
+                    </p>
+                    <div id="modal-app-banks-list" class="space-y-2"></div>
+                </div>
+
+                <div class="bg-[#FAF6F9]/80 border border-chocolate/15 rounded-2xl p-3 flex items-start gap-3 shadow-2xs">
+                    <div class="bg-white p-1.5 rounded-full shadow-2xs text-chocolate flex-shrink-0 border border-chocolate/5">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                     </div>
-                    <div class="space-y-2 pt-1">
-                        <p class="font-semibold text-theme-text text-[11px]">บัญชีโอนเงิน (กดคัดลอกเลขบัญชีได้เลย):</p>
-                        <div id="modal-app-banks-list" class="space-y-2"></div>
+                    <div class="text-[11px] leading-relaxed text-chocolate font-semibold">
+                        โอนผิด โอนใหม่ ไม่โอนคืน<br>
+                        <span class="text-chocolate/70 font-normal">เช็คบัญชีและชื่อก่อนโอนทุกครั้งนะคับ !</span>
                     </div>
                 </div>
             </div>
+
             <div class="p-4 border-t-2 border-theme-border bg-theme-card shrink-0 flex gap-2">
                 <button onclick="closeModal('modal-order-app')" class="px-5 py-3 rounded-full bg-white hover:bg-theme-soft text-theme-text font-medium text-xs border-2 border-theme-border">ย้อนกลับ</button>
                 <button onclick="copyAppOrderSummary()" class="flex-1 py-3.5 rounded-full bg-theme-primaryDark hover:bg-theme-primary text-white font-medium text-xs shadow-float flex items-center justify-center gap-2 transition-all active:scale-98 border-2 border-theme-border">
-                    <span>คัดลอกข้อมูลสั่งซื้อเพื่อส่งในแชท</span>
+                    <span>คัดลอกข้อมูลสั่งซื้อพร้อมโน้ตสลิป</span>
                 </button>
             </div>
         </div>
@@ -919,7 +932,7 @@
             ]
         };
 
-        const STORAGE_KEY = "care_storefront_v2026_demo_v5";
+        const STORAGE_KEY = "care_storefront_v2026_demo_v6";
         let appData = loadAppData();
         let selectedPackages = {};
         let selectedPlatforms = {};
@@ -1247,8 +1260,9 @@
         function renderBankSection() {
             const banks = appData.banks || [];
             const container = document.getElementById("payment-banks-container");
+            const modalAppList = document.getElementById("modal-app-banks-list");
 
-            container.innerHTML = banks.map((b, i) => {
+            const banksHtml = banks.map((b) => {
                 const isKbank = b.bankTitle.includes('กสิกร');
                 const gradClass = isKbank ? 'from-[#F5D5E5] via-[#F9E4EE] to-[#FAF6F9]' : 'from-[#DFEEB6] via-[#E9F4C9] to-[#FAF6F9]';
                 const shadowClass = isKbank ? 'shadow-[#F5D5E5]/30' : 'shadow-[#DFEEB6]/30';
@@ -1273,6 +1287,9 @@
                     </div>
                 `;
             }).join("");
+
+            if (container) container.innerHTML = banksHtml;
+            if (modalAppList) modalAppList.innerHTML = banksHtml;
         }
 
         let currentOrderingGameId = null;
@@ -1311,18 +1328,7 @@
             document.getElementById("order-app-platform").innerText = `รับชมทาง: ${platform}`;
             document.getElementById("order-app-price").innerText = `${pkg.price} ฿`;
 
-            const listContainer = document.getElementById("modal-app-banks-list");
-            const banks = appData.banks || [];
-            listContainer.innerHTML = banks.map((b) => `
-                <div class="bg-white p-3 rounded-full border-2 border-theme-border flex items-center justify-between text-[11px]">
-                    <div class="px-2">
-                        <span class="font-semibold text-theme-primaryDark">${b.bankTitle}</span>
-                        <p class="font-bold text-theme-text">${b.accountNumber}</p>
-                    </div>
-                    <button onclick="copyStringToClipboard('${b.accountNumber}', 'คัดลอกเลขบัญชีแล้ว')" class="px-4 py-1.5 rounded-full bg-white border-2 border-theme-border font-medium text-theme-primaryDark shadow-xs">คัดลอกเลข</button>
-                </div>
-            `).join("");
-
+            renderBankSection();
             document.getElementById("modal-order-app").classList.remove("hidden");
         }
 
