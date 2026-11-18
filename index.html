@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Care Store">
     <link id="pwa-manifest" rel="manifest" href="">
-    <link rel="apple-touch-icon" href="https://placehold.co/192x192/C8E8B3/3B4A3C?text=CS">
+    <link rel="apple-touch-icon" href="https://placehold.co/192x192/C8E8B3/3D4C3E?text=CS">
     
     <!-- Google Fonts: Prompt & Mitr -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -67,7 +67,6 @@
         }
 
         body {
-            /* Soft Minimalist Candy Gradient UI (White dominant + Matcha Green + Hint of Candy Pink) */
             background: linear-gradient(135deg, #FFFFFF 0%, #F3FAEE 48%, #FFF4F8 100%);
             background-attachment: fixed;
             color: var(--text-main);
@@ -112,7 +111,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* การ์ดสไตล์ขาวคลีน ขอบขาวล้วน เงาฟุ้งละมุน */
         .cute-card {
             background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(252,254,251,0.92) 100%);
             backdrop-filter: blur(8px);
@@ -195,7 +193,7 @@
     <!-- Audio Player -->
     <audio id="store-audio-player" loop preload="auto"></audio>
 
-    <!-- Main Container (Removed backdrop-blur on wrapper so fixed children never break, inner cards keep glass effect) -->
+    <!-- Main Container -->
     <div class="max-w-md md:max-w-3xl lg:max-w-5xl mx-auto min-h-screen bg-white/85 relative md:my-5 md:rounded-[2.75rem] shadow-soft border-2 border-white">
 
         <!-- Top Controls Bar -->
@@ -245,12 +243,10 @@
 
                         <p id="home-store-desc" class="text-xs text-candy-muted mt-1 leading-relaxed whitespace-pre-line"></p>
                         
-                        <!-- Highlight Box Soft Gradient -->
                         <div class="w-full max-w-xl mt-3.5 bg-gradient-to-r from-[#EDF8E6]/90 via-white to-[#FFF2F6]/90 border-2 border-white rounded-[2rem] p-4 shadow-soft">
                             <p id="home-highlight-desc" class="text-xs md:text-sm font-medium text-candy-text leading-relaxed whitespace-pre-line"></p>
                         </div>
 
-                        <!-- 3 Action Buttons (All White Borders) -->
                         <div class="w-full max-w-xl grid grid-cols-3 gap-2.5 mt-4">
                             <a id="profile-link-1" href="#" target="_blank" rel="noopener noreferrer" class="py-3 px-2 rounded-full bg-gradient-to-r from-[#78B159] to-[#8FC671] hover:opacity-95 text-white font-cute text-xs font-medium text-center border-2 border-white shadow-float transition-all active:scale-95 truncate">
                                 ติดต่อด่วน
@@ -440,10 +436,7 @@
 
                 <div class="bg-gradient-to-b from-white via-[#F9FDF7] to-[#FFF6F9] backdrop-blur-md rounded-[2.5rem] p-5 border-2 border-white shadow-soft relative overflow-hidden space-y-4 text-center">
                     
-                    <!-- QR Code Section (1 Image) -->
-                    <div id="payment-qr-wrapper" class="flex flex-col items-center justify-center">
-                        <!-- Rendered dynamically -->
-                    </div>
+                    <div id="payment-qr-wrapper" class="flex flex-col items-center justify-center"></div>
 
                     <div class="space-y-4 text-center">
                         <p class="text-xs font-medium leading-relaxed text-candy-text">
@@ -472,33 +465,9 @@
                 </div>
             </div>
         </div>
-
-        <!-- ==================== BOTTOM NAVIGATION BAR (All White Border Island) ==================== -->
-        <div class="fixed bottom-5 left-0 right-0 z-40 flex justify-center px-4 pointer-events-none">
-            <nav class="pointer-events-auto w-[92%] max-w-sm bg-white/95 backdrop-blur-md border-2 border-white rounded-full px-5 py-2.5 flex items-center justify-between shadow-island">
-                <button onclick="switchTab('home')" id="nav-btn-home" class="flex flex-col items-center gap-0.5 text-xs font-bold text-candy-greenDark transition-all">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-                    <span class="text-[10px]">หน้าหลัก</span>
-                </button>
-                <button onclick="switchTab('ids')" id="nav-btn-ids" class="flex flex-col items-center gap-0.5 text-xs font-medium text-candy-muted hover:text-candy-greenDark transition-all">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4"/><path d="M8 10v4"/><circle cx="15" cy="12" r="1"/><circle cx="18" cy="10" r="1"/></svg>
-                    <span class="text-[10px]">ไอดีเกม</span>
-                </button>
-                <button onclick="switchTab('apps')" id="nav-btn-apps" class="flex flex-col items-center gap-0.5 text-xs font-medium text-candy-muted hover:text-candy-greenDark transition-all">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="m9 12 2 2 4-4"/></svg>
-                    <span class="text-[10px]">แอพพรี</span>
-                </button>
-                <button onclick="switchTab('payment')" id="nav-btn-payment" class="flex flex-col items-center gap-0.5 text-xs font-medium text-candy-muted hover:text-candy-greenDark transition-all">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                    <span class="text-[10px]">ชำระเงิน</span>
-                </button>
-            </nav>
-        </div>
     </div>
 
     <!-- ==================== MODALS ==================== -->
-
-    <!-- All Reviews Modal -->
     <div id="modal-all-reviews" class="fixed inset-0 z-50 hidden bg-black/30 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="bg-gradient-to-b from-white to-[#F7FBF4] w-full max-w-lg h-[85vh] rounded-[2.5rem] flex flex-col shadow-2xl border-2 border-white fade-in overflow-hidden">
             <div class="px-5 py-4 border-b-2 border-white flex items-center justify-between shrink-0 bg-white/80">
@@ -514,7 +483,6 @@
         </div>
     </div>
 
-    <!-- Movie Guide Modal (Dynamic from Admin) -->
     <div id="modal-movie-guide" class="fixed inset-0 z-50 hidden bg-black/30 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="bg-gradient-to-b from-white via-[#F9FDF7] to-[#FFF5F8] w-full max-w-md rounded-[2.5rem] overflow-hidden shadow-2xl border-2 border-white fade-in flex flex-col max-h-[85vh]">
             <div class="px-5 py-4 border-b-2 border-white flex items-center justify-between shrink-0 bg-white/80">
@@ -528,14 +496,12 @@
             </div>
             <div class="p-4 overflow-y-auto space-y-3 text-xs">
                 <p class="text-candy-muted px-1">กดที่ชื่อเรื่องเพื่อเปิดลิงก์ไปยังแอพสตรีมมิ่งได้ทันที ✨</p>
-                <div id="movie-guide-list-container" class="space-y-2.5">
-                    <!-- Rendered dynamically -->
-                </div>
+                <div id="movie-guide-list-container" class="space-y-2.5"></div>
             </div>
         </div>
     </div>
 
-    <!-- ==================== BOTTOM NAVIGATION BAR (Truly Fixed Floating Island Outside Main Container) ==================== -->
+    <!-- ==================== FLOATING ISLAND NAVIGATION BAR ==================== -->
     <div class="fixed bottom-5 left-0 right-0 z-40 flex justify-center px-4 pointer-events-none" style="position: fixed; bottom: 1.25rem; left: 0; right: 0;">
         <nav class="pointer-events-auto w-[92%] max-w-sm bg-white/95 backdrop-blur-md border-2 border-white rounded-full px-5 py-2.5 flex items-center justify-between shadow-island">
             <button onclick="switchTab('home')" id="nav-btn-home" class="flex flex-col items-center gap-0.5 text-xs font-bold text-candy-greenDark transition-all">
@@ -557,7 +523,6 @@
         </nav>
     </div>
 
-    <!-- ==================== MODALS ==================== -->
     <!-- Game ID Order Modal -->
     <div id="modal-order-id" class="fixed inset-0 z-50 hidden bg-black/30 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4">
         <div class="bg-gradient-to-b from-white to-[#F6FBF2] w-full max-w-md rounded-t-[2.5rem] sm:rounded-[2.5rem] max-h-[92vh] flex flex-col shadow-2xl border-2 border-white fade-in overflow-hidden">
@@ -620,7 +585,6 @@
                 <button onclick="closeModal('modal-order-app')" class="w-8 h-8 rounded-full bg-white border-2 border-white text-candy-muted flex items-center justify-center shadow-soft">✕</button>
             </div>
             <div class="p-5 overflow-y-auto space-y-4 text-xs">
-                
                 <div class="text-center pb-1">
                     <h1 class="text-lg font-bold tracking-tight text-candy-text flex items-center justify-center gap-2 font-cute">
                         <span class="text-candy-pinkDark">❤</span> care payment <span class="text-candy-greenDark">❤</span>
@@ -640,10 +604,7 @@
                     </div>
                 </div>
 
-                <!-- QR Code Box in App Order Modal -->
-                <div id="modal-app-qr-wrapper" class="flex flex-col items-center justify-center">
-                    <!-- Rendered dynamically -->
-                </div>
+                <div id="modal-app-qr-wrapper" class="flex flex-col items-center justify-center"></div>
 
                 <div class="space-y-2.5">
                     <p class="text-xs font-medium text-candy-text text-center">เลือกโอนเข้าบัญชีด้านล่างได้เลยงับ</p>
@@ -750,8 +711,26 @@
                         <div class="cute-card p-4 space-y-3 rounded-[2rem]">
                             <h4 class="font-cute font-medium text-sm text-candy-text">ข้อมูลโปรไฟล์ & ปุ่มลิงก์</h4>
                             <div><label class="block text-candy-muted mb-1">ชื่อร้านค้า</label><input type="text" id="adm-store-name" class="w-full px-4 py-2.5 rounded-full candy-input"></div>
-                            <div><label class="block text-candy-muted mb-1">รูปหน้าปก (URL)</label><input type="text" id="adm-store-banner" class="w-full px-4 py-2.5 rounded-full candy-input"></div>
-                            <div><label class="block text-candy-muted mb-1">รูปโปรไฟล์ (URL)</label><input type="text" id="adm-store-avatar" class="w-full px-4 py-2.5 rounded-full candy-input"></div>
+                            <div>
+                                <label class="block text-candy-muted mb-1">รูปหน้าปก (URL หรืออัลบั้ม)</label>
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <input type="text" id="adm-store-banner" placeholder="วางลิงก์รูปหน้าปก..." class="flex-1 px-4 py-2.5 rounded-full candy-input">
+                                    <label class="px-4 py-2.5 rounded-full bg-[#EDF8E6] hover:bg-[#C8E8B3] text-candy-text font-medium cursor-pointer border-2 border-white shadow-soft text-center shrink-0">
+                                        <span>📷 เลือกรูปจากอัลบั้ม</span>
+                                        <input type="file" accept="image/*" onchange="handleAlbumUpload(this, 'adm-store-banner')" class="hidden">
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-candy-muted mb-1">รูปโปรไฟล์ (URL หรืออัลบั้ม)</label>
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <input type="text" id="adm-store-avatar" placeholder="วางลิงก์รูปโปรไฟล์..." class="flex-1 px-4 py-2.5 rounded-full candy-input">
+                                    <label class="px-4 py-2.5 rounded-full bg-[#EDF8E6] hover:bg-[#C8E8B3] text-candy-text font-medium cursor-pointer border-2 border-white shadow-soft text-center shrink-0">
+                                        <span>📷 เลือกรูปจากอัลบั้ม</span>
+                                        <input type="file" accept="image/*" onchange="handleAlbumUpload(this, 'adm-store-avatar')" class="hidden">
+                                    </label>
+                                </div>
+                            </div>
                             <div><label class="block text-candy-muted mb-1">คำทักทายใต้ชื่อร้าน</label><textarea id="adm-store-desc" rows="2" class="w-full px-4 py-2.5 rounded-[1.5rem] candy-input"></textarea></div>
                             <div><label class="block text-candy-muted mb-1">ข้อความเด่นใต้โปรไฟล์</label><textarea id="adm-store-highlight" rows="2" class="w-full px-4 py-2.5 rounded-[1.5rem] candy-input"></textarea></div>
                             <div><label class="block text-candy-muted mb-1">ข้อความเตือนหน้าเว็บ</label><textarea id="adm-store-notice" rows="2" class="w-full px-4 py-2.5 rounded-[1.5rem] candy-input"></textarea></div>
@@ -766,9 +745,9 @@
                         </div>
                     </div>
 
-                    <!-- TAB 2: PREMIUM APPS (ADD & EDIT WITH IMAGE, DEVICES, PACKAGES) -->
+                    <!-- TAB 2: PREMIUM APPS -->
                     <div id="apanel-apps" class="admin-panel hidden space-y-3">
-                        <div class="cute-card p-4 space-y-3 rounded-[2rem]">
+                        <div class="cute-card p-4 space-y-3.5 rounded-[2rem]">
                             <div class="flex items-center justify-between">
                                 <h4 id="adm-app-form-title" class="font-cute font-medium text-sm text-candy-text">เพิ่มแอพพรีเมียมใหม่</h4>
                                 <button type="button" id="adm-app-cancel-edit-btn" onclick="resetAppForm()" class="hidden text-[11px] bg-[#FFF2F6] text-candy-pinkDark px-3 py-1 rounded-full border-2 border-white">ยกเลิกการแก้ไข</button>
@@ -786,14 +765,13 @@
                                 </div>
                             </div>
 
-                            <!-- Image URL or File Upload -->
                             <div class="space-y-1.5">
-                                <label class="block text-candy-muted">รูปภาพแอพ (ใส่ URL หรืออัปโหลดไฟล์จากเครื่อง)</label>
+                                <label class="block text-candy-muted">รูปภาพแอพ (ใส่ URL หรือเลือกรูปจากอัลบั้ม)</label>
                                 <div class="flex flex-col sm:flex-row gap-2">
-                                    <input type="text" id="adm-app-img" oninput="updateAppImgPreview()" placeholder="https://... หรืออัปโหลดรูป" class="flex-1 px-4 py-2.5 rounded-full candy-input">
+                                    <input type="text" id="adm-app-img" oninput="updateAppImgPreview()" placeholder="https://... หรือเลือกรูป" class="flex-1 px-4 py-2.5 rounded-full candy-input">
                                     <label class="px-4 py-2.5 rounded-full bg-[#EDF8E6] hover:bg-[#C8E8B3] text-candy-text font-medium cursor-pointer border-2 border-white shadow-soft text-center shrink-0">
-                                        <span>เลือกรูปจากเครื่อง</span>
-                                        <input type="file" accept="image/*" onchange="handleImageUpload(this, 'adm-app-img', 'adm-app-img-preview')" class="hidden">
+                                        <span>📷 เลือกรูปจากอัลบั้ม</span>
+                                        <input type="file" accept="image/*" onchange="handleAlbumUpload(this, 'adm-app-img', 'adm-app-img-preview')" class="hidden">
                                     </label>
                                 </div>
                                 <div class="flex items-center gap-2 pt-1">
@@ -802,40 +780,38 @@
                                 </div>
                             </div>
 
-                            <!-- Devices Management -->
                             <div class="space-y-2 pt-2 border-t-2 border-white">
                                 <div class="flex items-center justify-between">
-                                    <label class="font-medium text-candy-text">อุปกรณ์ที่รับชมได้ (เลือก/เพิ่ม/ลบได้)</label>
+                                    <label class="font-medium text-candy-text">1. กำหนดจำนวนวัน (ทุกอุปกรณ์ใช้ตัวเลือกวันชุดเดียวกัน)</label>
                                 </div>
-                                <div id="adm-app-devices-list" class="flex flex-wrap gap-1.5">
-                                    <!-- Dynamic device pills -->
-                                </div>
+                                <div id="adm-app-days-list" class="flex flex-wrap gap-1.5"></div>
                                 <div class="flex gap-2">
-                                    <input type="text" id="adm-new-device-input" placeholder="เพิ่มอุปกรณ์ เช่น คอมพิวเตอร์, สมาร์ททีวี..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addCustomDeviceTag();}" class="flex-1 px-4 py-2 rounded-full candy-input text-xs">
-                                    <button type="button" onclick="addCustomDeviceTag()" class="px-4 py-2 rounded-full bg-[#FFF2F6] hover:bg-[#FADCE6] text-candy-pinkDark font-medium border-2 border-white shadow-2xs shrink-0">+ เพิ่มอุปกรณ์</button>
+                                    <input type="text" id="adm-new-day-input" placeholder="เพิ่มวัน เช่น 7 วัน, 30 วัน..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addCustomDayTag();}" class="flex-1 px-4 py-2 rounded-full candy-input text-xs">
+                                    <button type="button" onclick="addCustomDayTag()" class="px-4 py-2 rounded-full bg-[#EDF8E6] hover:bg-[#C8E8B3] text-candy-greenDark font-medium border-2 border-white shadow-2xs shrink-0">+ เพิ่มวัน</button>
                                 </div>
                             </div>
 
-                            <!-- Packages (Device / Days / Price) -->
                             <div class="space-y-2 pt-2 border-t-2 border-white">
                                 <div class="flex items-center justify-between">
-                                    <label class="font-medium text-candy-text">แพ็กเกจ (อุปกรณ์ / จำนวนวัน / ราคา)</label>
-                                    <button type="button" onclick="addPackageRow()" class="text-[11px] bg-[#EDF8E6] border-2 border-white text-candy-greenDark px-3 py-1 rounded-full font-medium shadow-2xs">+ เพิ่มแพ็กเกจ</button>
+                                    <label class="font-medium text-candy-text">2. กำหนดอุปกรณ์ & ใส่ราคาแยกตามอุปกรณ์/จำนวนวัน</label>
                                 </div>
-                                <p class="text-[10px] text-candy-muted">ระบุอุปกรณ์ (หรือเลือก "ทุกอุปกรณ์") พร้อมจำนวนวันและราคาที่แตกต่างกันในแต่ละตัวเลือก</p>
-                                <div id="adm-app-packages-container" class="space-y-2"></div>
+                                <div class="flex gap-2">
+                                    <input type="text" id="adm-new-device-input" placeholder="เพิ่มอุปกรณ์ เช่น เข้ามือถือ, ไอแพด..." onkeydown="if(event.key==='Enter'){event.preventDefault(); addCustomDeviceTag();}" class="flex-1 px-4 py-2 rounded-full candy-input text-xs">
+                                    <button type="button" onclick="addCustomDeviceTag()" class="px-4 py-2 rounded-full bg-[#FFF2F6] hover:bg-[#FADCE6] text-candy-pinkDark font-medium border-2 border-white shadow-2xs shrink-0">+ เพิ่มอุปกรณ์</button>
+                                </div>
+                                <div id="adm-app-matrix-container" class="space-y-2.5 pt-1"></div>
                             </div>
 
                             <button onclick="savePremiumAppItem()" id="adm-app-save-btn" class="w-full py-3.5 rounded-full bg-gradient-to-r from-[#78B159] to-[#8FC671] text-white font-medium shadow-float border-2 border-white">บันทึกแอพพรีเมียม</button>
                         </div>
 
                         <div class="space-y-2">
-                            <h4 class="font-cute font-medium text-xs text-candy-muted px-1">รายการแอพพรีเมียมทั้งหมด (กดแก้ไขได้)</h4>
+                            <h4 class="font-cute font-medium text-xs text-candy-muted px-1">รายการแอพพรีเมียมทั้งหมด</h4>
                             <div id="adm-apps-list" class="space-y-2"></div>
                         </div>
                     </div>
 
-                    <!-- TAB 3: MOVIE RECOMMENDATIONS (ADD, EDIT, DELETE) -->
+                    <!-- TAB 3: MOVIES -->
                     <div id="apanel-movies" class="admin-panel hidden space-y-3">
                         <div class="cute-card p-4 space-y-3 rounded-[2rem]">
                             <div class="flex items-center justify-between">
@@ -844,22 +820,22 @@
                             </div>
                             <input type="hidden" id="adm-movie-edit-index" value="-1">
                             <div>
-                                <label class="block text-candy-muted mb-1">ชื่อเรื่อง / ซีรีส์</label>
-                                <input type="text" id="adm-movie-title" placeholder="เช่น Stranger Things (Netflix)" class="w-full px-4 py-2.5 rounded-full candy-input">
+                                <label class="block text-candy-muted mb-1">ชื่อเรื่องหนัง / ซีรีส์</label>
+                                <input type="text" id="adm-movie-title" placeholder="เช่น Stranger Things" class="w-full px-4 py-2.5 rounded-full candy-input">
                             </div>
-                            <div>
-                                <label class="block text-candy-muted mb-1">ลิงก์หนัง (URL สำหรับกดเปิดดู)</label>
-                                <input type="text" id="adm-movie-url" placeholder="https://www.netflix.com/..." class="w-full px-4 py-2.5 rounded-full candy-input">
-                            </div>
-                            <div class="grid grid-cols-2 gap-2">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 <div>
-                                    <label class="block text-candy-muted mb-1">แพลตฟอร์ม (ป้ายกำกับ)</label>
+                                    <label class="block text-candy-muted mb-1">แพลตฟอร์ม</label>
                                     <input type="text" id="adm-movie-platform" placeholder="เช่น Netflix, Disney+" class="w-full px-4 py-2.5 rounded-full candy-input">
                                 </div>
                                 <div>
-                                    <label class="block text-candy-muted mb-1">คำอธิบายสั้นๆ</label>
-                                    <input type="text" id="adm-movie-desc" placeholder="เช่น ซีรีส์ไซไฟยอดฮิต" class="w-full px-4 py-2.5 rounded-full candy-input">
+                                    <label class="block text-candy-muted mb-1">ลิงก์แอพ / เว็บดูหนัง</label>
+                                    <input type="text" id="adm-movie-url" placeholder="https://www.netflix.com" class="w-full px-4 py-2.5 rounded-full candy-input">
                                 </div>
+                            </div>
+                            <div>
+                                <label class="block text-candy-muted mb-1">คำอธิบายย่อ</label>
+                                <input type="text" id="adm-movie-desc" placeholder="เช่น ซีรีส์ไซไฟยอดฮิต" class="w-full px-4 py-2.5 rounded-full candy-input">
                             </div>
                             <button onclick="saveMovieItem()" id="adm-movie-save-btn" class="w-full py-3.5 rounded-full bg-gradient-to-r from-[#E57A9B] to-[#F3A6C0] text-white font-medium shadow-pinkGlow border-2 border-white">บันทึกรายการหนัง</button>
                         </div>
@@ -870,19 +846,18 @@
                         </div>
                     </div>
 
-                    <!-- TAB 4: BANK & QR CODE (1 IMAGE + MULTIPLE BANKS EDIT/ADD/DELETE) -->
+                    <!-- TAB 4: BANK & QR CODE -->
                     <div id="apanel-bank" class="admin-panel hidden space-y-3">
-                        <!-- QR Code Management (1 Image) -->
                         <div class="cute-card p-4 space-y-3 rounded-[2rem]">
                             <div class="flex items-center justify-between">
                                 <h4 class="font-cute font-medium text-sm text-candy-text">รูปภาพ QR Code รับเงิน (1 ภาพ)</h4>
                                 <button type="button" onclick="clearQrCodeImage()" class="text-[11px] bg-[#FFF2F6] text-candy-pinkDark px-3 py-1 rounded-full border-2 border-white">ลบรูป QR</button>
                             </div>
                             <div class="flex flex-col sm:flex-row gap-2">
-                                <input type="text" id="adm-qr-url" placeholder="วางลิงก์รูป QR Code หรืออัปโหลด..." class="flex-1 px-4 py-2.5 rounded-full candy-input">
+                                <input type="text" id="adm-qr-url" placeholder="วางลิงก์รูป QR Code หรือเลือกรูป..." class="flex-1 px-4 py-2.5 rounded-full candy-input">
                                 <label class="px-4 py-2.5 rounded-full bg-[#EDF8E6] hover:bg-[#C8E8B3] text-candy-text font-medium cursor-pointer border-2 border-white shadow-soft text-center shrink-0">
-                                    <span>อัปโหลดรูป QR</span>
-                                    <input type="file" accept="image/*" onchange="handleImageUpload(this, 'adm-qr-url', 'adm-qr-preview')" class="hidden">
+                                    <span>📷 เลือกรูปจากอัลบั้ม</span>
+                                    <input type="file" accept="image/*" onchange="handleAlbumUpload(this, 'adm-qr-url', 'adm-qr-preview')" class="hidden">
                                 </label>
                             </div>
                             <div class="flex items-center gap-3 bg-white/80 p-3 rounded-2xl border-2 border-white">
@@ -894,7 +869,6 @@
                             </div>
                         </div>
 
-                        <!-- Bank Account Add / Edit -->
                         <div class="cute-card p-4 space-y-3 rounded-[2rem]">
                             <div class="flex items-center justify-between">
                                 <h4 id="adm-bank-form-title" class="font-cute font-medium text-sm text-candy-text">เพิ่มเลขบัญชีธนาคาร</h4>
@@ -903,7 +877,7 @@
                             <input type="hidden" id="adm-bank-edit-index" value="-1">
                             <div>
                                 <label class="block text-candy-muted mb-1">ชื่อธนาคาร / ช่องทาง</label>
-                                <input type="text" id="adm-bank-title" placeholder="เช่น กสิกรไทย, ไทยพาณิชย์, ทรูมันนี่ วอลเล็ท" class="w-full px-4 py-2.5 rounded-full candy-input">
+                                <input type="text" id="adm-bank-title" placeholder="เช่น กสิกรไทย, ทรูมันนี่ วอลเล็ท" class="w-full px-4 py-2.5 rounded-full candy-input">
                             </div>
                             <div>
                                 <label class="block text-candy-muted mb-1">ชื่อบัญชี</label>
@@ -930,7 +904,16 @@
                                 <div><label class="block text-candy-muted mb-1">รหัสไอดี</label><input type="text" id="adm-id-code" placeholder="#ID-01" class="w-full px-3.5 py-2.5 rounded-full candy-input"></div>
                                 <div class="col-span-2"><label class="block text-candy-muted mb-1">รายละเอียด</label><input type="text" id="adm-id-name" placeholder="ROV คอน..." class="w-full px-3.5 py-2.5 rounded-full candy-input"></div>
                             </div>
-                            <div><label class="block text-candy-muted mb-1">รูปสินค้า (URL)</label><input type="text" id="adm-id-img" class="w-full px-4 py-2.5 rounded-full candy-input"></div>
+                            <div>
+                                <label class="block text-candy-muted mb-1">รูปสินค้า (URL หรือเลือกรูปจากอัลบั้ม)</label>
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <input type="text" id="adm-id-img" placeholder="https://... หรือเลือกรูป" class="flex-1 px-4 py-2.5 rounded-full candy-input">
+                                    <label class="px-4 py-2.5 rounded-full bg-[#EDF8E6] hover:bg-[#C8E8B3] text-candy-text font-medium cursor-pointer border-2 border-white shadow-soft text-center shrink-0">
+                                        <span>📷 เลือกรูปจากอัลบั้ม</span>
+                                        <input type="file" accept="image/*" onchange="handleAlbumUpload(this, 'adm-id-img')" class="hidden">
+                                    </label>
+                                </div>
+                            </div>
                             <div class="grid grid-cols-2 gap-2">
                                 <div><label class="block text-candy-muted mb-1">ราคา (บาท)</label><input type="number" id="adm-id-price" class="w-full px-3.5 py-2.5 rounded-full candy-input"></div>
                                 <div><label class="block text-candy-muted mb-1">ราคาดาวน์</label><input type="text" id="adm-id-down" class="w-full px-3.5 py-2.5 rounded-full candy-input"></div>
@@ -945,10 +928,14 @@
                     <div id="apanel-reviews" class="admin-panel hidden space-y-3">
                         <div class="cute-card p-4 space-y-3 rounded-[2rem]">
                             <h4 class="font-cute font-medium text-sm text-candy-text">เพิ่มรูปรีวิว</h4>
-                            <div class="flex gap-2">
-                                <input type="text" id="adm-review-url" placeholder="https://..." class="flex-1 px-4 py-2.5 rounded-full candy-input">
-                                <button onclick="addReviewByUrl()" class="px-4 py-2.5 rounded-full bg-candy-greenDark text-white font-medium shrink-0 border-2 border-white shadow-soft">เพิ่มรูป</button>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <input type="text" id="adm-review-url" placeholder="วางลิงก์รูป https://..." class="flex-1 px-4 py-2.5 rounded-full candy-input">
+                                <button onclick="addReviewByUrl()" class="px-4 py-2.5 rounded-full bg-candy-greenDark text-white font-medium shrink-0 border-2 border-white shadow-soft">เพิ่มลิงก์</button>
                             </div>
+                            <label class="w-full py-3 px-4 rounded-full bg-[#FFF2F6] hover:bg-[#FADCE6] text-candy-pinkDark font-medium cursor-pointer border-2 border-white shadow-soft flex items-center justify-center gap-2">
+                                <span>📷 เลือกรูปรีวิวจากอัลบั้ม (เลือกได้หลายรูปพร้อมกัน)</span>
+                                <input type="file" accept="image/*" multiple onchange="handleMultipleReviewsUpload(this)" class="hidden">
+                            </label>
                         </div>
                         <div class="cute-card p-4 space-y-2.5 rounded-[2rem]">
                             <h4 class="font-cute font-medium text-sm text-candy-text">รายการรูปรีวิวทั้งหมด</h4>
@@ -963,7 +950,16 @@
                             <div><label class="block text-candy-muted mb-1">ชื่อหัวข้อโซน</label><input type="text" id="adm-show-sec-title" class="w-full px-4 py-2.5 rounded-full candy-input"></div>
                             <div><label class="block text-candy-muted mb-1">ชื่อรายการ</label><input type="text" id="adm-show-title" class="w-full px-4 py-2.5 rounded-full candy-input"></div>
                             <div><label class="block text-candy-muted mb-1">รายละเอียด / ป้าย</label><input type="text" id="adm-show-desc" class="w-full px-4 py-2.5 rounded-full candy-input"></div>
-                            <div><label class="block text-candy-muted mb-1">รูปภาพ (URL)</label><input type="text" id="adm-show-img" class="w-full px-4 py-2.5 rounded-full candy-input"></div>
+                            <div>
+                                <label class="block text-candy-muted mb-1">รูปภาพ (URL หรือเลือกรูปจากอัลบั้ม)</label>
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <input type="text" id="adm-show-img" placeholder="https://... หรือเลือกรูป" class="flex-1 px-4 py-2.5 rounded-full candy-input">
+                                    <label class="px-4 py-2.5 rounded-full bg-[#EDF8E6] hover:bg-[#C8E8B3] text-candy-text font-medium cursor-pointer border-2 border-white shadow-soft text-center shrink-0">
+                                        <span>📷 เลือกรูปจากอัลบั้ม</span>
+                                        <input type="file" accept="image/*" onchange="handleAlbumUpload(this, 'adm-show-img')" class="hidden">
+                                    </label>
+                                </div>
+                            </div>
                             <button onclick="saveShowcaseItem()" class="w-full py-3.5 rounded-full bg-gradient-to-r from-[#78B159] to-[#8FC671] text-white font-medium shadow-float border-2 border-white">บันทึกรายการ</button>
                         </div>
                         <div id="adm-showcase-list" class="space-y-2"></div>
@@ -1074,25 +1070,25 @@
                     name: "Netflix Ultra HD 4K",
                     img: "https://placehold.co/400x400/EDF8E6/3D4C3E?text=NETFLIX+4K",
                     desc: "จอส่วนตัว คมชัด 4K ไม่หาร",
-                    devices: ["มือถือ", "ไอแพด", "ทีวี"],
-                    packages: [
-                        { device: "มือถือ", days: "7 วัน", price: "45" },
-                        { device: "มือถือ", days: "30 วัน", price: "129" },
-                        { device: "ไอแพด", days: "30 วัน", price: "139" },
-                        { device: "ทีวี", days: "30 วัน", price: "169" },
-                        { device: "ทีวี", days: "90 วัน", price: "450" }
-                    ]
+                    devices: ["เข้ามือถือ", "ไอแพด", "เข้าทีวี"],
+                    daysList: ["7 วัน", "30 วัน", "90 วัน"],
+                    priceMatrix: {
+                        "เข้ามือถือ": { "7 วัน": "45", "30 วัน": "129", "90 วัน": "350" },
+                        "ไอแพด": { "7 วัน": "49", "30 วัน": "139", "90 วัน": "380" },
+                        "เข้าทีวี": { "7 วัน": "59", "30 วัน": "169", "90 วัน": "450" }
+                    }
                 },
                 {
                     name: "YouTube Premium",
                     img: "https://placehold.co/400x400/FFF2F6/3D4C3E?text=YOUTUBE",
                     desc: "ดูไม่มีโฆษณา ฟังเพลงปิดจอได้",
-                    devices: ["มือถือ", "ไอแพด", "คอมพิวเตอร์"],
-                    packages: [
-                        { device: "ทุกอุปกรณ์", days: "30 วัน", price: "45" },
-                        { device: "ทุกอุปกรณ์", days: "90 วัน", price: "120" },
-                        { device: "ทุกอุปกรณ์", days: "1 ปี", price: "390" }
-                    ]
+                    devices: ["เข้ามือถือ", "ไอแพด", "เข้าทีวี"],
+                    daysList: ["30 วัน", "90 วัน", "1 ปี"],
+                    priceMatrix: {
+                        "เข้ามือถือ": { "30 วัน": "45", "90 วัน": "120", "1 ปี": "390" },
+                        "ไอแพด": { "30 วัน": "45", "90 วัน": "120", "1 ปี": "390" },
+                        "เข้าทีวี": { "30 วัน": "55", "90 วัน": "149", "1 ปี": "450" }
+                    }
                 }
             ],
             showcaseItems: [],
@@ -1102,27 +1098,51 @@
             ]
         };
 
-        const STORAGE_KEY = "care_storefront_candy_soft_v1";
+        const STORAGE_KEY = "care_storefront_candy_soft_v3";
         let appData = loadAppData();
-        let selectedPackages = {};
+        let selectedDayIndex = {};
         let selectedPlatforms = {};
         let currentTab = "home";
         let isAdminAuthenticated = false;
         let isPlayingMusic = false;
-        let currentAdminDevices = ["มือถือ", "ไอแพด", "ทีวี"];
+
+        let adminAppDays = ["7 วัน", "30 วัน", "90 วัน"];
+        let adminAppDevices = ["เข้ามือถือ", "ไอแพด", "เข้าทีวี"];
+        let adminAppPrices = {};
+
+        function normalizePremiumApp(app) {
+            if (app.daysList && app.priceMatrix) {
+                return app;
+            }
+            const devices = (app.devices && app.devices.length > 0) ? app.devices : ["เข้ามือถือ", "ไอแพด", "เข้าทีวี"];
+            const daysSet = new Set();
+            (app.packages || []).forEach(p => { if (p.days) daysSet.add(p.days); });
+            const daysList = daysSet.size > 0 ? Array.from(daysSet) : ["30 วัน"];
+            const priceMatrix = {};
+            devices.forEach(dev => {
+                priceMatrix[dev] = {};
+                daysList.forEach(day => {
+                    const found = (app.packages || []).find(p => (p.device === dev || p.device === "ทุกอุปกรณ์" || !p.device) && p.days === day);
+                    priceMatrix[dev][day] = found ? found.price : "0";
+                });
+            });
+            return { ...app, devices, daysList, priceMatrix };
+        }
 
         function loadAppData() {
             try {
                 const raw = localStorage.getItem(STORAGE_KEY);
                 if (raw) {
                     const parsed = JSON.parse(raw);
-                    return {
+                    const merged = {
                         ...DEFAULT_DATA,
                         ...parsed,
                         store: { ...DEFAULT_DATA.store, ...(parsed.store || {}) },
                         movies: parsed.movies || DEFAULT_DATA.movies,
                         banks: parsed.banks || DEFAULT_DATA.banks
                     };
+                    merged.premiumApps = (merged.premiumApps || []).map(normalizePremiumApp);
+                    return merged;
                 }
             } catch (e) {}
             return JSON.parse(JSON.stringify(DEFAULT_DATA));
@@ -1133,7 +1153,7 @@
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
                 renderAll();
             } catch (e) {
-                showToast("พื้นที่เก็บข้อมูลเต็ม (แนะนำใช้ลิงก์รูปภาพแทนไฟล์ขนาดใหญ่)");
+                showToast("พื้นที่เก็บข้อมูลเต็ม แนะนำลบรูปเก่าบางส่วนออกก่อนนะครับ");
             }
         }
 
@@ -1160,21 +1180,69 @@
             document.body.removeChild(temp);
         }
 
-        /* Helper: Convert local uploaded image to DataURL */
-        function handleImageUpload(inputEl, targetInputId, previewImgId) {
+        function compressImageFile(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    const maxDim = 800;
+                    let width = img.width;
+                    let height = img.height;
+                    if (width > maxDim || height > maxDim) {
+                        if (width > height) {
+                            height = Math.round((height * maxDim) / width);
+                            width = maxDim;
+                        } else {
+                            width = Math.round((width * maxDim) / height);
+                            height = maxDim;
+                        }
+                    }
+                    const canvas = document.createElement("canvas");
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+                    const compressedDataUrl = canvas.toDataURL("image/jpeg", 0.82);
+                    callback(compressedDataUrl);
+                };
+                img.onerror = function() {
+                    callback(event.target.result);
+                };
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleAlbumUpload(inputEl, targetInputId, previewImgId) {
             const file = inputEl.files && inputEl.files[0];
             if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const dataUrl = e.target.result;
-                document.getElementById(targetInputId).value = dataUrl;
+            compressImageFile(file, (dataUrl) => {
+                const targetInput = document.getElementById(targetInputId);
+                if (targetInput) targetInput.value = dataUrl;
                 if (previewImgId) {
                     const prev = document.getElementById(previewImgId);
                     if (prev) prev.src = dataUrl;
                 }
-                showToast("อัปโหลดรูปภาพเรียบร้อย");
-            };
-            reader.readAsDataURL(file);
+                showToast("เลือกรูปจากอัลบั้มเรียบร้อย");
+                inputEl.value = "";
+            });
+        }
+
+        function handleMultipleReviewsUpload(inputEl) {
+            const files = Array.from(inputEl.files || []);
+            if (files.length === 0) return;
+            let processed = 0;
+            files.forEach(file => {
+                compressImageFile(file, (dataUrl) => {
+                    appData.reviews.unshift(dataUrl);
+                    processed++;
+                    if (processed === files.length) {
+                        saveAppData();
+                        showToast(`เพิ่มรูปรีวิวจากอัลบั้ม ${files.length} รูปสำเร็จ`);
+                        inputEl.value = "";
+                    }
+                });
+            });
         }
 
         function toggleStoreMusic() {
@@ -1342,23 +1410,25 @@
             `;
         }
 
-        function createPremiumAppCardHtml(app, appIdx) {
-            const devices = (app.devices && app.devices.length > 0) ? app.devices : ["มือถือ", "ไอแพด", "ทีวี"];
+        function createPremiumAppCardHtml(rawApp, appIdx) {
+            const app = normalizePremiumApp(rawApp);
+            const devices = app.devices || ["เข้ามือถือ"];
+            const daysList = app.daysList || ["30 วัน"];
+
             if (!selectedPlatforms[appIdx] || !devices.includes(selectedPlatforms[appIdx])) {
                 selectedPlatforms[appIdx] = devices[0];
             }
             const activePlatform = selectedPlatforms[appIdx];
 
-            // Filter packages matching the selected device (or packages set for "ทุกอุปกรณ์" / generic)
-            const allPackages = app.packages || [];
-            let matchingPackages = allPackages.filter(p => !p.device || p.device === "ทุกอุปกรณ์" || p.device === activePlatform);
-            if (matchingPackages.length === 0) matchingPackages = allPackages;
-
-            if (selectedPackages[appIdx] === undefined || selectedPackages[appIdx] >= matchingPackages.length) {
-                selectedPackages[appIdx] = 0;
+            if (selectedDayIndex[appIdx] === undefined || selectedDayIndex[appIdx] >= daysList.length) {
+                selectedDayIndex[appIdx] = 0;
             }
-            const activePkgIdx = selectedPackages[appIdx];
-            const activePkg = matchingPackages[activePkgIdx] || { days: "-", price: "0" };
+            const activeDayIdx = selectedDayIndex[appIdx];
+            const activeDay = daysList[activeDayIdx];
+
+            const activePrice = (app.priceMatrix && app.priceMatrix[activePlatform] && app.priceMatrix[activePlatform][activeDay] !== undefined)
+                ? app.priceMatrix[activePlatform][activeDay]
+                : "0";
 
             return `
                 <div class="cute-card overflow-hidden flex flex-col justify-between rounded-[2.25rem]">
@@ -1373,9 +1443,8 @@
                                 <p class="text-[11px] text-candy-muted line-clamp-1">${app.desc || 'พร้อมส่ง ใช้งานได้ทันที'}</p>
                             </div>
                             
-                            <!-- Device Selector -->
                             <div class="space-y-1">
-                                <span class="text-[10px] text-candy-muted font-medium">รับชมอุปกรณ์:</span>
+                                <span class="text-[10px] text-candy-muted font-medium">รับชมอุปกรณ์ไหน:</span>
                                 <div class="flex flex-wrap gap-1">
                                     ${devices.map(plat => `
                                         <button onclick="selectAppPlatform(${appIdx}, '${plat}')" class="px-2.5 py-1 rounded-full text-[10px] font-medium border-2 border-white transition-all ${activePlatform === plat ? 'bg-gradient-to-r from-[#E57A9B] to-[#F3A6C0] text-white shadow-pinkGlow' : 'bg-[#FFF2F6]/70 text-candy-text hover:bg-[#FADCE6]/60'}">${plat}</button>
@@ -1383,12 +1452,11 @@
                                 </div>
                             </div>
 
-                            <!-- Duration / Days Selector -->
                             <div class="space-y-1 pt-0.5">
                                 <span class="text-[10px] text-candy-muted font-medium">เลือกจำนวนวัน:</span>
                                 <div class="flex flex-wrap gap-1">
-                                    ${matchingPackages.map((pkg, pIdx) => `
-                                        <button onclick="selectAppPackage(${appIdx}, ${pIdx})" class="px-2.5 py-1 rounded-full text-[10px] font-medium border-2 border-white transition-all ${pIdx === activePkgIdx ? 'bg-candy-greenDark text-white shadow-soft' : 'bg-[#EDF8E6]/80 text-candy-text hover:bg-[#C8E8B3]/70'}">${pkg.days}</button>
+                                    ${daysList.map((dayStr, dIdx) => `
+                                        <button onclick="selectAppDay(${appIdx}, ${dIdx})" class="px-2.5 py-1 rounded-full text-[10px] font-medium border-2 border-white transition-all ${dIdx === activeDayIdx ? 'bg-candy-greenDark text-white shadow-soft' : 'bg-[#EDF8E6]/80 text-candy-text hover:bg-[#C8E8B3]/70'}">${dayStr}</button>
                                     `).join("")}
                                 </div>
                             </div>
@@ -1396,8 +1464,8 @@
                     </div>
                     <div class="p-3.5 pt-1 space-y-2">
                         <div class="bg-gradient-to-r from-[#F9FDF7] to-[#FFF7FA] p-2.5 rounded-2xl flex items-baseline justify-between text-xs border-2 border-white shadow-2xs">
-                            <span class="font-extrabold text-base text-candy-greenDark">${activePkg.price} ฿</span>
-                            <span class="text-[11px] font-medium text-candy-muted">${activePkg.days}</span>
+                            <span class="font-extrabold text-base text-candy-greenDark">${activePrice} ฿</span>
+                            <span class="text-[10px] font-medium text-candy-muted truncate ml-1">${activePlatform} • ${activeDay}</span>
                         </div>
                         <button onclick="openAppOrderModal(${appIdx})" class="w-full py-2.5 rounded-full text-xs font-medium bg-gradient-to-r from-[#78B159] to-[#8FC671] hover:opacity-95 text-white shadow-float border-2 border-white transition-all active:scale-98">
                             ชำระเงิน / สั่งซื้อ
@@ -1445,15 +1513,14 @@
             document.getElementById("apps-grid-list").innerHTML = filtered.map(app => createPremiumAppCardHtml(app, app.originalIdx)).join("");
         }
 
-        function selectAppPackage(appIdx, pkgIdx) {
-            selectedPackages[appIdx] = pkgIdx;
+        function selectAppDay(appIdx, dayIdx) {
+            selectedDayIndex[appIdx] = dayIdx;
             renderAppsSection();
             renderHomePreviews();
         }
 
         function selectAppPlatform(appIdx, platform) {
             selectedPlatforms[appIdx] = platform;
-            selectedPackages[appIdx] = 0; // Reset package index when switching device so price updates accurately
             renderAppsSection();
             renderHomePreviews();
         }
@@ -1558,24 +1625,22 @@
 
         let currentOrderingApp = null;
         function openAppOrderModal(appIdx) {
-            const app = appData.premiumApps[appIdx];
-            const devices = (app.devices && app.devices.length > 0) ? app.devices : ["มือถือ", "ไอแพด", "ทีวี"];
+            const app = normalizePremiumApp(appData.premiumApps[appIdx]);
+            const devices = app.devices || ["เข้ามือถือ"];
+            const daysList = app.daysList || ["30 วัน"];
             const platform = selectedPlatforms[appIdx] || devices[0];
+            const dayIdx = selectedDayIndex[appIdx] || 0;
+            const dayStr = daysList[dayIdx] || daysList[0];
+            const price = (app.priceMatrix && app.priceMatrix[platform] && app.priceMatrix[platform][dayStr] !== undefined)
+                ? app.priceMatrix[platform][dayStr]
+                : "0";
 
-            const allPackages = app.packages || [];
-            let matchingPackages = allPackages.filter(p => !p.device || p.device === "ทุกอุปกรณ์" || p.device === platform);
-            if (matchingPackages.length === 0) matchingPackages = allPackages;
-
-            const pkgIdx = selectedPackages[appIdx] || 0;
-            const pkg = matchingPackages[pkgIdx] || matchingPackages[0];
-            if (!app || !pkg) return;
-
-            currentOrderingApp = { app, pkg, platform };
+            currentOrderingApp = { app, days: dayStr, price, platform };
 
             document.getElementById("order-app-name").innerText = app.name;
             document.getElementById("order-app-platform").innerText = `อุปกรณ์: ${platform}`;
-            document.getElementById("order-app-pkg").innerText = `แพ็กเกจ: ${pkg.days}`;
-            document.getElementById("order-app-price").innerText = `${pkg.price} ฿`;
+            document.getElementById("order-app-pkg").innerText = `ระยะเวลา: ${dayStr}`;
+            document.getElementById("order-app-price").innerText = `${price} ฿`;
 
             renderBankSection();
             document.getElementById("modal-order-app").classList.remove("hidden");
@@ -1583,8 +1648,8 @@
 
         function copyAppOrderSummary() {
             if (!currentOrderingApp) return;
-            const { app, pkg, platform } = currentOrderingApp;
-            const text = `*โน๊ตสลิปกำกับ * ซื้อขายกับแคร์ : ${app.name} (${platform} / ${pkg.days})\nยอดโอน: ${pkg.price} ฿`;
+            const { app, days, price, platform } = currentOrderingApp;
+            const text = `*โน๊ตสลิปกำกับ * ซื้อขายกับแคร์ : ${app.name} (${platform} / ${days})\nยอดโอน: ${price} ฿`;
             copyStringToClipboard(text, "คัดลอกข้อมูลสั่งซื้อพร้อมโน๊ตสลิปเรียบร้อย");
         }
 
@@ -1598,7 +1663,6 @@
             document.getElementById(id).classList.add("hidden");
         }
 
-        /* ==================== ADMIN LOGIC ==================== */
         function openAdminModal() {
             document.getElementById("modal-admin").classList.remove("hidden");
             if (isAdminAuthenticated) showAdminDashboard();
@@ -1648,11 +1712,12 @@
             document.getElementById("adm-btn3-label").value = s.btn3Label || "เครดิตแอพพรี";
             document.getElementById("adm-btn3-url").value = s.btn3Url || "";
             document.getElementById("adm-show-sec-title").value = s.showcaseTitle || "";
-            
             document.getElementById("adm-qr-url").value = s.qrCodeImg || "";
             document.getElementById("adm-qr-preview").src = s.qrCodeImg || "https://placehold.co/150x150/FFF2F6/E57A9B?text=NO+QR";
 
             resetAppForm();
+            resetMovieForm();
+            resetBankForm();
             renderAdminLists();
         }
 
@@ -1661,9 +1726,11 @@
                 const btn = document.getElementById(`atab-${t}`);
                 const panel = document.getElementById(`apanel-${t}`);
                 if (btn) {
-                    btn.className = `admin-tab-btn px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap border-2 border-white shadow-2xs transition-all ${t === tab ? 'bg-candy-greenDark text-white' : 'bg-white text-candy-text hover:bg-[#EDF8E6]'}`;
+                    btn.className = `admin-tab-btn px-4 py-1.5 rounded-full text-xs font-medium whitespace-nowrap border-2 border-white shadow-2xs ${t === tab ? 'bg-candy-greenDark text-white' : 'bg-white text-candy-text'}`;
                 }
-                if (panel) panel.classList.toggle("hidden", t !== tab);
+                if (panel) {
+                    panel.classList.toggle("hidden", t !== tab);
+                }
             });
         }
 
@@ -1688,69 +1755,106 @@
             showToast("บันทึกข้อมูลร้านสำเร็จ");
         }
 
-        /* ==================== PREMIUM APPS ADMIN (ADD & EDIT) ==================== */
         function updateAppImgPreview() {
             const url = document.getElementById("adm-app-img").value.trim();
             document.getElementById("adm-app-img-preview").src = url || "https://placehold.co/100x100/EDF8E6/3D4C3E?text=PREVIEW";
         }
 
-        function renderAdminDevicesList() {
-            const container = document.getElementById("adm-app-devices-list");
-            container.innerHTML = currentAdminDevices.map((dev, idx) => `
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FFF2F6] text-candy-text text-xs font-medium border-2 border-white shadow-2xs">
-                    <span>📱 ${dev}</span>
-                    <button type="button" onclick="removeAdminDeviceTag(${idx})" class="text-candy-pinkDark font-bold hover:scale-110">✕</button>
-                </span>
-            `).join("");
-            // Refresh device dropdowns inside package rows
-            refreshPackageDeviceSelects();
+        function captureCurrentMatrixInputs() {
+            document.querySelectorAll(".matrix-price-input").forEach(inp => {
+                const dev = inp.getAttribute("data-device");
+                const day = inp.getAttribute("data-day");
+                if (!adminAppPrices[dev]) adminAppPrices[dev] = {};
+                adminAppPrices[dev][day] = inp.value.trim();
+            });
+        }
+
+        function renderAdminAppMatrix() {
+            const daysContainer = document.getElementById("adm-app-days-list");
+            if (daysContainer) {
+                daysContainer.innerHTML = adminAppDays.map((dayStr, idx) => `
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EDF8E6] text-candy-text text-xs font-medium border-2 border-white shadow-2xs">
+                        <span>🗓️ ${dayStr}</span>
+                        <button type="button" onclick="removeAdminDayTag(${idx})" class="text-candy-greenDark font-bold hover:scale-110">✕</button>
+                    </span>
+                `).join("");
+            }
+
+            const matrixContainer = document.getElementById("adm-app-matrix-container");
+            if (matrixContainer) {
+                matrixContainer.innerHTML = adminAppDevices.map((dev, devIdx) => {
+                    const dayInputsHtml = adminAppDays.map(dayStr => {
+                        const val = (adminAppPrices[dev] && adminAppPrices[dev][dayStr] !== undefined) ? adminAppPrices[dev][dayStr] : "";
+                        return `
+                            <div class="flex items-center justify-between gap-2 bg-white/90 px-3 py-1.5 rounded-full border-2 border-white shadow-2xs">
+                                <span class="text-[11px] font-medium text-candy-text shrink-0">${dayStr}</span>
+                                <div class="flex items-center gap-1">
+                                    <input type="number" data-device="${dev}" data-day="${dayStr}" value="${val}" placeholder="ราคา" oninput="captureCurrentMatrixInputs()" class="matrix-price-input w-20 text-right bg-transparent text-xs font-bold text-candy-greenDark focus:outline-none">
+                                    <span class="text-[10px] text-candy-muted">฿</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join("");
+
+                    return `
+                        <div class="bg-gradient-to-r from-[#FFF2F6]/70 via-white to-[#EDF8E6]/60 p-3 rounded-[1.5rem] border-2 border-white shadow-2xs space-y-2">
+                            <div class="flex items-center justify-between px-1">
+                                <span class="font-semibold text-xs text-candy-pinkDark">📱 อุปกรณ์: ${dev}</span>
+                                <button type="button" onclick="removeAdminDeviceTag(${devIdx})" class="text-[10px] bg-white text-candy-pinkDark px-2.5 py-0.5 rounded-full border border-white shadow-2xs">ลบอุปกรณ์</button>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                                ${dayInputsHtml}
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+            }
+        }
+
+        function addCustomDayTag() {
+            captureCurrentMatrixInputs();
+            const inp = document.getElementById("adm-new-day-input");
+            const val = inp.value.trim();
+            if (!val) return;
+            if (!adminAppDays.includes(val)) {
+                adminAppDays.push(val);
+                renderAdminAppMatrix();
+            }
+            inp.value = "";
+        }
+
+        function removeAdminDayTag(idx) {
+            if (adminAppDays.length <= 1) {
+                showToast("ต้องมีจำนวนวันอย่างน้อย 1 ตัวเลือก");
+                return;
+            }
+            captureCurrentMatrixInputs();
+            adminAppDays.splice(idx, 1);
+            renderAdminAppMatrix();
         }
 
         function addCustomDeviceTag() {
+            captureCurrentMatrixInputs();
             const inp = document.getElementById("adm-new-device-input");
             const val = inp.value.trim();
             if (!val) return;
-            if (!currentAdminDevices.includes(val)) {
-                currentAdminDevices.push(val);
-                renderAdminDevicesList();
+            if (!adminAppDevices.includes(val)) {
+                adminAppDevices.push(val);
+                renderAdminAppMatrix();
             }
             inp.value = "";
         }
 
         function removeAdminDeviceTag(idx) {
-            if (currentAdminDevices.length <= 1) {
+            if (adminAppDevices.length <= 1) {
                 showToast("ต้องมีอุปกรณ์อย่างน้อย 1 รายการ");
                 return;
             }
-            currentAdminDevices.splice(idx, 1);
-            renderAdminDevicesList();
-        }
-
-        function getDeviceSelectOptionsHtml(selectedVal = "ทุกอุปกรณ์") {
-            const opts = ["ทุกอุปกรณ์", ...currentAdminDevices];
-            return opts.map(o => `<option value="${o}" ${o === selectedVal ? 'selected' : ''}>${o}</option>`).join("");
-        }
-
-        function refreshPackageDeviceSelects() {
-            document.querySelectorAll(".pkg-device").forEach(sel => {
-                const cur = sel.value;
-                sel.innerHTML = getDeviceSelectOptionsHtml(cur);
-            });
-        }
-
-        function addPackageRow(device = "ทุกอุปกรณ์", days = "30 วัน", price = "129") {
-            const container = document.getElementById("adm-app-packages-container");
-            const row = document.createElement("div");
-            row.className = "flex flex-wrap sm:flex-nowrap items-center gap-1.5 pkg-row bg-white/70 p-2 rounded-2xl border-2 border-white";
-            row.innerHTML = `
-                <select class="pkg-device w-full sm:w-32 px-3 py-2 rounded-full candy-input text-xs">
-                    ${getDeviceSelectOptionsHtml(device)}
-                </select>
-                <input type="text" placeholder="จำนวนวัน เช่น 30 วัน" value="${days}" class="pkg-days flex-1 min-w-[90px] px-3.5 py-2 rounded-full candy-input text-xs">
-                <input type="text" placeholder="ราคา" value="${price}" class="pkg-price w-20 px-3.5 py-2 rounded-full candy-input text-xs">
-                <button type="button" onclick="this.parentElement.remove()" class="text-candy-pinkDark bg-[#FFF2F6] px-2.5 py-1.5 rounded-full border border-white font-medium text-[11px]">ลบ</button>
-            `;
-            container.appendChild(row);
+            captureCurrentMatrixInputs();
+            const removedDev = adminAppDevices[idx];
+            delete adminAppPrices[removedDev];
+            adminAppDevices.splice(idx, 1);
+            renderAdminAppMatrix();
         }
 
         function resetAppForm() {
@@ -1762,14 +1866,18 @@
             document.getElementById("adm-app-desc").value = "";
             document.getElementById("adm-app-img").value = "";
             document.getElementById("adm-app-img-preview").src = "https://placehold.co/100x100/EDF8E6/3D4C3E?text=PREVIEW";
-            currentAdminDevices = ["มือถือ", "ไอแพด", "ทีวี"];
-            renderAdminDevicesList();
-            document.getElementById("adm-app-packages-container").innerHTML = "";
-            addPackageRow("ทุกอุปกรณ์", "30 วัน", "129");
+            adminAppDays = ["7 วัน", "30 วัน", "90 วัน"];
+            adminAppDevices = ["เข้ามือถือ", "ไอแพด", "เข้าทีวี"];
+            adminAppPrices = {
+                "เข้ามือถือ": { "7 วัน": "45", "30 วัน": "129", "90 วัน": "350" },
+                "ไอแพด": { "7 วัน": "49", "30 วัน": "139", "90 วัน": "380" },
+                "เข้าทีวี": { "7 วัน": "59", "30 วัน": "169", "90 วัน": "450" }
+            };
+            renderAdminAppMatrix();
         }
 
         function editPremiumAppItem(idx) {
-            const app = appData.premiumApps[idx];
+            const app = normalizePremiumApp(appData.premiumApps[idx]);
             if (!app) return;
             document.getElementById("adm-app-edit-index").value = idx;
             document.getElementById("adm-app-form-title").innerText = `แก้ไขแอพ: ${app.name}`;
@@ -1781,33 +1889,38 @@
             document.getElementById("adm-app-img").value = app.img || "";
             updateAppImgPreview();
 
-            currentAdminDevices = (app.devices && app.devices.length > 0) ? [...app.devices] : ["มือถือ", "ไอแพด", "ทีวี"];
-            renderAdminDevicesList();
-
-            const pkgContainer = document.getElementById("adm-app-packages-container");
-            pkgContainer.innerHTML = "";
-            (app.packages || []).forEach(p => {
-                addPackageRow(p.device || "ทุกอุปกรณ์", p.days, p.price);
-            });
+            adminAppDays = [...(app.daysList || ["30 วัน"])];
+            adminAppDevices = [...(app.devices || ["เข้ามือถือ"])];
+            adminAppPrices = JSON.parse(JSON.stringify(app.priceMatrix || {}));
+            renderAdminAppMatrix();
             document.getElementById("apanel-apps").scrollIntoView({ behavior: "smooth" });
         }
 
         function savePremiumAppItem() {
+            captureCurrentMatrixInputs();
             const editIdx = parseInt(document.getElementById("adm-app-edit-index").value);
             const name = document.getElementById("adm-app-name").value.trim();
             const desc = document.getElementById("adm-app-desc").value.trim() || "ใช้งานต่อเนื่อง คุ้มสุดๆ";
             const img = document.getElementById("adm-app-img").value.trim() || "https://placehold.co/400x400/FFF2F6/3D4C3E?text=APP";
-            
-            const packages = [];
-            document.querySelectorAll(".pkg-row").forEach(r => {
-                const dev = r.querySelector(".pkg-device").value;
-                const d = r.querySelector(".pkg-days").value.trim();
-                const p = r.querySelector(".pkg-price").value.trim();
-                if (d && p) packages.push({ device: dev, days: d, price: p });
+
+            if (!name || adminAppDevices.length === 0 || adminAppDays.length === 0) {
+                showToast("กรุณากรอกชื่อแอพ อุปกรณ์ และจำนวนวันให้ครบ");
+                return;
+            }
+
+            const cleanMatrix = {};
+            let missingPrice = false;
+            adminAppDevices.forEach(dev => {
+                cleanMatrix[dev] = {};
+                adminAppDays.forEach(dayStr => {
+                    const p = (adminAppPrices[dev] && adminAppPrices[dev][dayStr]) ? String(adminAppPrices[dev][dayStr]).trim() : "";
+                    if (!p) missingPrice = true;
+                    cleanMatrix[dev][dayStr] = p || "0";
+                });
             });
 
-            if (!name || packages.length === 0) {
-                showToast("กรุณากรอกชื่อแอพและแพ็กเกจวัน/ราคาอย่างน้อย 1 รายการ");
+            if (missingPrice) {
+                showToast("กรุณากรอกราคาให้ครบทุกช่องอุปกรณ์และจำนวนวัน");
                 return;
             }
 
@@ -1815,8 +1928,9 @@
                 name,
                 desc,
                 img,
-                devices: [...currentAdminDevices],
-                packages
+                devices: [...adminAppDevices],
+                daysList: [...adminAppDays],
+                priceMatrix: cleanMatrix
             };
 
             if (editIdx >= 0 && editIdx < appData.premiumApps.length) {
@@ -1837,7 +1951,6 @@
             showToast("ลบแอพพรีเมียมแล้ว");
         }
 
-        /* ==================== MOVIE RECOMMENDATIONS ADMIN ==================== */
         function resetMovieForm() {
             document.getElementById("adm-movie-edit-index").value = "-1";
             document.getElementById("adm-movie-form-title").innerText = "เพิ่มรายการแนะนำหนัง / ซีรีส์";
@@ -1895,7 +2008,6 @@
             showToast("ลบรายการหนังแล้ว");
         }
 
-        /* ==================== BANK & QR CODE ADMIN ==================== */
         function saveQrCodeImage() {
             const url = document.getElementById("adm-qr-url").value.trim();
             appData.store.qrCodeImg = url;
@@ -1962,7 +2074,6 @@
             showToast("ลบบัญชีธนาคารแล้ว");
         }
 
-        /* ==================== OTHER ADMIN ITEMS ==================== */
         function addReviewByUrl() {
             const url = document.getElementById("adm-review-url").value.trim();
             if (url) {
@@ -2015,74 +2126,89 @@
         }
 
         function renderAdminLists() {
-            // Premium Apps List with Edit & Delete
-            document.getElementById("adm-apps-list").innerHTML = appData.premiumApps.map((app, i) => `
-                <div class="cute-card p-3 flex items-center justify-between gap-2 rounded-[1.75rem]">
-                    <div class="flex items-center gap-2.5 min-w-0">
-                        <img src="${app.img}" class="w-10 h-10 rounded-xl object-contain bg-white border border-white shrink-0">
+            const appsListEl = document.getElementById("adm-apps-list");
+            if (appsListEl) {
+                appsListEl.innerHTML = appData.premiumApps.map((rawApp, i) => {
+                    const app = normalizePremiumApp(rawApp);
+                    return `
+                        <div class="cute-card p-3 flex items-center justify-between gap-2 rounded-[1.75rem]">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <img src="${app.img}" class="w-10 h-10 rounded-xl object-contain bg-white border border-white shrink-0">
+                                <div class="min-w-0">
+                                    <p class="font-semibold text-candy-text truncate">${app.name}</p>
+                                    <p class="text-[10px] text-candy-muted truncate">${(app.devices || []).join(', ')} • ${(app.daysList || []).join(' / ')}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-1.5 shrink-0">
+                                <button onclick="editPremiumAppItem(${i})" class="px-3 py-1 rounded-full bg-[#EDF8E6] text-candy-greenDark font-medium border-2 border-white">แก้ไข</button>
+                                <button onclick="deletePremiumAppItem(${i})" class="px-3 py-1 rounded-full bg-[#FFF2F6] text-candy-pinkDark font-medium border-2 border-white">ลบ</button>
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+            }
+
+            const moviesListEl = document.getElementById("adm-movies-list");
+            if (moviesListEl) {
+                moviesListEl.innerHTML = (appData.movies || []).map((m, i) => `
+                    <div class="cute-card p-3 flex items-center justify-between gap-2 rounded-[1.75rem]">
                         <div class="min-w-0">
-                            <p class="font-semibold text-candy-text truncate">${app.name}</p>
-                            <p class="text-[10px] text-candy-muted truncate">${(app.devices || []).join(', ')} • ${(app.packages || []).length} แพ็กเกจ</p>
+                            <p class="font-semibold text-candy-text truncate">🎬 ${m.title} ${m.platform ? `<span class="text-[10px] text-candy-greenDark">(${m.platform})</span>` : ''}</p>
+                            <p class="text-[10px] text-candy-muted truncate">${m.url}</p>
+                        </div>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button onclick="editMovieItem(${i})" class="px-3 py-1 rounded-full bg-[#EDF8E6] text-candy-greenDark font-medium border-2 border-white">แก้ไข</button>
+                            <button onclick="deleteMovieItem(${i})" class="px-3 py-1 rounded-full bg-[#FFF2F6] text-candy-pinkDark font-medium border-2 border-white">ลบ</button>
                         </div>
                     </div>
-                    <div class="flex items-center gap-1.5 shrink-0">
-                        <button onclick="editPremiumAppItem(${i})" class="px-3 py-1 rounded-full bg-[#EDF8E6] text-candy-greenDark font-medium border-2 border-white">แก้ไข</button>
-                        <button onclick="deletePremiumAppItem(${i})" class="px-3 py-1 rounded-full bg-[#FFF2F6] text-candy-pinkDark font-medium border-2 border-white">ลบ</button>
-                    </div>
-                </div>
-            `).join("");
+                `).join("");
+            }
 
-            // Movies List with Edit & Delete
-            document.getElementById("adm-movies-list").innerHTML = (appData.movies || []).map((m, i) => `
-                <div class="cute-card p-3 flex items-center justify-between gap-2 rounded-[1.75rem]">
-                    <div class="min-w-0">
-                        <p class="font-semibold text-candy-text truncate">🎬 ${m.title} ${m.platform ? `<span class="text-[10px] text-candy-greenDark">(${m.platform})</span>` : ''}</p>
-                        <p class="text-[10px] text-candy-muted truncate">${m.url}</p>
+            const banksListEl = document.getElementById("adm-banks-list");
+            if (banksListEl) {
+                banksListEl.innerHTML = (appData.banks || []).map((b, i) => `
+                    <div class="cute-card p-3 flex items-center justify-between gap-2 rounded-[1.75rem]">
+                        <div class="min-w-0">
+                            <p class="font-semibold text-candy-text">${b.bankTitle} <span class="font-normal text-candy-muted">(${b.accountName})</span></p>
+                            <p class="text-[11px] text-candy-greenDark font-bold">${b.accountNumber}</p>
+                        </div>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button onclick="editBankAccountItem(${i})" class="px-3 py-1 rounded-full bg-[#EDF8E6] text-candy-greenDark font-medium border-2 border-white">แก้ไข</button>
+                            <button onclick="deleteBankAccountItem(${i})" class="px-3 py-1 rounded-full bg-[#FFF2F6] text-candy-pinkDark font-medium border-2 border-white">ลบ</button>
+                        </div>
                     </div>
-                    <div class="flex items-center gap-1.5 shrink-0">
-                        <button onclick="editMovieItem(${i})" class="px-3 py-1 rounded-full bg-[#EDF8E6] text-candy-greenDark font-medium border-2 border-white">แก้ไข</button>
-                        <button onclick="deleteMovieItem(${i})" class="px-3 py-1 rounded-full bg-[#FFF2F6] text-candy-pinkDark font-medium border-2 border-white">ลบ</button>
+                `).join("");
+            }
+
+            const idsListEl = document.getElementById("adm-ids-list");
+            if (idsListEl) {
+                idsListEl.innerHTML = appData.gameIds.map((item, i) => `
+                    <div class="cute-card p-3 flex items-center justify-between rounded-[1.75rem]">
+                        <div><p class="font-medium"><b>${item.code}</b> ${item.name}</p></div>
+                        <button onclick="deleteGameIdItem(${i})" class="px-3 py-1 rounded-full bg-[#FFF2F6] text-candy-pinkDark border-2 border-white">ลบ</button>
                     </div>
-                </div>
-            `).join("");
+                `).join("");
+            }
 
-            // Banks List with Edit & Delete
-            document.getElementById("adm-banks-list").innerHTML = (appData.banks || []).map((b, i) => `
-                <div class="cute-card p-3 flex items-center justify-between gap-2 rounded-[1.75rem]">
-                    <div class="min-w-0">
-                        <p class="font-semibold text-candy-text">${b.bankTitle} <span class="font-normal text-candy-muted">(${b.accountName})</span></p>
-                        <p class="text-[11px] text-candy-greenDark font-bold">${b.accountNumber}</p>
+            const showcaseListEl = document.getElementById("adm-showcase-list");
+            if (showcaseListEl) {
+                showcaseListEl.innerHTML = (appData.showcaseItems || []).map((item, i) => `
+                    <div class="cute-card p-3 flex items-center justify-between rounded-[1.75rem]">
+                        <div><p class="font-medium">${item.title}</p></div>
+                        <button onclick="deleteShowcaseItem(${i})" class="px-3 py-1 rounded-full bg-[#FFF2F6] text-candy-pinkDark border-2 border-white">ลบ</button>
                     </div>
-                    <div class="flex items-center gap-1.5 shrink-0">
-                        <button onclick="editBankAccountItem(${i})" class="px-3 py-1 rounded-full bg-[#EDF8E6] text-candy-greenDark font-medium border-2 border-white">แก้ไข</button>
-                        <button onclick="deleteBankAccountItem(${i})" class="px-3 py-1 rounded-full bg-[#FFF2F6] text-candy-pinkDark font-medium border-2 border-white">ลบ</button>
+                `).join("");
+            }
+
+            const reviewsListEl = document.getElementById("adm-reviews-list");
+            if (reviewsListEl) {
+                reviewsListEl.innerHTML = appData.reviews.map((url, i) => `
+                    <div class="relative aspect-square rounded-[1.75rem] overflow-hidden border-2 border-white bg-white flex items-center justify-center shadow-2xs">
+                        <img src="${url}" class="w-full h-full object-contain">
+                        <button onclick="deleteReviewItem(${i})" class="absolute top-1.5 right-1.5 bg-candy-pinkDark text-white rounded-full px-2.5 py-0.5 text-[10px] border border-white">ลบ</button>
                     </div>
-                </div>
-            `).join("");
-
-            // Game IDs List
-            document.getElementById("adm-ids-list").innerHTML = appData.gameIds.map((item, i) => `
-                <div class="cute-card p-3 flex items-center justify-between rounded-[1.75rem]">
-                    <div><p class="font-medium"><b>${item.code}</b> ${item.name}</p></div>
-                    <button onclick="deleteGameIdItem(${i})" class="px-3 py-1 rounded-full bg-[#FFF2F6] text-candy-pinkDark border-2 border-white">ลบ</button>
-                </div>
-            `).join("");
-
-            // Showcase List
-            document.getElementById("adm-showcase-list").innerHTML = (appData.showcaseItems || []).map((item, i) => `
-                <div class="cute-card p-3 flex items-center justify-between rounded-[1.75rem]">
-                    <div><p class="font-medium">${item.title}</p></div>
-                    <button onclick="deleteShowcaseItem(${i})" class="px-3 py-1 rounded-full bg-[#FFF2F6] text-candy-pinkDark border-2 border-white">ลบ</button>
-                </div>
-            `).join("");
-
-            // Reviews List
-            document.getElementById("adm-reviews-list").innerHTML = appData.reviews.map((url, i) => `
-                <div class="relative aspect-square rounded-[1.75rem] overflow-hidden border-2 border-white bg-white flex items-center justify-center shadow-2xs">
-                    <img src="${url}" class="w-full h-full object-contain">
-                    <button onclick="deleteReviewItem(${i})" class="absolute top-1.5 right-1.5 bg-candy-pinkDark text-white rounded-full px-2.5 py-0.5 text-[10px] border border-white">ลบ</button>
-                </div>
-            `).join("");
+                `).join("");
+            }
         }
 
         window.onload = function() {
@@ -2091,15 +2217,17 @@
 
             setTimeout(() => {
                 const loader = document.getElementById("page-loader");
-                loader.style.opacity = "0";
-                setTimeout(() => {
-                    loader.style.display = "none";
-                    if (appData.store.welcomeEnabled !== false) {
-                        document.getElementById("welcome-popup-title").innerText = appData.store.welcomeTitle || "ยินดีต้อนรับสู่ icaresh";
-                        document.getElementById("welcome-popup-text").innerText = appData.store.welcomeText || "";
-                        document.getElementById("modal-welcome").classList.remove("hidden");
-                    }
-                }, 300);
+                if (loader) {
+                    loader.style.opacity = "0";
+                    setTimeout(() => {
+                        loader.style.display = "none";
+                        if (appData.store.welcomeEnabled !== false) {
+                            document.getElementById("welcome-popup-title").innerText = appData.store.welcomeTitle || "ยินดีต้อนรับสู่ icaresh";
+                            document.getElementById("welcome-popup-text").innerText = appData.store.welcomeText || "";
+                            document.getElementById("modal-welcome").classList.remove("hidden");
+                        }
+                    }, 300);
+                }
             }, 600);
         };
     </script>
