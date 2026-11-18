@@ -51,6 +51,192 @@
                 }
             }
         }
+
+        /* ==================== KAWAII SAKURA, SPARKLES & MASCOT ENGINE ==================== */
+        const KAWAII_MASCOT_LINES = [
+            'いらっしゃいませ ✿<br><span class="text-[10px] text-candy-pinkDark">ยินดีต้อนรับสู่ร้านแคร์งับ ♡</span>',
+            'かわいくてあんしん ✧<br><span class="text-[10px] text-candy-greenDark">เช็คเครดิตก่อนซื้อได้เลยน้า</span>',
+            'おすすめアプリ ♪<br><span class="text-[10px] text-candy-pinkDark">แอพพรีราคาประหยัดพร้อมส่ง!</span>',
+            'ゲームIDもあるよ ✿<br><span class="text-[10px] text-candy-greenDark">ไอดีเกมผ่อนได้ วางดาวน์ได้เลย</span>',
+            'ありがとう〜 ♡<br><span class="text-[10px] text-candy-pinkDark">จิ้มน้องทักแชท LINE ได้เลยงับ</span>'
+        ];
+
+        function escapeMascotHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function getMascotLines() {
+            const custom = (typeof appData !== 'undefined' && appData.store && Array.isArray(appData.store.mascotLines))
+                ? appData.store.mascotLines.filter(line => line && line.trim() !== '')
+                : [];
+            if (custom.length > 0) {
+                return custom.map(line => {
+                    const parts = line.split('|');
+                    if (parts.length >= 2) {
+                        const top = escapeMascotHtml(parts[0].trim());
+                        const bottom = escapeMascotHtml(parts.slice(1).join('|').trim());
+                        return `${top}<br><span class="text-[10px] text-candy-pinkDark">${bottom}</span>`;
+                    }
+                    return `<span class="text-candy-text">${escapeMascotHtml(line.trim())}</span>`;
+                });
+            }
+            return KAWAII_MASCOT_LINES;
+        }
+
+        function getMascotLineUrl() {
+            if (typeof appData !== 'undefined' && appData.store) {
+                const customUrl = (appData.store.mascotLineUrl || '').trim();
+                if (customUrl) return customUrl;
+                const btn1Url = (appData.store.btn1Url || '').trim();
+                if (btn1Url && btn1Url !== '#') return btn1Url;
+            }
+            return 'https://line.me';
+        }
+        let mascotLineIndex = 0;
+        let mascotAutoTimer = null;
+
+        function spawnTapSparkles(x, y, count = 6) {
+            const symbols = ['✦', '✧', '♡', '✿', '⋆'];
+            const colors = ['#E57A9B', '#78B159', '#F49AC1', '#95C976', '#F6B8D0'];
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('span');
+                el.className = 'tap-sparkle-particle';
+                el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                el.style.color = colors[Math.floor(Math.random() * colors.length)];
+                el.style.fontSize = (11 + Math.floor(Math.random() * 8)) + 'px';
+                el.style.left = x + 'px';
+                el.style.top = y + 'px';
+
+                const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.6;
+                const dist = 24 + Math.random() * 34;
+                const dx = Math.round(Math.cos(angle) * dist);
+                const dy = Math.round(Math.sin(angle) * dist - 14);
+                const rot = Math.round((Math.random() - 0.5) * 180);
+
+                el.style.setProperty('--dx', dx + 'px');
+                el.style.setProperty('--dy', dy + 'px');
+                el.style.setProperty('--rot', rot + 'deg');
+
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 750);
+            }
+        }
+
+        function spawnSakuraPetal() {
+            const layer = document.getElementById('kawaii-sakura-layer');
+            if (!layer || document.hidden) return;
+            if (layer.querySelectorAll('.sakura-petal').length > 16) return;
+
+            const petal = document.createElement('div');
+            petal.className = 'sakura-petal';
+            const size = 12 + Math.floor(Math.random() * 10);
+            const leftPct = Math.random() * 98;
+            const dur = (9.5 + Math.random() * 6).toFixed(1) + 's';
+            const swayMid = Math.round((Math.random() - 0.5) * 90) + 'px';
+            const swayEnd = Math.round((Math.random() - 0.5) * 110) + 'px';
+            const petalColors = ['#FADCE6', '#F8C4D8', '#FFE4EE', '#F5B5CE'];
+            const fill = petalColors[Math.floor(Math.random() * petalColors.length)];
+
+            petal.style.left = leftPct + 'vw';
+            petal.style.width = size + 'px';
+            petal.style.height = size + 'px';
+            petal.style.setProperty('--dur', dur);
+            petal.style.setProperty('--sway-mid', swayMid);
+            petal.style.setProperty('--sway-end', swayEnd);
+
+            petal.innerHTML = `<svg viewBox="0 0 24 24" class="w-full h-full"><path d="M12 2 C16 6, 20 11, 17 17 C15 20, 13 21, 12 19 C11 21, 9 20, 7 17 C4 11, 8 6, 12 2 Z" fill="${fill}" stroke="#FFFFFF" stroke-width="1.2"/></svg>`;
+            layer.appendChild(petal);
+
+            setTimeout(() => petal.remove(), parseFloat(dur) * 1000 + 200);
+        }
+
+        function initAmbientKiraStars() {
+            const layer = document.getElementById('kawaii-sakura-layer');
+            if (!layer) return;
+            const starCoords = [
+                { top: '12%', left: '8%', sym: '✦', color: '#E57A9B', dur: '2.8s' },
+                { top: '20%', left: '91%', sym: '✧', color: '#78B159', dur: '3.4s' },
+                { top: '42%', left: '5%', sym: '✧', color: '#F29BB8', dur: '3.1s' },
+                { top: '55%', left: '94%', sym: '✦', color: '#94C973', dur: '2.6s' },
+                { top: '74%', left: '7%', sym: '✦', color: '#E57A9B', dur: '3.7s' },
+                { top: '30%', left: '86%', sym: '⋆', color: '#78B159', dur: '2.9s' }
+            ];
+            starCoords.forEach(st => {
+                const s = document.createElement('span');
+                s.className = 'kira-star';
+                s.textContent = st.sym;
+                s.style.top = st.top;
+                s.style.left = st.left;
+                s.style.color = st.color;
+                s.style.fontSize = '13px';
+                s.style.setProperty('--twinkle-dur', st.dur);
+                layer.appendChild(s);
+            });
+        }
+
+        function interactWithMascot(e) {
+            if (e) e.stopPropagation();
+            const avatar = document.getElementById('mascot-avatar-btn');
+            const bubble = document.getElementById('mascot-speech-bubble');
+
+            if (avatar) {
+                avatar.classList.remove('mascot-jump');
+                void avatar.offsetWidth;
+                avatar.classList.add('mascot-jump');
+                const rect = avatar.getBoundingClientRect();
+                spawnTapSparkles(rect.left + rect.width / 2, rect.top + rect.height / 2, 8);
+            }
+
+            if (bubble) {
+                bubble.classList.remove('speech-pop');
+                void bubble.offsetWidth;
+                bubble.classList.add('speech-pop');
+            }
+
+            window.open(getMascotLineUrl(), '_blank', 'noopener,noreferrer');
+        }
+
+        function toggleMascotMinimize(e) {
+            if (e) e.stopPropagation();
+            const widget = document.getElementById('kawaii-mascot-widget');
+            const restoreBtn = document.getElementById('kawaii-mascot-restore');
+            if (!widget || !restoreBtn) return;
+            const isHidden = widget.classList.contains('hidden');
+            widget.classList.toggle('hidden', !isHidden);
+            restoreBtn.classList.toggle('hidden', isHidden);
+        }
+
+        function initKawaiiEffects() {
+            document.addEventListener('pointerdown', function(e) {
+                spawnTapSparkles(e.clientX, e.clientY, 5);
+            }, { passive: true });
+
+            initAmbientKiraStars();
+            for (let i = 0; i < 4; i++) {
+                setTimeout(spawnSakuraPetal, i * 650);
+            }
+            setInterval(spawnSakuraPetal, 1450);
+
+            mascotAutoTimer = setInterval(() => {
+                const widget = document.getElementById('kawaii-mascot-widget');
+                const textEl = document.getElementById('mascot-speech-text');
+                const bubble = document.getElementById('mascot-speech-bubble');
+                const lines = getMascotLines();
+                if (widget && !widget.classList.contains('hidden') && textEl && lines.length > 0) {
+                    mascotLineIndex = (mascotLineIndex + 1) % lines.length;
+                    textEl.innerHTML = lines[mascotLineIndex];
+                    if (bubble) {
+                        bubble.classList.remove('speech-pop');
+                        void bubble.offsetWidth;
+                        bubble.classList.add('speech-pop');
+                    }
+                }
+            }, 6500);
+        }
     </script>
     <style>
         :root {
@@ -155,6 +341,106 @@
         .virtual-card:active {
             transform: translateY(1px) scale(0.98);
         }
+
+        /* ==================== JAPAN KAWAII SAKURA, SPARKLES & MASCOT ==================== */
+        @keyframes sakuraDrift {
+            0% {
+                transform: translate3d(0, -40px, 0) rotate(0deg) scale(0.85);
+                opacity: 0;
+            }
+            12% {
+                opacity: 0.92;
+            }
+            50% {
+                transform: translate3d(var(--sway-mid, 28px), 50vh, 0) rotate(190deg) scale(1);
+            }
+            88% {
+                opacity: 0.85;
+            }
+            100% {
+                transform: translate3d(var(--sway-end, -18px), 105vh, 0) rotate(380deg) scale(0.8);
+                opacity: 0;
+            }
+        }
+        .sakura-petal {
+            position: fixed;
+            top: -30px;
+            pointer-events: none;
+            z-index: 35;
+            will-change: transform, opacity;
+            animation: sakuraDrift var(--dur, 11s) linear forwards;
+            filter: drop-shadow(0 2px 4px rgba(229, 122, 155, 0.22));
+        }
+
+        @keyframes kiraTwinkle {
+            0%, 100% {
+                transform: scale(0.55) rotate(0deg);
+                opacity: 0.15;
+            }
+            50% {
+                transform: scale(1.2) rotate(25deg);
+                opacity: 0.95;
+            }
+        }
+        .kira-star {
+            position: fixed;
+            pointer-events: none;
+            z-index: 35;
+            animation: kiraTwinkle var(--twinkle-dur, 3.2s) ease-in-out infinite;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.95), 0 0 12px rgba(229, 122, 155, 0.45);
+            user-select: none;
+        }
+
+        @keyframes tapBurst {
+            0% {
+                transform: translate3d(0, 0, 0) scale(0.4) rotate(0deg);
+                opacity: 1;
+            }
+            70% {
+                opacity: 0.95;
+            }
+            100% {
+                transform: translate3d(var(--dx, 0px), var(--dy, -30px), 0) scale(1.15) rotate(var(--rot, 90deg));
+                opacity: 0;
+            }
+        }
+        .tap-sparkle-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 190;
+            font-weight: 700;
+            line-height: 1;
+            will-change: transform, opacity;
+            animation: tapBurst 0.72s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            text-shadow: 0 2px 6px rgba(255, 255, 255, 0.95);
+            user-select: none;
+        }
+
+        @keyframes mascotFloat {
+            0%, 100% { transform: translateY(0px) rotate(-1.5deg); }
+            50% { transform: translateY(-6px) rotate(1.5deg); }
+        }
+        @keyframes mascotHappyJump {
+            0% { transform: scale(1) translateY(0); }
+            30% { transform: scale(1.14, 0.9) translateY(2px); }
+            55% { transform: scale(0.95, 1.1) translateY(-16px) rotate(-4deg); }
+            80% { transform: scale(1.04, 0.96) translateY(-2px) rotate(2deg); }
+            100% { transform: scale(1) translateY(0) rotate(0deg); }
+        }
+        .mascot-idle {
+            animation: mascotFloat 3.4s ease-in-out infinite;
+        }
+        .mascot-jump {
+            animation: mascotHappyJump 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+        }
+
+        @keyframes bubblePop {
+            0% { opacity: 0; transform: translateY(6px) scale(0.92); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .speech-pop {
+            animation: bubblePop 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -242,7 +528,9 @@
                     </div>
                     
                     <div class="px-5 md:px-8 pb-6 -mt-12 md:-mt-14 relative z-10 flex flex-col items-center text-center">
-                        <div class="w-24 h-24 md:w-28 md:h-28 rounded-full p-1 bg-white shadow-soft border-2 border-white relative">
+                        <div class="w-24 h-24 md:w-28 md:h-28 rounded-full p-1 bg-gradient-to-tr from-[#C8E8B3] via-white to-[#FADCE6] shadow-soft border-2 border-white relative">
+                            <span class="absolute -top-1.5 -left-1.5 text-sm text-candy-pinkDark animate-pulse select-none pointer-events-none drop-shadow-2xs">✦</span>
+                            <span class="absolute -top-1 right-0 text-xs text-candy-greenDark animate-bounce select-none pointer-events-none drop-shadow-2xs">✧</span>
                             <img id="home-avatar" src="https://i.postimg.cc/RhbMCMrL/image.png" alt="Profile" class="w-full h-full rounded-full object-cover cursor-pointer" onclick="openLightbox(this.src)" onerror="this.src='https://placehold.co/200x200/C8E8B3/3D4C3E?text=CARE'">
                             <span class="absolute bottom-0.5 right-0.5 w-6 h-6 rounded-full bg-candy-greenDark text-white flex items-center justify-center text-[11px] font-bold border-2 border-white shadow-xs">✓</span>
                         </div>
@@ -532,6 +820,75 @@
         </div>
     </div>
 
+    <!-- ==================== KAWAII SAKURA & KIRA-KIRA LAYER ==================== -->
+    <div id="kawaii-sakura-layer" class="fixed inset-0 pointer-events-none z-[35] overflow-hidden"></div>
+
+    <!-- ==================== KAWAII CHIBI MASCOT WIDGET ==================== -->
+    <div id="kawaii-mascot-widget" class="fixed bottom-24 right-3 sm:right-6 z-30 flex flex-col items-end gap-1.5 select-none">
+        <!-- Manga Speech Bubble -->
+        <div id="mascot-speech-bubble" onclick="interactWithMascot(event)" class="speech-pop cursor-pointer max-w-[175px] bg-white/95 backdrop-blur-md border-2 border-white rounded-[1.35rem] rounded-br-sm px-3 py-2 shadow-pinkGlow relative group transition-transform hover:scale-102">
+            <button onclick="toggleMascotMinimize(event)" class="absolute -top-2 -left-2 w-5 h-5 rounded-full bg-[#FFF2F6] hover:bg-[#FADCE6] text-candy-pinkDark text-[10px] font-bold border border-white shadow-2xs flex items-center justify-center opacity-85 hover:opacity-100" title="ซ่อนน้องมาสคอต">✕</button>
+            <p id="mascot-speech-text" class="font-cute text-[11px] leading-snug text-candy-text text-center">いらっしゃいませ ✿<br><span class="text-[10px] text-candy-pinkDark">ยินดีต้อนรับสู่ร้านแคร์งับ ♡</span></p>
+        </div>
+
+        <!-- Chibi Kawaii Bunny-Cat Mascot SVG -->
+        <div id="mascot-avatar-btn" onclick="interactWithMascot(event)" class="mascot-idle cursor-pointer relative w-16 h-16 sm:w-[70px] sm:h-[70px] flex items-center justify-center drop-shadow-md active:scale-90 transition-transform" title="จิ้มน้องมาสคอตเพื่อทัก LINE ได้เลยงับ!">
+            <svg viewBox="0 0 120 120" class="w-full h-full overflow-visible">
+                <!-- Soft Pastel Aura -->
+                <circle cx="60" cy="68" r="44" fill="url(#mascotAura)" opacity="0.7"/>
+                <defs>
+                    <radialGradient id="mascotAura" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#FFF2F6"/>
+                        <stop offset="70%" stop-color="#EDF8E6"/>
+                        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+                    </radialGradient>
+                </defs>
+                <!-- Left Bunny Ear -->
+                <path d="M40 46 C31 16, 46 10, 52 40 Z" fill="#FFFFFF" stroke="#E57A9B" stroke-width="2.6" stroke-linejoin="round"/>
+                <path d="M42 42 C37 22, 45 19, 49 39 Z" fill="#FADCE6"/>
+                <!-- Right Bunny Ear -->
+                <path d="M80 46 C89 16, 74 10, 68 40 Z" fill="#FFFFFF" stroke="#E57A9B" stroke-width="2.6" stroke-linejoin="round"/>
+                <path d="M78 42 C83 22, 75 19, 71 39 Z" fill="#FADCE6"/>
+                <!-- Cute Mint-Pink Ribbon Bow on Left Ear -->
+                <path d="M35 36 L25 30 L27 42 Z" fill="#C8E8B3" stroke="#78B159" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M35 36 L43 29 L42 41 Z" fill="#C8E8B3" stroke="#78B159" stroke-width="1.8" stroke-linejoin="round"/>
+                <circle cx="35" cy="36" r="3.5" fill="#FADCE6" stroke="#E57A9B" stroke-width="1.6"/>
+                <!-- Chibi Round Face -->
+                <ellipse cx="60" cy="68" rx="34" ry="29" fill="#FFFFFF" stroke="#E57A9B" stroke-width="2.6"/>
+                <!-- Rosy Kawaii Cheeks -->
+                <ellipse cx="41" cy="73" rx="6.5" ry="3.8" fill="#FADCE6" opacity="0.9"/>
+                <ellipse cx="79" cy="73" rx="6.5" ry="3.8" fill="#FADCE6" opacity="0.9"/>
+                <!-- Cheek Blush Lines -->
+                <line x1="38" y1="73" x2="40" y2="71" stroke="#E57A9B" stroke-width="1.4" stroke-linecap="round"/>
+                <line x1="42" y1="73" x2="44" y2="71" stroke="#E57A9B" stroke-width="1.4" stroke-linecap="round"/>
+                <line x1="76" y1="73" x2="78" y2="71" stroke="#E57A9B" stroke-width="1.4" stroke-linecap="round"/>
+                <line x1="80" y1="73" x2="82" y2="71" stroke="#E57A9B" stroke-width="1.4" stroke-linecap="round"/>
+                <!-- Sparkling Kawaii Eyes -->
+                <circle cx="47" cy="64" r="5" fill="#3D4C3E"/>
+                <circle cx="45.5" cy="62" r="2" fill="#FFFFFF"/>
+                <circle cx="48.5" cy="65.5" r="1" fill="#FFFFFF"/>
+                <circle cx="73" cy="64" r="5" fill="#3D4C3E"/>
+                <circle cx="71.5" cy="62" r="2" fill="#FFFFFF"/>
+                <circle cx="74.5" cy="65.5" r="1" fill="#FFFFFF"/>
+                <!-- Cute Cat/Bunny W Mouth & Nose -->
+                <ellipse cx="60" cy="68.5" rx="2.4" ry="1.6" fill="#E57A9B"/>
+                <path d="M54 72 Q57 76 60 72 Q63 76 66 72" fill="none" stroke="#3D4C3E" stroke-width="2" stroke-linecap="round"/>
+                <!-- Little Paws Holding a Pastel Heart -->
+                <path d="M60 95 C52 88, 46 82, 51 77 C54 74, 58 76, 60 79 C62 76, 66 74, 69 77 C74 82, 68 88, 60 95 Z" fill="#FADCE6" stroke="#E57A9B" stroke-width="1.8"/>
+                <ellipse cx="47" cy="86" rx="6.5" ry="5" fill="#FFFFFF" stroke="#E57A9B" stroke-width="2"/>
+                <ellipse cx="73" cy="86" rx="6.5" ry="5" fill="#FFFFFF" stroke="#E57A9B" stroke-width="2"/>
+                <!-- Mini Floating Sparkles -->
+                <text x="88" y="45" font-size="12" fill="#E57A9B">✦</text>
+                <text x="18" y="55" font-size="11" fill="#78B159">✧</text>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Minimized Mascot Restore Pill -->
+    <button id="kawaii-mascot-restore" onclick="toggleMascotMinimize(event)" class="hidden fixed bottom-24 right-3 sm:right-6 z-30 w-11 h-11 rounded-full bg-white/95 border-2 border-white shadow-pinkGlow flex items-center justify-center text-base hover:scale-105 active:scale-95 transition-transform" title="เรียกน้องมาสคอตกลับมา">
+        🐰
+    </button>
+
     <!-- ==================== FLOATING ISLAND NAVIGATION BAR ==================== -->
     <div class="fixed bottom-5 left-0 right-0 z-40 flex justify-center px-4 pointer-events-none" style="position: fixed; bottom: 1.25rem; left: 0; right: 0;">
         <nav class="pointer-events-auto w-[92%] max-w-sm bg-white/95 backdrop-blur-md border-2 border-white rounded-full px-5 py-2.5 flex items-center justify-between shadow-island">
@@ -806,6 +1163,19 @@
                                 <div class="grid grid-cols-3 gap-2"><input type="text" id="adm-btn2-label" placeholder="เครดิตไอดี" class="px-3 py-2 rounded-full candy-input"><input type="text" id="adm-btn2-url" placeholder="ลิงก์..." class="col-span-2 px-3.5 py-2 rounded-full candy-input"></div>
                                 <div class="grid grid-cols-3 gap-2"><input type="text" id="adm-btn3-label" placeholder="เครดิตแอพพรี" class="px-3 py-2 rounded-full candy-input"><input type="text" id="adm-btn3-url" placeholder="ลิงก์..." class="col-span-2 px-3.5 py-2 rounded-full candy-input"></div>
                             </div>
+                            <div class="pt-2 border-t-2 border-white space-y-2.5">
+                                <div class="p-3.5 rounded-[1.5rem] bg-[#FFF2F6]/70 border-2 border-white space-y-2.5">
+                                    <p class="font-cute text-xs font-medium text-candy-pinkDark">ตั้งค่าน้องมาสคอต & ลิงก์ LINE</p>
+                                    <div>
+                                        <label class="block text-[11px] text-candy-muted mb-1">ข้อความกล่องคำพูดมาสคอต (1 บรรทัด = 1 ข้อความสลับอัตโนมัติ | ใช้เครื่องหมาย | เพื่อแบ่งบรรทัดบน-ล่าง)</label>
+                                        <textarea id="adm-mascot-lines" rows="4" placeholder="ยินดีต้อนรับงับ ✿ | จิ้มน้องทัก LINE ได้เลย ♡" class="w-full px-3.5 py-2 rounded-2xl candy-input text-xs text-candy-text leading-relaxed"></textarea>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[11px] text-candy-muted mb-1">ลิงก์ LINE เมื่อจิ้มมาสคอต (เว้นว่างไว้จะดึงจากลิงก์ "ติดต่อด่วน" ให้อัตโนมัติ)</label>
+                                        <input type="url" id="adm-mascot-line-url" placeholder="https://line.me/ti/p/~ไอดีไลน์ของคุณ" class="w-full px-3.5 py-2 rounded-full candy-input text-xs text-candy-text">
+                                    </div>
+                                </div>
+                            </div>
                             <button onclick="saveStoreSettings()" class="w-full py-3.5 rounded-full bg-gradient-to-r from-[#78B159] to-[#8FC671] text-white font-medium shadow-float border-2 border-white">บันทึกข้อมูลทั้งหมด</button>
                         </div>
                     </div>
@@ -1073,7 +1443,15 @@
                 btn3Label: "เครดิตแอพพรี",
                 btn3Url: "https://instagram.com",
                 showcaseTitle: "สินค้าอื่น ๆ และผลงานของร้าน",
-                qrCodeImg: "https://placehold.co/320x320/FFFFFF/78B159?text=SCAN+QR+CODE"
+                qrCodeImg: "https://placehold.co/320x320/FFFFFF/78B159?text=SCAN+QR+CODE",
+                mascotLines: [
+                    "いらっしゃいませ ✿ | ยินดีต้อนรับสู่ร้านแคร์งับ ♡",
+                    "かわいくてあんしん ✧ | เช็คเครดิตก่อนซื้อได้เลยน้า",
+                    "おすすめアプリ ♪ | แอพพรีราคาประหยัดพร้อมส่ง!",
+                    "ゲームIDもあるよ ✿ | ไอดีเกมผ่อนได้ วางดาวน์ได้เลย",
+                    "ありがとう〜 ♡ | จิ้มน้องทักแชท LINE ได้เลยงับ"
+                ],
+                mascotLineUrl: ""
             },
             banks: [
                 {
@@ -1452,6 +1830,13 @@
             b1.innerText = s.btn1Label || "ติดต่อด่วน"; b1.href = s.btn1Url || "#";
             b2.innerText = s.btn2Label || "เครดิตไอดี"; b2.href = s.btn2Url || "#";
             b3.innerText = s.btn3Label || "เครดิตแอพพรี"; b3.href = s.btn3Url || "#";
+
+            const mascotTextEl = document.getElementById("mascot-speech-text");
+            const mascotLines = getMascotLines();
+            if (mascotTextEl && mascotLines.length > 0) {
+                mascotLineIndex = 0;
+                mascotTextEl.innerHTML = mascotLines[0];
+            }
         }
 
         function renderReviewsCarousel() {
@@ -1826,6 +2211,12 @@
             document.getElementById("adm-qr-url").value = s.qrCodeImg || "";
             document.getElementById("adm-qr-preview").src = s.qrCodeImg || "https://placehold.co/150x150/FFF2F6/E57A9B?text=NO+QR";
 
+            const defaultMascotText = (DEFAULT_DATA.store.mascotLines || []).join("\n");
+            document.getElementById("adm-mascot-lines").value = (Array.isArray(s.mascotLines) && s.mascotLines.length > 0)
+                ? s.mascotLines.join("\n")
+                : defaultMascotText;
+            document.getElementById("adm-mascot-line-url").value = s.mascotLineUrl || "";
+
             resetAppForm();
             resetMovieForm();
             resetBankForm();
@@ -1874,6 +2265,11 @@
             appData.store.btn2Url = document.getElementById("adm-btn2-url").value.trim();
             appData.store.btn3Label = document.getElementById("adm-btn3-label").value.trim();
             appData.store.btn3Url = document.getElementById("adm-btn3-url").value.trim();
+            appData.store.mascotLines = document.getElementById("adm-mascot-lines").value
+                .split("\n")
+                .map(line => line.trim())
+                .filter(line => line !== "");
+            appData.store.mascotLineUrl = document.getElementById("adm-mascot-line-url").value.trim();
             saveAppData();
             showToast("บันทึกข้อมูลร้านสำเร็จ");
         }
@@ -2337,6 +2733,7 @@
         window.onload = function() {
             switchTab('home');
             renderAll();
+            initKawaiiEffects();
 
             setTimeout(() => {
                 const loader = document.getElementById("page-loader");
