@@ -157,7 +157,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen pb-40">
+<body class="min-h-screen flex flex-col">
 
     <!-- ==================== LOADER ==================== -->
     <div id="page-loader" class="fixed inset-0 z-[200] bg-gradient-to-br from-white via-[#F3FAEE] to-[#FFF2F6] flex flex-col items-center justify-center gap-3 transition-opacity duration-300">
@@ -170,7 +170,7 @@
     </div>
 
     <!-- ==================== WELCOME POPUP ==================== -->
-    <div id="modal-welcome" class="fixed inset-0 z-[150] hidden bg-black/20 backdrop-blur-xs flex items-center justify-center p-4">
+    <div id="modal-welcome" class="fixed inset-0 z-[150] hidden bg-black/25 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="bg-gradient-to-b from-white via-white to-[#F6FBF2] w-full max-w-sm rounded-[2.5rem] p-6 text-center space-y-4 border-2 border-white shadow-2xl fade-in">
             <div class="w-14 h-14 mx-auto rounded-full bg-gradient-to-tr from-[#EDF8E6] to-[#FFF2F6] border-2 border-white flex items-center justify-center shadow-soft">
                 <svg class="w-7 h-7 text-candy-pinkDark" viewBox="0 0 24 24" fill="currentColor">
@@ -181,9 +181,26 @@
                 <h3 id="welcome-popup-title" class="font-cute text-base font-medium text-candy-text">ยินดีต้อนรับสู่ icaresh</h3>
                 <p id="welcome-popup-text" class="text-xs text-candy-muted leading-relaxed whitespace-pre-line"></p>
             </div>
-            <button onclick="closeWelcomeModal()" class="w-full py-3.5 rounded-full bg-gradient-to-r from-[#78B159] to-[#8FC671] hover:opacity-95 text-white font-medium text-xs shadow-float border-2 border-white transition-all active:scale-98">
-                เข้าชมหน้าร้าน
-            </button>
+            <div class="space-y-2 pt-1">
+                <p class="text-[11px] font-medium text-candy-muted">เลือกเมนูที่ต้องการไปได้เลยงับ</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <button onclick="selectWelcomeDestination('ids')" class="py-3 px-3 rounded-full bg-gradient-to-r from-[#FFF2F6] to-[#FADCE6]/70 hover:opacity-90 text-candy-pinkDark font-cute font-medium text-xs border-2 border-white shadow-pinkGlow transition-all active:scale-95">
+                        ไอดีเกม
+                    </button>
+                    <button onclick="selectWelcomeDestination('apps')" class="py-3 px-3 rounded-full bg-gradient-to-r from-[#EDF8E6] to-[#C8E8B3]/70 hover:opacity-90 text-candy-greenDark font-cute font-medium text-xs border-2 border-white shadow-soft transition-all active:scale-95">
+                        แอพพรี
+                    </button>
+                    <button onclick="selectWelcomeDestination('payment')" class="py-3 px-3 rounded-full bg-white hover:bg-[#EDF8E6]/60 text-candy-text font-cute font-medium text-xs border-2 border-white shadow-soft transition-all active:scale-95">
+                        บัญชี
+                    </button>
+                    <a id="welcome-contact-link" href="#" target="_blank" rel="noopener noreferrer" onclick="closeWelcomeModal()" class="py-3 px-3 rounded-full bg-gradient-to-r from-[#78B159] to-[#8FC671] hover:opacity-95 text-white font-cute font-medium text-xs border-2 border-white shadow-float transition-all active:scale-95 flex items-center justify-center">
+                        ติดต่อ
+                    </a>
+                </div>
+                <button onclick="closeWelcomeModal()" class="w-full py-2.5 rounded-full bg-white/80 hover:bg-white text-candy-muted font-medium text-[11px] border-2 border-white transition-all active:scale-98 mt-1">
+                    เข้าชมหน้าหลักร้าน
+                </button>
+            </div>
         </div>
     </div>
 
@@ -193,28 +210,21 @@
     <!-- Audio Player -->
     <audio id="store-audio-player" loop preload="auto"></audio>
 
+    <!-- Fixed Top-Left Round Music Button -->
+    <button onclick="toggleStoreMusic()" id="floating-music-btn" class="fixed top-4 left-4 z-40 w-11 h-11 rounded-full bg-white/95 backdrop-blur-md border-2 border-white shadow-float flex items-center justify-center transition-transform active:scale-90 hover:scale-105" title="เปิด/ปิดเพลง">
+        <div id="vinyl-disc-btn" class="w-8 h-8 rounded-full bg-gradient-to-tr from-[#78B159] via-[#A3D986] to-[#FADCE6] border-2 border-white flex items-center justify-center relative shadow-2xs">
+            <span id="audio-icon-symbol" class="text-[11px] font-bold text-white drop-shadow-2xs">▶</span>
+        </div>
+    </button>
+
     <!-- Main Container -->
-    <div class="max-w-md md:max-w-3xl lg:max-w-5xl mx-auto min-h-screen bg-white/85 relative md:my-5 md:rounded-[2.75rem] shadow-soft border-2 border-white">
+    <div class="w-full max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto flex-1 min-h-screen md:min-h-[calc(100vh-2.5rem)] bg-white/85 relative md:my-5 md:rounded-[2.75rem] shadow-soft border-0 md:border-2 md:border-white pb-28">
 
         <!-- Top Controls Bar -->
-        <div class="px-4 md:px-6 pt-4 pb-2 z-30 flex items-center justify-between gap-2">
-            <div class="flex items-center gap-2.5 bg-white/95 px-3.5 py-2 rounded-full border-2 border-white shadow-soft max-w-[74%] sm:max-w-xs">
-                <button onclick="toggleStoreMusic()" id="vinyl-disc-btn" class="w-8 h-8 rounded-full bg-gradient-to-tr from-[#3D4C3E] to-[#5C705D] border-2 border-white flex items-center justify-center shrink-0 relative overflow-hidden shadow-xs vinyl-spinning" title="เปิด/ปิดเพลง">
-                    <div class="w-3 h-3 rounded-full bg-candy-pink border-2 border-white z-10"></div>
-                </button>
-                <div class="min-w-0 flex-1">
-                    <p id="music-track-title" class="text-[11px] font-medium text-candy-text truncate">เพลงลอฟายฟังสบายบรรยากาศร้าน</p>
-                </div>
-                <button onclick="toggleStoreMusic()" id="music-play-icon" class="w-7 h-7 rounded-full bg-gradient-to-tr from-[#EDF8E6] to-[#FFF2F6] text-candy-text border-2 border-white flex items-center justify-center shrink-0 shadow-2xs" title="เล่น/หยุดเพลง">
-                    <span id="audio-icon-symbol" class="text-[10px] font-bold">❚❚</span>
-                </button>
-            </div>
-
-            <div class="flex items-center gap-2 ml-auto">
-                <button onclick="openAdminModal()" class="w-10 h-10 rounded-full bg-white hover:bg-[#EDF8E6] text-candy-greenDark flex items-center justify-center shadow-soft border-2 border-white transition-all active:scale-95 shrink-0" title="ระบบหลังบ้าน">
-                    <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                </button>
-            </div>
+        <div class="px-4 md:px-6 pt-4 pb-2 z-30 flex items-center justify-end gap-2">
+            <button onclick="openAdminModal()" class="w-10 h-10 rounded-full bg-white hover:bg-[#EDF8E6] text-candy-greenDark flex items-center justify-center shadow-soft border-2 border-white transition-all active:scale-95 shrink-0" title="ระบบหลังบ้าน">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </button>
         </div>
 
         <!-- ==================== VIEW: HOME ==================== -->
@@ -469,6 +479,25 @@
         </div>
     </div>
 
+    <!-- ==================== GAME ID RULES MODAL ==================== -->
+    <div id="modal-id-rules" class="fixed inset-0 z-[140] hidden bg-black/25 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-gradient-to-b from-white via-[#F9FDF7] to-[#FFF5F8] w-full max-w-sm rounded-[2.5rem] p-6 space-y-4 border-2 border-white shadow-2xl fade-in">
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-full bg-gradient-to-tr from-[#FFF2F6] to-[#EDF8E6] border-2 border-white flex items-center justify-center text-candy-pinkDark shadow-soft shrink-0">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                </div>
+                <div>
+                    <h3 class="font-cute text-sm font-medium text-candy-text">กฎและรายละเอียดการซื้อ-ผ่อนไอดี</h3>
+                    <p class="text-[11px] text-candy-muted">กรุณาอ่านข้อตกลงก่อนเลือกซื้อน้า</p>
+                </div>
+            </div>
+            <div id="id-rules-popup-content" class="bg-white/95 rounded-[1.75rem] p-4 border-2 border-white shadow-soft text-xs text-candy-text leading-relaxed whitespace-pre-line max-h-[50vh] overflow-y-auto"></div>
+            <button onclick="closeModal('modal-id-rules')" class="w-full py-3.5 rounded-full bg-gradient-to-r from-[#78B159] to-[#8FC671] hover:opacity-95 text-white font-medium text-xs shadow-float border-2 border-white transition-all active:scale-98">
+                รับทราบ / ดูไอดีเกม
+            </button>
+        </div>
+    </div>
+
     <!-- ==================== MODALS ==================== -->
     <div id="modal-all-reviews" class="fixed inset-0 z-50 hidden bg-black/30 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="bg-gradient-to-b from-white to-[#F7FBF4] w-full max-w-lg h-[85vh] rounded-[2.5rem] flex flex-col shadow-2xl border-2 border-white fade-in overflow-hidden">
@@ -613,6 +642,18 @@
                     <div id="modal-app-banks-list" class="space-y-2.5"></div>
                 </div>
 
+                <div class="bg-gradient-to-r from-[#EDF8E6]/80 via-white to-[#FFF2F6]/80 border-2 border-white rounded-[1.75rem] p-3.5 space-y-2 shadow-soft">
+                    <p class="font-cute font-medium text-xs text-candy-text flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-candy-greenDark"></span>
+                        <span>วิธีการสั่งซื้อแอพพรีเมียม</span>
+                    </p>
+                    <ol class="list-decimal list-inside space-y-1 text-[11px] text-candy-text leading-relaxed">
+                        <li>สแกน QR Code หรือคัดลอกเลขบัญชีด้านบนเพื่อโอนเงินตามยอด</li>
+                        <li>กดปุ่ม <b class="text-candy-greenDark">"คัดลอกข้อมูลสั่งซื้อพร้อมโน๊ตสลิป"</b> ด้านล่าง</li>
+                        <li>ส่งสลิปโอนเงินพร้อมวางข้อความที่คัดลอกในแชทร้านเพื่อรับแอพทันที</li>
+                    </ol>
+                </div>
+
                 <div class="bg-white/95 border-2 border-white rounded-[1.75rem] p-3 flex items-start gap-3 shadow-soft">
                     <div class="bg-[#FFF2F6] p-1.5 rounded-full text-candy-pinkDark flex-shrink-0 border-2 border-white">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
@@ -708,6 +749,28 @@
                             </div>
                             <div><label class="block text-candy-muted mb-1">หัวข้อ Pop-up ต้อนรับ</label><input type="text" id="adm-welcome-title" class="w-full px-4 py-2.5 rounded-full candy-input"></div>
                             <div><label class="block text-candy-muted mb-1">ข้อความใน Pop-up ต้อนรับ</label><textarea id="adm-welcome-text" rows="2" class="w-full px-4 py-2.5 rounded-[1.5rem] candy-input"></textarea></div>
+                        </div>
+
+                        <div class="cute-card p-4 space-y-3 rounded-[2rem]">
+                            <h4 class="font-cute font-medium text-sm text-candy-text">ตั้งค่าเพลงพื้นหลังร้าน & กฎไอดีเกม</h4>
+                            <div>
+                                <label class="block text-candy-muted mb-1">ชื่อเพลง</label>
+                                <input type="text" id="adm-music-title" placeholder="เช่น เพลงลอฟายฟังสบายบรรยากาศร้าน" class="w-full px-4 py-2.5 rounded-full candy-input">
+                            </div>
+                            <div>
+                                <label class="block text-candy-muted mb-1">ลิงก์ไฟล์เพลง (.mp3) หรือเลือกไฟล์เพลงจากเครื่อง</label>
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <input type="text" id="adm-music-url" placeholder="https://...mp3" class="flex-1 px-4 py-2.5 rounded-full candy-input">
+                                    <label class="px-4 py-2.5 rounded-full bg-[#FFF2F6] hover:bg-[#FADCE6] text-candy-pinkDark font-medium cursor-pointer border-2 border-white shadow-soft text-center shrink-0">
+                                        <span>เลือกไฟล์เพลง</span>
+                                        <input type="file" accept="audio/*" onchange="handleAudioFileUpload(this)" class="hidden">
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="pt-1 border-t-2 border-white">
+                                <label class="block text-candy-muted mb-1">กฎการซื้อ-ผ่อนไอดีเกม (เด้งให้อ่านเมื่อกดเข้าหน้าไอดีเกม)</label>
+                                <textarea id="adm-id-rules" rows="3" placeholder="ระบุกฎการซื้อขาย / ผ่อนไอดีเกม..." class="w-full px-4 py-2.5 rounded-[1.5rem] candy-input"></textarea>
+                            </div>
                         </div>
 
                         <div class="cute-card p-4 space-y-3 rounded-[2rem]">
@@ -997,6 +1060,7 @@
                 desc: "ยินดีต้อนรับลูกค้าทุกท่านนะครับ ร้านแคร์ยินดีให้บริการ",
                 highlightDesc: "รับซื้อ-ขายไอดีเกม และแอพพรีเมียมราคาประหยัด เช็คเครดิตมั่นใจก่อนซื้อ ปลอดภัย ยินดีผ่านกลาง",
                 notice: "ส่องหน้าร้านแคร์ เช็คเครดิตมั่นใจแล้ว เลือกซื้อสินค้า สั่งซื้อ ต้องทักหาแคร์ เพื่อรับสินค้ากับแคร์ส่วนตัวทั้งหมดนะคะ\nหากตอบช้ากดโทรตามได้เลยค่ะ",
+                idRules: "1. วางดาวน์ตามกำหนด แจ้งสลิปในแชทเพื่อรับข้อมูลเปลี่ยนรหัสทันที\n2. ผ่อนครบตามงวดรับไอดีถาวร ปลอดภัย 100%\n3. หากผิดนัดชำระเกินกำหนด ขออนุญาตยึดเงินดาวน์และนำไอดีลงขายใหม่โดยไม่คืนเงินทุกกรณี\n4. ซื้อสดเปลี่ยนรหัสและผูกเมล/เบอร์ใหม่ได้ทันทีหลังโอน",
                 welcomeEnabled: true,
                 welcomeTitle: "ยินดีต้อนรับสู่ icaresh",
                 welcomeText: "hi hi หวัดดีค่ะ เว็บรวมสินค้า เช็คเครดิตก่อนซื้อ\nกดจิ้มเลือกซื้อได้เลย แคร์รวมมาให้แล้วงับ",
@@ -1247,13 +1311,35 @@
             });
         }
 
+        function handleAudioFileUpload(inputEl) {
+            const file = inputEl.files && inputEl.files[0];
+            if (!file) return;
+            if (file.size > 3.5 * 1024 * 1024) {
+                showToast("ไฟล์เพลงใหญ่เกินไป (แนะนำไม่เกิน 3MB หรือใช้ลิงก์ URL)");
+                inputEl.value = "";
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById("adm-music-url").value = e.target.result;
+                if (!document.getElementById("adm-music-title").value.trim()) {
+                    document.getElementById("adm-music-title").value = file.name.replace(/\.[^/.]+$/, "");
+                }
+                showToast("อัปโหลดไฟล์เพลงเรียบร้อย กดบันทึกข้อมูลทั้งหมดได้เลย");
+                inputEl.value = "";
+            };
+            reader.readAsDataURL(file);
+        }
+
         function toggleStoreMusic() {
             const audio = document.getElementById("store-audio-player");
             const disc = document.getElementById("vinyl-disc-btn");
             const symbol = document.getElementById("audio-icon-symbol");
             const url = appData.store.musicUrl || "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf7f6.mp3?filename=lofi-study-112191.mp3";
 
-            if (!audio.src || audio.src === "") audio.src = url;
+            if (!audio.src || audio.src !== url) {
+                audio.src = url;
+            }
 
             if (isPlayingMusic) {
                 audio.pause();
@@ -1271,6 +1357,7 @@
             }
         }
 
+        let hasSeenIdRulesThisSession = false;
         function switchTab(tabName) {
             currentTab = tabName;
             ["home", "ids", "apps", "payment"].forEach(t => {
@@ -1285,6 +1372,18 @@
                 }
             });
             window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            if (tabName === 'ids' && !hasSeenIdRulesThisSession) {
+                hasSeenIdRulesThisSession = true;
+                const rulesText = appData.store.idRules || DEFAULT_DATA.store.idRules;
+                document.getElementById("id-rules-popup-content").innerText = rulesText;
+                document.getElementById("modal-id-rules").classList.remove("hidden");
+            }
+        }
+
+        function selectWelcomeDestination(tabName) {
+            closeWelcomeModal();
+            switchTab(tabName);
         }
 
         function closeWelcomeModal() {
@@ -1332,7 +1431,10 @@
             document.getElementById("home-store-desc").innerText = s.desc;
             document.getElementById("home-highlight-desc").innerText = s.highlightDesc || "";
             document.getElementById("home-notice").innerText = s.notice;
-            document.getElementById("music-track-title").innerText = s.musicTitle || "เพลงลอฟายฟังสบายบรรยากาศร้าน";
+            const floatMusicBtn = document.getElementById("floating-music-btn");
+            if (floatMusicBtn) floatMusicBtn.title = (s.musicTitle || "เพลงร้าน") + " (กดเพื่อเปิด/ปิด)";
+            const welcomeContactEl = document.getElementById("welcome-contact-link");
+            if (welcomeContactEl) welcomeContactEl.href = s.btn1Url || "#";
 
             const isOpen = s.isOpen !== false;
             document.getElementById("store-status-dot").className = isOpen ? "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" : "w-2.5 h-2.5 rounded-full bg-rose-500 animate-pulse";
@@ -1620,8 +1722,8 @@
             const cust = document.getElementById("form-id-customer").value.trim() || "-";
             const type = document.getElementById("form-id-type").value;
             const contact = document.getElementById("form-id-contact").value.trim() || "-";
-            const text = `*โน๊ตสลิปกำกับ * ซื้อขายกับแคร์\nรหัส: ${currentOrderingGameId.code} | ${currentOrderingGameId.name}\nราคา: ${currentOrderingGameId.price} ฿ (${type})\nชื่อลูกค้า: ${cust}\nติดต่อ: ${contact}`;
-            copyStringToClipboard(text, "คัดลอกแบบฟอร์มสำเร็จพร้อมโน๊ตสลิป");
+            const text = `แบบฟอร์มสั่งซื้อ/สอบถามไอดีเกม\nรหัส: ${currentOrderingGameId.code} | ${currentOrderingGameId.name}\nราคา: ${currentOrderingGameId.price} ฿ (${type})\nชื่อลูกค้า: ${cust}\nติดต่อ: ${contact}`;
+            copyStringToClipboard(text, "คัดลอกแบบฟอร์มสำเร็จแล้ว");
         }
 
         let currentOrderingApp = null;
@@ -1706,6 +1808,9 @@
             document.getElementById("adm-store-desc").value = s.desc;
             document.getElementById("adm-store-highlight").value = s.highlightDesc || "";
             document.getElementById("adm-store-notice").value = s.notice;
+            document.getElementById("adm-music-title").value = s.musicTitle || "";
+            document.getElementById("adm-music-url").value = s.musicUrl || "";
+            document.getElementById("adm-id-rules").value = s.idRules || DEFAULT_DATA.store.idRules;
             document.getElementById("adm-btn1-label").value = s.btn1Label || "ติดต่อด่วน";
             document.getElementById("adm-btn1-url").value = s.btn1Url || "";
             document.getElementById("adm-btn2-label").value = s.btn2Label || "เครดิตไอดี";
@@ -1746,6 +1851,18 @@
             appData.store.desc = document.getElementById("adm-store-desc").value.trim();
             appData.store.highlightDesc = document.getElementById("adm-store-highlight").value.trim();
             appData.store.notice = document.getElementById("adm-store-notice").value.trim();
+            appData.store.musicTitle = document.getElementById("adm-music-title").value.trim();
+            const newMusicUrl = document.getElementById("adm-music-url").value.trim();
+            const musicChanged = appData.store.musicUrl !== newMusicUrl;
+            appData.store.musicUrl = newMusicUrl;
+            appData.store.idRules = document.getElementById("adm-id-rules").value.trim();
+            if (musicChanged) {
+                const audio = document.getElementById("store-audio-player");
+                audio.src = newMusicUrl;
+                if (isPlayingMusic && newMusicUrl) {
+                    audio.play().catch(() => {});
+                }
+            }
             appData.store.btn1Label = document.getElementById("adm-btn1-label").value.trim();
             appData.store.btn1Url = document.getElementById("adm-btn1-url").value.trim();
             appData.store.btn2Label = document.getElementById("adm-btn2-label").value.trim();
@@ -1803,7 +1920,7 @@
                                 <span class="font-semibold text-xs text-candy-pinkDark">อุปกรณ์: ${dev}</span>
                                 <button type="button" onclick="removeAdminDeviceTag(${devIdx})" class="text-[10px] bg-white text-candy-pinkDark px-2.5 py-0.5 rounded-full border border-white shadow-2xs">ลบอุปกรณ์</button>
                             </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                            <div class="grid grid-cols-1 gap-2">
                                 ${dayInputsHtml}
                             </div>
                         </div>
