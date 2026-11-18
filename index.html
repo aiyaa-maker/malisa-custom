@@ -456,8 +456,8 @@
     </div>
 
     <!-- ==================== WELCOME POPUP ==================== -->
-    <div id="modal-welcome" class="fixed inset-0 z-[150] hidden bg-black/25 backdrop-blur-xs flex items-center justify-center p-4">
-        <div class="bg-gradient-to-b from-white via-white to-[#F6FBF2] w-full max-w-sm rounded-[2.5rem] p-6 text-center space-y-4 border-2 border-white shadow-2xl fade-in">
+    <div id="modal-welcome" onclick="closeWelcomeModal()" class="fixed inset-0 z-[150] hidden bg-black/25 backdrop-blur-xs flex items-center justify-center p-4">
+        <div onclick="event.stopPropagation()" class="bg-gradient-to-b from-white via-white to-[#F6FBF2] w-full max-w-sm rounded-[2.5rem] p-6 text-center space-y-4 border-2 border-white shadow-2xl fade-in">
             <div class="w-14 h-14 mx-auto rounded-full bg-gradient-to-tr from-[#EDF8E6] to-[#FFF2F6] border-2 border-white flex items-center justify-center shadow-soft">
                 <svg class="w-7 h-7 text-candy-pinkDark" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
@@ -494,13 +494,26 @@
     <div id="toast-container" class="fixed top-4 left-1/2 -translate-x-1/2 z-[120] flex flex-col items-center gap-2 pointer-events-none w-11/12 max-w-sm"></div>
 
     <!-- Audio Player -->
-    <audio id="store-audio-player" loop preload="auto"></audio>
+    <audio id="store-audio-player" preload="auto" onended="handleTrackEnded()"></audio>
+    <!-- Hidden YouTube Background Audio Container -->
+    <div id="yt-audio-wrapper" style="position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden;" aria-hidden="true">
+        <div id="yt-audio-player"></div>
+    </div>
 
-    <!-- Fixed Top-Left Round Music Button -->
-    <button onclick="toggleStoreMusic()" id="floating-music-btn" class="fixed top-4 left-4 z-40 w-11 h-11 rounded-full bg-white/95 backdrop-blur-md border-2 border-white shadow-float flex items-center justify-center transition-transform active:scale-90 hover:scale-105" title="เปิด/ปิดเพลง">
-        <div id="vinyl-disc-btn" class="w-8 h-8 rounded-full bg-gradient-to-tr from-[#78B159] via-[#A3D986] to-[#FADCE6] border-2 border-white flex items-center justify-center relative shadow-2xs">
-            <span id="audio-icon-symbol" class="text-[11px] font-bold text-white drop-shadow-2xs">▶</span>
-        </div>
+    <!-- Fixed Top-Left Cute Speaker Button (Mute / Unmute Only) -->
+    <button onclick="toggleStoreMusic()" id="floating-music-btn" class="fixed top-4 left-4 z-40 w-12 h-12 rounded-full bg-[#FFFDFB] hover:bg-[#FFF8FA] border-[1.5px] border-[#F8D7E8] shadow-[0_6px_18px_rgba(200,177,163,0.24)] flex items-center justify-center transition-all active:scale-90 hover:scale-105 select-none" title="เปิด/ปิดเสียงเพลง">
+        <!-- Muted / Paused Icon (Speaker + X) -->
+        <svg id="audio-icon-muted" class="w-6 h-6 text-[#C8B1A3]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="21" y1="9.5" x2="16" y2="14.5"></line>
+            <line x1="16" y1="9.5" x2="21" y2="14.5"></line>
+        </svg>
+        <!-- Playing Icon (Speaker + Sound Waves) -->
+        <svg id="audio-icon-playing" class="w-6 h-6 text-[#C8B1A3] hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            <path d="M18.5 5.5a9 9 0 0 1 0 13"></path>
+        </svg>
     </button>
 
     <!-- Main Container -->
@@ -1109,22 +1122,37 @@
                         </div>
 
                         <div class="cute-card p-4 space-y-3 rounded-[2rem]">
-                            <h4 class="font-cute font-medium text-sm text-candy-text">ตั้งค่าเพลงพื้นหลังร้าน & กฎไอดีเกม</h4>
-                            <div>
-                                <label class="block text-candy-muted mb-1">ชื่อเพลง</label>
-                                <input type="text" id="adm-music-title" placeholder="เช่น เพลงลอฟายฟังสบายบรรยากาศร้าน" class="w-full px-4 py-2.5 rounded-full candy-input">
-                            </div>
-                            <div>
-                                <label class="block text-candy-muted mb-1">ลิงก์ไฟล์เพลง (.mp3) หรือเลือกไฟล์เพลงจากเครื่อง</label>
-                                <div class="flex flex-col sm:flex-row gap-2">
-                                    <input type="text" id="adm-music-url" placeholder="https://...mp3" class="flex-1 px-4 py-2.5 rounded-full candy-input">
-                                    <label class="px-4 py-2.5 rounded-full bg-[#FFF2F6] hover:bg-[#FADCE6] text-candy-pinkDark font-medium cursor-pointer border-2 border-white shadow-soft text-center shrink-0">
-                                        <span>เลือกไฟล์เพลง</span>
-                                        <input type="file" accept="audio/*" onchange="handleAudioFileUpload(this)" class="hidden">
-                                    </label>
+                            <h4 class="font-cute font-medium text-sm text-candy-text">ตั้งค่าเพลงพื้นหลังร้าน (แอดมินเลือกและแก้ไขได้เท่านั้น) & กฎไอดีเกม</h4>
+                            <div class="p-3 rounded-[1.5rem] bg-[#FFF2F6]/65 border-2 border-white space-y-2.5">
+                                <div class="flex items-center justify-between">
+                                    <p id="adm-music-form-title" class="font-cute text-xs font-medium text-candy-pinkDark">เพิ่มเพลงใหม่เข้าเพลย์ลิสต์ร้าน</p>
+                                    <button type="button" id="adm-music-cancel-btn" onclick="resetAdminMusicForm()" class="hidden text-[11px] bg-white text-candy-pinkDark px-3 py-0.5 rounded-full border border-white shadow-2xs">ยกเลิกแก้ไข</button>
                                 </div>
+                                <input type="hidden" id="adm-music-edit-index" value="-1">
+                                <div>
+                                    <label class="block text-candy-muted mb-1">ชื่อเพลง</label>
+                                    <input type="text" id="adm-music-title" placeholder="เช่น เพลงลอฟายฟังสบายบรรยากาศร้าน" class="w-full px-4 py-2.5 rounded-full candy-input">
+                                </div>
+                                <div>
+                                    <label class="block text-candy-muted mb-1">ลิงก์เพลง (.mp3 / YouTube / Google Drive) หรือเลือกไฟล์จากเครื่อง</label>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <input type="text" id="adm-music-url" oninput="clearAdminMusicFileBadge()" placeholder="วางลิงก์ .mp3 / YouTube / Google Drive หรือเลือกไฟล์" class="flex-1 px-4 py-2.5 rounded-full candy-input">
+                                        <label class="px-4 py-2.5 rounded-full bg-white hover:bg-[#FADCE6] text-candy-pinkDark font-medium cursor-pointer border-2 border-white shadow-soft text-center shrink-0">
+                                            <span>เลือกไฟล์เพลง</span>
+                                            <input type="file" accept="audio/*,.mp3,.m4a,.wav,.ogg,.aac" onchange="handleAudioFileUpload(this)" class="hidden">
+                                        </label>
+                                    </div>
+                                    <div id="adm-music-file-badge" class="hidden mt-1.5 px-3 py-1 rounded-full bg-[#EDF8E6] text-candy-greenDark text-[11px] font-medium inline-flex items-center gap-1.5 border border-white">
+                                        <span id="adm-music-file-badge-text">✓ อัปโหลดไฟล์เพลงจากเครื่องแล้ว</span>
+                                    </div>
+                                </div>
+                                <button type="button" id="adm-music-save-btn" onclick="saveAdminPlaylistTrack()" class="w-full py-2.5 rounded-full bg-gradient-to-r from-[#E57A9B] to-[#F3A6C0] text-white font-medium text-xs border-2 border-white shadow-pinkGlow">+ เพิ่มเพลงนี้เข้าเพลย์ลิสต์</button>
                             </div>
-                            <div class="pt-1 border-t-2 border-white">
+                            <div class="space-y-1.5">
+                                <label class="block text-candy-muted">รายการเพลงของร้าน (เล่นอัตโนมัติเมื่อลูกค้ากดปุ่มต้อนรับ)</label>
+                                <div id="adm-playlist-list" class="space-y-1.5"></div>
+                            </div>
+                            <div class="pt-2 border-t-2 border-white">
                                 <label class="block text-candy-muted mb-1">กฎการซื้อ-ผ่อนไอดีเกม (เด้งให้อ่านเมื่อกดเข้าหน้าไอดีเกม)</label>
                                 <textarea id="adm-id-rules" rows="3" placeholder="ระบุกฎการซื้อขาย / ผ่อนไอดีเกม..." class="w-full px-4 py-2.5 rounded-[1.5rem] candy-input"></textarea>
                             </div>
@@ -1434,8 +1462,18 @@
                 welcomeEnabled: true,
                 welcomeTitle: "ยินดีต้อนรับสู่ icaresh",
                 welcomeText: "hi hi หวัดดีค่ะ เว็บรวมสินค้า เช็คเครดิตก่อนซื้อ\nกดจิ้มเลือกซื้อได้เลย แคร์รวมมาให้แล้วงับ",
-                musicTitle: "เพลงลอฟายฟังสบายบรรยากาศร้าน",
-                musicUrl: "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf7f6.mp3?filename=lofi-study-112191.mp3",
+                musicTitle: "Pastel Music Box (เพลงร้านแคร์)",
+                musicUrl: "builtin://pastel-music-box",
+                playlist: [
+                    {
+                        title: "Pastel Music Box (เพลงร้านแคร์)",
+                        url: "builtin://pastel-music-box"
+                    },
+                    {
+                        title: "Sweet Matcha Lullaby (กล่องดนตรีมัทฉะ)",
+                        url: "builtin://matcha-lullaby"
+                    }
+                ],
                 btn1Label: "ติดต่อด่วน",
                 btn1Url: "https://line.me",
                 btn2Label: "เครดิตไอดี",
@@ -1591,6 +1629,17 @@
                         banks: parsed.banks || DEFAULT_DATA.banks
                     };
                     merged.premiumApps = (merged.premiumApps || []).map(normalizePremiumApp);
+                    const isBrokenPixabayUrl = (u) => typeof u === "string" && u.includes("cdn.pixabay.com/download/audio/2022/");
+                    if (isBrokenPixabayUrl(merged.store.musicUrl)) {
+                        merged.store.musicTitle = DEFAULT_DATA.store.musicTitle;
+                        merged.store.musicUrl = DEFAULT_DATA.store.musicUrl;
+                    }
+                    if (Array.isArray(merged.store.playlist) && merged.store.playlist.length > 0) {
+                        const validTracks = merged.store.playlist.filter(t => t && t.url && !isBrokenPixabayUrl(t.url));
+                        merged.store.playlist = validTracks.length > 0
+                            ? validTracks
+                            : JSON.parse(JSON.stringify(DEFAULT_DATA.store.playlist));
+                    }
                     return merged;
                 }
             } catch (e) {}
@@ -1694,51 +1743,679 @@
             });
         }
 
-        function handleAudioFileUpload(inputEl) {
+        let currentTrackIndex = 0;
+        let hasAutoStartedMusic = false;
+        let userExplicitlyMuted = false;
+        let activeAudioMode = "none"; // "html5" | "youtube" | "builtin" | "none"
+        const resolvedBlobUrls = {};
+
+        // ==================== INDEXEDDB AUDIO STORAGE ====================
+        const AUDIO_DB_NAME = "icaresh_audio_db_v1";
+        const AUDIO_STORE_NAME = "audio_blobs";
+
+        function openAudioDB() {
+            return new Promise((resolve, reject) => {
+                if (!window.indexedDB) return reject(new Error("IndexedDB not supported"));
+                const req = indexedDB.open(AUDIO_DB_NAME, 1);
+                req.onupgradeneeded = function(e) {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(AUDIO_STORE_NAME)) {
+                        db.createObjectStore(AUDIO_STORE_NAME, { keyPath: "id" });
+                    }
+                };
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function saveAudioBlobToIDB(id, fileOrBlob, fileName) {
+            const db = await openAudioDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(AUDIO_STORE_NAME, "readwrite");
+                tx.objectStore(AUDIO_STORE_NAME).put({
+                    id,
+                    blob: fileOrBlob,
+                    name: fileName || "audio",
+                    type: fileOrBlob.type || "audio/mpeg",
+                    createdAt: Date.now()
+                });
+                tx.oncomplete = () => resolve(id);
+                tx.onerror = () => reject(tx.error);
+            });
+        }
+
+        async function getAudioBlobFromIDB(id) {
+            const db = await openAudioDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(AUDIO_STORE_NAME, "readonly");
+                const req = tx.objectStore(AUDIO_STORE_NAME).get(id);
+                req.onsuccess = () => resolve(req.result ? req.result.blob : null);
+                req.onerror = () => reject(req.error);
+            });
+        }
+
+        async function deleteAudioBlobFromIDB(id) {
+            if (!id || !id.startsWith("idb://")) return;
+            try {
+                if (resolvedBlobUrls[id]) {
+                    URL.revokeObjectURL(resolvedBlobUrls[id]);
+                    delete resolvedBlobUrls[id];
+                }
+                const db = await openAudioDB();
+                const tx = db.transaction(AUDIO_STORE_NAME, "readwrite");
+                tx.objectStore(AUDIO_STORE_NAME).delete(id);
+            } catch (e) {}
+        }
+
+        // ==================== URL NORMALIZER & YOUTUBE DETECTOR ====================
+        function extractYouTubeVideoId(url) {
+            if (!url || typeof url !== "string") return null;
+            const trimmed = url.trim();
+            const patterns = [
+                /(?:youtube\.com\/watch\?(?:.*&)?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/|music\.youtube\.com\/watch\?(?:.*&)?v=)([a-zA-Z0-9_-]{11})/
+            ];
+            for (const p of patterns) {
+                const m = trimmed.match(p);
+                if (m && m[1]) return m[1];
+            }
+            return null;
+        }
+
+        function normalizeExternalAudioUrl(rawUrl) {
+            if (!rawUrl || typeof rawUrl !== "string") return "";
+            const url = rawUrl.trim();
+            if (url.startsWith("idb://") || url.startsWith("builtin://") || url.startsWith("data:") || url.startsWith("blob:")) {
+                return url;
+            }
+            // Google Drive share link -> direct download/stream link
+            const gdriveFileMatch = url.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+            if (gdriveFileMatch && gdriveFileMatch[1]) {
+                return `https://docs.google.com/uc?export=download&id=${gdriveFileMatch[1]}`;
+            }
+            const gdriveOpenMatch = url.match(/drive\.google\.com\/(?:open|uc)\?(?:.*&)?id=([a-zA-Z0-9_-]+)/);
+            if (gdriveOpenMatch && gdriveOpenMatch[1]) {
+                return `https://docs.google.com/uc?export=download&id=${gdriveOpenMatch[1]}`;
+            }
+            // Dropbox link -> raw=1
+            if (url.includes("dropbox.com/")) {
+                if (url.includes("dl=0")) return url.replace("dl=0", "raw=1");
+                if (url.includes("dl=1")) return url.replace("dl=1", "raw=1");
+                if (!url.includes("raw=1")) return url + (url.includes("?") ? "&raw=1" : "?raw=1");
+            }
+            // GitHub blob -> raw.githubusercontent.com
+            if (url.includes("github.com/") && url.includes("/blob/")) {
+                return url.replace("github.com/", "raw.githubusercontent.com/").replace("/blob/", "/");
+            }
+            return url;
+        }
+
+        async function resolvePlayableUrl(rawUrl) {
+            if (!rawUrl) return "";
+            if (rawUrl.startsWith("idb://")) {
+                if (resolvedBlobUrls[rawUrl]) return resolvedBlobUrls[rawUrl];
+                try {
+                    const blob = await getAudioBlobFromIDB(rawUrl);
+                    if (blob) {
+                        const objUrl = URL.createObjectURL(blob);
+                        resolvedBlobUrls[rawUrl] = objUrl;
+                        return objUrl;
+                    }
+                } catch (e) {}
+                return "";
+            }
+            return normalizeExternalAudioUrl(rawUrl);
+        }
+
+        // ==================== BUILT-IN PASTEL MUSIC BOX (WEB AUDIO) ====================
+        const BuiltinMusicBox = (function() {
+            let ctx = null;
+            let timerId = null;
+            let running = false;
+            let step = 0;
+
+            const MELODIES = {
+                "pastel-music-box": {
+                    tempoMs: 420,
+                    notes: [
+                        523.25, 659.25, 783.99, 987.77, 783.99, 659.25, 587.33, 783.99,
+                        698.46, 880.00, 1046.50, 880.00, 783.99, 659.25, 587.33, 0,
+                        440.00, 523.25, 659.25, 783.99, 659.25, 523.25, 587.33, 698.46,
+                        659.25, 587.33, 523.25, 493.88, 523.25, 0, 0, 0
+                    ]
+                },
+                "matcha-lullaby": {
+                    tempoMs: 460,
+                    notes: [
+                        698.46, 880.00, 1046.50, 880.00, 783.99, 698.46, 659.25, 783.99,
+                        587.33, 698.46, 880.00, 783.99, 698.46, 587.33, 523.25, 0,
+                        466.16, 587.33, 698.46, 880.00, 783.99, 698.46, 659.25, 587.33,
+                        523.25, 587.33, 659.25, 783.99, 698.46, 0, 0, 0
+                    ]
+                }
+            };
+
+            function triggerChime(freq) {
+                if (!ctx || !freq || freq <= 0) return;
+                const now = ctx.currentTime;
+                const osc1 = ctx.createOscillator();
+                const osc2 = ctx.createOscillator();
+                const gain = ctx.createGain();
+                const filter = ctx.createBiquadFilter();
+
+                osc1.type = "sine";
+                osc1.frequency.setValueAtTime(freq, now);
+                osc2.type = "triangle";
+                osc2.frequency.setValueAtTime(freq * 2, now);
+
+                filter.type = "lowpass";
+                filter.frequency.setValueAtTime(1900, now);
+
+                gain.gain.setValueAtTime(0.0001, now);
+                gain.gain.linearRampToValueAtTime(0.055, now + 0.025);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.85);
+
+                const osc2Gain = ctx.createGain();
+                osc2Gain.gain.setValueAtTime(0.18, now);
+
+                osc1.connect(filter);
+                osc2.connect(osc2Gain);
+                osc2Gain.connect(filter);
+                filter.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc1.start(now);
+                osc2.start(now);
+                osc1.stop(now + 0.9);
+                osc2.stop(now + 0.9);
+            }
+
+            function start(variant = "pastel-music-box") {
+                stop();
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                if (!AudioCtx) return false;
+                if (!ctx) ctx = new AudioCtx();
+                if (ctx.state === "suspended") {
+                    ctx.resume().catch(() => {});
+                }
+                const song = MELODIES[variant] || MELODIES["pastel-music-box"];
+                running = true;
+                step = 0;
+                const tick = () => {
+                    if (!running) return;
+                    const note = song.notes[step % song.notes.length];
+                    triggerChime(note);
+                    step++;
+                };
+                tick();
+                timerId = setInterval(tick, song.tempoMs);
+                return true;
+            }
+
+            function stop() {
+                running = false;
+                if (timerId) {
+                    clearInterval(timerId);
+                    timerId = null;
+                }
+            }
+
+            return { start, stop, isRunning: () => running };
+        })();
+
+        // ==================== YOUTUBE BACKGROUND AUDIO ENGINE ====================
+        let ytPlayer = null;
+        let ytApiLoading = false;
+        let ytPlayerReady = false;
+        let pendingYtVideoId = null;
+
+        function ensureYouTubeApiLoaded() {
+            if (window.YT && window.YT.Player) {
+                initYouTubePlayerInstance();
+                return;
+            }
+            if (ytApiLoading) return;
+            ytApiLoading = true;
+            const prevReady = window.onYouTubeIframeAPIReady;
+            window.onYouTubeIframeAPIReady = function() {
+                if (typeof prevReady === "function") prevReady();
+                initYouTubePlayerInstance();
+            };
+            const tag = document.createElement("script");
+            tag.src = "https://www.youtube.com/iframe_api";
+            document.head.appendChild(tag);
+        }
+
+        function initYouTubePlayerInstance() {
+            if (ytPlayer || !window.YT || !window.YT.Player) return;
+            ytPlayer = new YT.Player("yt-audio-player", {
+                height: "1",
+                width: "1",
+                videoId: pendingYtVideoId || "",
+                playerVars: {
+                    autoplay: 1,
+                    controls: 0,
+                    disablekb: 1,
+                    fs: 0,
+                    iv_load_policy: 3,
+                    modestbranding: 1,
+                    playsinline: 1,
+                    rel: 0
+                },
+                events: {
+                    onReady: function(event) {
+                        ytPlayerReady = true;
+                        event.target.setVolume(100);
+                        if (pendingYtVideoId && activeAudioMode === "youtube") {
+                            event.target.loadVideoById(pendingYtVideoId);
+                            event.target.playVideo();
+                        }
+                    },
+                    onStateChange: function(event) {
+                        if (activeAudioMode !== "youtube") return;
+                        if (event.data === YT.PlayerState.PLAYING) {
+                            isPlayingMusic = true;
+                            hasAutoStartedMusic = true;
+                            updateSpeakerButtonUI(true);
+                            if (isAdminAuthenticated) renderAdminLists();
+                        } else if (event.data === YT.PlayerState.PAUSED) {
+                            isPlayingMusic = false;
+                            updateSpeakerButtonUI(false);
+                            if (isAdminAuthenticated) renderAdminLists();
+                        } else if (event.data === YT.PlayerState.ENDED) {
+                            handleTrackEnded();
+                        }
+                    },
+                    onError: function() {
+                        if (activeAudioMode !== "youtube") return;
+                        isPlayingMusic = false;
+                        updateSpeakerButtonUI(false);
+                        showToast("วิดีโอ YouTube นี้ไม่อนุญาตให้เล่นนอกเว็บ ลองใช้ลิงก์อื่นหรืออัปโหลดไฟล์ MP3 น้า");
+                        const list = getStorePlaylist();
+                        if (list.length > 1) {
+                            playStoreTrack((currentTrackIndex + 1) % list.length, true);
+                        }
+                    }
+                }
+            });
+        }
+
+        function stopAllAudioEngines() {
+            const audio = document.getElementById("store-audio-player");
+            if (audio) {
+                try { audio.pause(); } catch (e) {}
+            }
+            BuiltinMusicBox.stop();
+            if (ytPlayer && ytPlayerReady && typeof ytPlayer.pauseVideo === "function") {
+                try { ytPlayer.pauseVideo(); } catch (e) {}
+            }
+        }
+
+        function getStorePlaylist() {
+            const s = (appData && appData.store) ? appData.store : DEFAULT_DATA.store;
+            if (Array.isArray(s.playlist) && s.playlist.length > 0) {
+                return s.playlist;
+            }
+            if (s.musicUrl && s.musicUrl.trim() !== "") {
+                return [{ title: s.musicTitle || "เพลงพื้นหลังร้าน", url: s.musicUrl.trim() }];
+            }
+            return DEFAULT_DATA.store.playlist;
+        }
+
+        function updateSpeakerButtonUI(playing) {
+            const mutedIcon = document.getElementById("audio-icon-muted");
+            const playingIcon = document.getElementById("audio-icon-playing");
+            const btn = document.getElementById("floating-music-btn");
+            if (mutedIcon) mutedIcon.classList.toggle("hidden", playing);
+            if (playingIcon) playingIcon.classList.toggle("hidden", !playing);
+            if (btn) {
+                btn.title = playing ? "กำลังเล่นเพลง (กดเพื่อปิดเสียง)" : "ปิดเสียงอยู่ (กดเพื่อเปิดเพลง)";
+                if (playing) {
+                    btn.classList.add("ring-2", "ring-[#FADCE6]/80");
+                } else {
+                    btn.classList.remove("ring-2", "ring-[#FADCE6]/80");
+                }
+            }
+        }
+
+        async function preloadFirstStoreTrack() {
+            const list = getStorePlaylist();
+            const audio = document.getElementById("store-audio-player");
+            if (!audio || !list || list.length === 0) return;
+            const track = list[0];
+            if (!track || !track.url) return;
+
+            const ytId = extractYouTubeVideoId(track.url);
+            if (ytId) {
+                pendingYtVideoId = ytId;
+                ensureYouTubeApiLoaded();
+                return;
+            }
+            if (track.url.startsWith("builtin://")) {
+                return;
+            }
+            const playable = await resolvePlayableUrl(track.url);
+            if (playable && audio.getAttribute("src") !== playable) {
+                audio.src = playable;
+                audio.loop = (list.length === 1);
+                audio.load();
+            }
+        }
+
+        function playStoreTrack(index, autoPlay = true) {
+            const list = getStorePlaylist();
+            if (!list || list.length === 0) return;
+            currentTrackIndex = ((index % list.length) + list.length) % list.length;
+            const track = list[currentTrackIndex];
+            if (!track || !track.url) return;
+
+            stopAllAudioEngines();
+
+            const rawUrl = track.url.trim();
+            const ytId = extractYouTubeVideoId(rawUrl);
+
+            // 1) YouTube Track
+            if (ytId) {
+                activeAudioMode = "youtube";
+                pendingYtVideoId = ytId;
+                ensureYouTubeApiLoaded();
+                if (autoPlay && ytPlayer && ytPlayerReady && typeof ytPlayer.loadVideoById === "function") {
+                    ytPlayer.loadVideoById(ytId);
+                    ytPlayer.playVideo();
+                    isPlayingMusic = true;
+                    hasAutoStartedMusic = true;
+                    updateSpeakerButtonUI(true);
+                    if (isAdminAuthenticated) renderAdminLists();
+                } else if (autoPlay) {
+                    isPlayingMusic = true;
+                    updateSpeakerButtonUI(true);
+                }
+                return;
+            }
+
+            // 2) Built-in Music Box Track
+            if (rawUrl.startsWith("builtin://")) {
+                activeAudioMode = "builtin";
+                if (autoPlay) {
+                    const variant = rawUrl.replace("builtin://", "");
+                    const started = BuiltinMusicBox.start(variant);
+                    if (started) {
+                        isPlayingMusic = true;
+                        hasAutoStartedMusic = true;
+                        updateSpeakerButtonUI(true);
+                        if (isAdminAuthenticated) renderAdminLists();
+                    }
+                }
+                return;
+            }
+
+            // 3) HTML5 Audio (Uploaded IDB Blob / Direct MP3 / Google Drive / Dropbox)
+            activeAudioMode = "html5";
+            const audio = document.getElementById("store-audio-player");
+            if (!audio) return;
+
+            const startHtml5Audio = (playableUrl) => {
+                if (!playableUrl) {
+                    isPlayingMusic = false;
+                    updateSpeakerButtonUI(false);
+                    showToast("ไม่พบไฟล์เพลงนี้ กรุณาลองอัปโหลดหรือวางลิงก์ใหม่น้า");
+                    return;
+                }
+                if (audio.getAttribute("src") !== playableUrl) {
+                    audio.src = playableUrl;
+                }
+                audio.loop = (list.length === 1);
+                audio.onerror = function() {
+                    // Fallback retry for Google Drive links if export=download fails
+                    if (audio.src.includes("docs.google.com/uc?export=download&id=")) {
+                        const fallbackDrive = audio.src.replace("docs.google.com/uc?export=download&id=", "drive.google.com/uc?export=open&id=");
+                        if (audio.src !== fallbackDrive) {
+                            audio.src = fallbackDrive;
+                            if (autoPlay) audio.play().catch(() => {});
+                            return;
+                        }
+                    }
+                    isPlayingMusic = false;
+                    updateSpeakerButtonUI(false);
+                    if (isAdminAuthenticated) renderAdminLists();
+                    showToast("เล่นไฟล์/ลิงก์เพลงนี้ไม่ได้ (ตรวจสอบลิงก์สาธารณะหรือเลือกไฟล์ MP3 จากเครื่อง)");
+                    if (list.length > 1) {
+                        setTimeout(() => playStoreTrack((currentTrackIndex + 1) % list.length, true), 400);
+                    }
+                };
+
+                if (autoPlay) {
+                    const playPromise = audio.play();
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            isPlayingMusic = true;
+                            hasAutoStartedMusic = true;
+                            updateSpeakerButtonUI(true);
+                            if (isAdminAuthenticated) renderAdminLists();
+                        }).catch(() => {
+                            isPlayingMusic = false;
+                            updateSpeakerButtonUI(false);
+                        });
+                    }
+                }
+            };
+
+            // Fast synchronous path if already cached in resolvedBlobUrls or normal URL
+            if (rawUrl.startsWith("idb://") && resolvedBlobUrls[rawUrl]) {
+                startHtml5Audio(resolvedBlobUrls[rawUrl]);
+            } else if (!rawUrl.startsWith("idb://")) {
+                startHtml5Audio(normalizeExternalAudioUrl(rawUrl));
+            } else {
+                resolvePlayableUrl(rawUrl).then(startHtml5Audio);
+            }
+        }
+
+        function handleTrackEnded() {
+            const list = getStorePlaylist();
+            if (list.length > 1) {
+                playStoreTrack((currentTrackIndex + 1) % list.length, true);
+            } else {
+                if (activeAudioMode === "youtube" && ytPlayer && ytPlayerReady) {
+                    ytPlayer.seekTo(0);
+                    ytPlayer.playVideo();
+                } else {
+                    const audio = document.getElementById("store-audio-player");
+                    if (audio) {
+                        audio.currentTime = 0;
+                        audio.play().catch(() => {});
+                    }
+                }
+            }
+        }
+
+        function clearAdminMusicFileBadge() {
+            const badge = document.getElementById("adm-music-file-badge");
+            if (badge) badge.classList.add("hidden");
+        }
+
+        async function handleAudioFileUpload(inputEl) {
             const file = inputEl.files && inputEl.files[0];
             if (!file) return;
-            if (file.size > 3.5 * 1024 * 1024) {
-                showToast("ไฟล์เพลงใหญ่เกินไป (แนะนำไม่เกิน 3MB หรือใช้ลิงก์ URL)");
+            if (file.size > 30 * 1024 * 1024) {
+                showToast("ไฟล์เพลงใหญ่เกินไป (รองรับสูงสุด 30MB นะงับ)");
                 inputEl.value = "";
                 return;
             }
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById("adm-music-url").value = e.target.result;
-                if (!document.getElementById("adm-music-title").value.trim()) {
-                    document.getElementById("adm-music-title").value = file.name.replace(/\.[^/.]+$/, "");
+            try {
+                const trackId = "idb://track_" + Date.now();
+                await saveAudioBlobToIDB(trackId, file, file.name);
+                resolvedBlobUrls[trackId] = URL.createObjectURL(file);
+
+                const urlInput = document.getElementById("adm-music-url");
+                const titleInput = document.getElementById("adm-music-title");
+                const badge = document.getElementById("adm-music-file-badge");
+                const badgeText = document.getElementById("adm-music-file-badge-text");
+
+                if (urlInput) urlInput.value = trackId;
+                if (titleInput && !titleInput.value.trim()) {
+                    titleInput.value = file.name.replace(/\.[^/.]+$/, "");
                 }
-                showToast("อัปโหลดไฟล์เพลงเรียบร้อย กดบันทึกข้อมูลทั้งหมดได้เลย");
+                if (badge && badgeText) {
+                    badgeText.innerText = `✓ ไฟล์พร้อมบันทึก: ${file.name}`;
+                    badge.classList.remove("hidden");
+                }
+                showToast("อัปโหลดไฟล์เพลงเรียบร้อย กด '+ เพิ่มเพลงนี้เข้าเพลย์ลิสต์' ได้เลย");
+            } catch (err) {
+                showToast("บันทึกไฟล์เพลงไม่สำเร็จ กรุณาลองใหม่อีกครั้ง");
+            } finally {
                 inputEl.value = "";
-            };
-            reader.readAsDataURL(file);
+            }
+        }
+
+        function resetAdminMusicForm() {
+            const editIdxEl = document.getElementById("adm-music-edit-index");
+            if (editIdxEl) editIdxEl.value = "-1";
+            const formTitleEl = document.getElementById("adm-music-form-title");
+            if (formTitleEl) formTitleEl.innerText = "เพิ่มเพลงใหม่เข้าเพลย์ลิสต์ร้าน";
+            const saveBtnEl = document.getElementById("adm-music-save-btn");
+            if (saveBtnEl) saveBtnEl.innerText = "+ เพิ่มเพลงนี้เข้าเพลย์ลิสต์";
+            const cancelBtnEl = document.getElementById("adm-music-cancel-btn");
+            if (cancelBtnEl) cancelBtnEl.classList.add("hidden");
+            const titleEl = document.getElementById("adm-music-title");
+            if (titleEl) titleEl.value = "";
+            const urlEl = document.getElementById("adm-music-url");
+            if (urlEl) urlEl.value = "";
+            clearAdminMusicFileBadge();
+        }
+
+        function editAdminPlaylistTrack(idx) {
+            const tracks = getStorePlaylist();
+            const track = tracks[idx];
+            if (!track) return;
+            document.getElementById("adm-music-edit-index").value = idx;
+            document.getElementById("adm-music-form-title").innerText = `แก้ไขเพลง #${idx + 1}: ${track.title}`;
+            document.getElementById("adm-music-save-btn").innerText = "บันทึกการแก้ไขเพลง";
+            document.getElementById("adm-music-cancel-btn").classList.remove("hidden");
+            document.getElementById("adm-music-title").value = track.title || "";
+            document.getElementById("adm-music-url").value = track.url || "";
+            const badge = document.getElementById("adm-music-file-badge");
+            const badgeText = document.getElementById("adm-music-file-badge-text");
+            if (badge && badgeText && track.url && track.url.startsWith("idb://")) {
+                badgeText.innerText = `✓ ไฟล์เพลงที่อัปโหลดไว้ในเครื่อง`;
+                badge.classList.remove("hidden");
+            } else {
+                clearAdminMusicFileBadge();
+            }
+        }
+
+        function saveAdminPlaylistTrack() {
+            const editIdx = parseInt(document.getElementById("adm-music-edit-index").value);
+            const title = document.getElementById("adm-music-title").value.trim();
+            const url = document.getElementById("adm-music-url").value.trim();
+            if (!url) {
+                showToast("กรุณาใส่ลิงก์เพลง (.mp3 / YouTube / Drive) หรือเลือกไฟล์เพลงก่อน");
+                return;
+            }
+            if (!Array.isArray(appData.store.playlist)) {
+                appData.store.playlist = [...getStorePlaylist()];
+            }
+            let targetIdx = 0;
+            if (editIdx >= 0 && editIdx < appData.store.playlist.length) {
+                const oldUrl = appData.store.playlist[editIdx].url;
+                if (oldUrl && oldUrl.startsWith("idb://") && oldUrl !== url) {
+                    deleteAudioBlobFromIDB(oldUrl);
+                }
+                const trackTitle = title || appData.store.playlist[editIdx].title || `เพลงที่ ${editIdx + 1}`;
+                appData.store.playlist[editIdx] = { title: trackTitle, url };
+                targetIdx = editIdx;
+                showToast(`แก้ไขเพลง "${trackTitle}" เรียบร้อย`);
+            } else {
+                const trackTitle = title || `เพลงที่ ${appData.store.playlist.length + 1}`;
+                // Insert newly added track at #1 (main track) so it plays immediately!
+                appData.store.playlist.unshift({ title: trackTitle, url });
+                targetIdx = 0;
+                showToast(`เพิ่ม "${trackTitle}" เป็นเพลงหลักและเริ่มเล่นแล้ว`);
+            }
+            appData.store.musicTitle = appData.store.playlist[0].title;
+            appData.store.musicUrl = appData.store.playlist[0].url;
+            resetAdminMusicForm();
+            saveAppData();
+            userExplicitlyMuted = false;
+            playStoreTrack(targetIdx, true);
+        }
+
+        function previewAdminPlaylistTrack(idx) {
+            if (isPlayingMusic && currentTrackIndex === idx) {
+                stopAllAudioEngines();
+                isPlayingMusic = false;
+                updateSpeakerButtonUI(false);
+                renderAdminLists();
+            } else {
+                userExplicitlyMuted = false;
+                playStoreTrack(idx, true);
+            }
+        }
+
+        function deleteAdminPlaylistTrack(idx) {
+            if (!Array.isArray(appData.store.playlist)) {
+                appData.store.playlist = [...getStorePlaylist()];
+            }
+            if (appData.store.playlist.length <= 1) {
+                showToast("ต้องมีเพลงในเพลย์ลิสต์อย่างน้อย 1 เพลงนะงับ");
+                return;
+            }
+            const removed = appData.store.playlist[idx];
+            if (removed && removed.url && removed.url.startsWith("idb://")) {
+                deleteAudioBlobFromIDB(removed.url);
+            }
+            const wasPlayingDeleted = isPlayingMusic && currentTrackIndex === idx;
+            appData.store.playlist.splice(idx, 1);
+            appData.store.musicTitle = appData.store.playlist[0].title;
+            appData.store.musicUrl = appData.store.playlist[0].url;
+            if (currentTrackIndex >= appData.store.playlist.length) {
+                currentTrackIndex = 0;
+            }
+            resetAdminMusicForm();
+            saveAppData();
+            if (wasPlayingDeleted) {
+                playStoreTrack(0, true);
+            }
+            showToast("ลบเพลงออกจากเพลย์ลิสต์แล้ว");
+        }
+
+        function setAdminDefaultTrack(idx) {
+            if (!Array.isArray(appData.store.playlist) || !appData.store.playlist[idx]) return;
+            const [chosen] = appData.store.playlist.splice(idx, 1);
+            appData.store.playlist.unshift(chosen);
+            appData.store.musicTitle = chosen.title;
+            appData.store.musicUrl = chosen.url;
+            resetAdminMusicForm();
+            saveAppData();
+            userExplicitlyMuted = false;
+            playStoreTrack(0, true);
+            showToast(`ตั้ง "${chosen.title}" เป็นเพลงหลักและเริ่มเล่นแล้ว`);
         }
 
         function toggleStoreMusic() {
-            const audio = document.getElementById("store-audio-player");
-            const disc = document.getElementById("vinyl-disc-btn");
-            const symbol = document.getElementById("audio-icon-symbol");
-            const url = appData.store.musicUrl || "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf7f6.mp3?filename=lofi-study-112191.mp3";
-
-            if (!audio.src || audio.src !== url) {
-                audio.src = url;
-            }
+            const list = getStorePlaylist();
+            if (currentTrackIndex >= list.length) currentTrackIndex = 0;
 
             if (isPlayingMusic) {
-                audio.pause();
+                stopAllAudioEngines();
                 isPlayingMusic = false;
-                disc.classList.remove("vinyl-spinning");
-                symbol.innerHTML = "▶";
+                userExplicitlyMuted = true;
+                hasAutoStartedMusic = true;
+                updateSpeakerButtonUI(false);
+                if (isAdminAuthenticated) renderAdminLists();
             } else {
-                audio.play().then(() => {
-                    isPlayingMusic = true;
-                    disc.classList.add("vinyl-spinning");
-                    symbol.innerHTML = "❚❚";
-                }).catch(() => {
-                    showToast("กรุณากดปุ่มเล่นเพลงอีกครั้ง");
-                });
+                userExplicitlyMuted = false;
+                playStoreTrack(currentTrackIndex, true);
             }
         }
+
+        // Auto-start music on ANY first real user interaction (click / touchend / pointerdown)
+        function handleFirstUserGestureForMusic(e) {
+            if (userExplicitlyMuted || hasAutoStartedMusic || isPlayingMusic) return;
+            if (e.target && e.target.closest("#floating-music-btn")) return;
+            playStoreTrack(currentTrackIndex, true);
+        }
+        ["click", "touchend", "pointerdown"].forEach(evtName => {
+            document.addEventListener(evtName, handleFirstUserGestureForMusic, { capture: true, passive: true });
+        });
 
         let hasSeenIdRulesThisSession = false;
         function switchTab(tabName) {
@@ -1771,15 +2448,8 @@
 
         function closeWelcomeModal() {
             document.getElementById("modal-welcome").classList.add("hidden");
-            const audio = document.getElementById("store-audio-player");
-            const musicSrc = appData.store.musicUrl || "https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf7f6.mp3?filename=lofi-study-112191.mp3";
-            if (!isPlayingMusic) {
-                audio.src = musicSrc;
-                audio.play().then(() => {
-                    isPlayingMusic = true;
-                    document.getElementById("vinyl-disc-btn").classList.add("vinyl-spinning");
-                    document.getElementById("audio-icon-symbol").innerHTML = "❚❚";
-                }).catch(e => {});
+            if (!userExplicitlyMuted && !isPlayingMusic) {
+                playStoreTrack(currentTrackIndex, true);
             }
         }
 
@@ -1814,8 +2484,7 @@
             document.getElementById("home-store-desc").innerText = s.desc;
             document.getElementById("home-highlight-desc").innerText = s.highlightDesc || "";
             document.getElementById("home-notice").innerText = s.notice;
-            const floatMusicBtn = document.getElementById("floating-music-btn");
-            if (floatMusicBtn) floatMusicBtn.title = (s.musicTitle || "เพลงร้าน") + " (กดเพื่อเปิด/ปิด)";
+            updateSpeakerButtonUI(isPlayingMusic);
             const welcomeContactEl = document.getElementById("welcome-contact-link");
             if (welcomeContactEl) welcomeContactEl.href = s.btn1Url || "#";
 
@@ -2198,8 +2867,8 @@
             document.getElementById("adm-store-desc").value = s.desc;
             document.getElementById("adm-store-highlight").value = s.highlightDesc || "";
             document.getElementById("adm-store-notice").value = s.notice;
-            document.getElementById("adm-music-title").value = s.musicTitle || "";
-            document.getElementById("adm-music-url").value = s.musicUrl || "";
+            document.getElementById("adm-music-title").value = "";
+            document.getElementById("adm-music-url").value = "";
             document.getElementById("adm-id-rules").value = s.idRules || DEFAULT_DATA.store.idRules;
             document.getElementById("adm-btn1-label").value = s.btn1Label || "ติดต่อด่วน";
             document.getElementById("adm-btn1-url").value = s.btn1Url || "";
@@ -2217,6 +2886,7 @@
                 : defaultMascotText;
             document.getElementById("adm-mascot-line-url").value = s.mascotLineUrl || "";
 
+            resetAdminMusicForm();
             resetAppForm();
             resetMovieForm();
             resetBankForm();
@@ -2247,18 +2917,29 @@
             appData.store.desc = document.getElementById("adm-store-desc").value.trim();
             appData.store.highlightDesc = document.getElementById("adm-store-highlight").value.trim();
             appData.store.notice = document.getElementById("adm-store-notice").value.trim();
-            appData.store.musicTitle = document.getElementById("adm-music-title").value.trim();
-            const newMusicUrl = document.getElementById("adm-music-url").value.trim();
-            const musicChanged = appData.store.musicUrl !== newMusicUrl;
-            appData.store.musicUrl = newMusicUrl;
-            appData.store.idRules = document.getElementById("adm-id-rules").value.trim();
-            if (musicChanged) {
-                const audio = document.getElementById("store-audio-player");
-                audio.src = newMusicUrl;
-                if (isPlayingMusic && newMusicUrl) {
-                    audio.play().catch(() => {});
+            const pendingEditIdx = parseInt(document.getElementById("adm-music-edit-index").value);
+            const pendingTitle = document.getElementById("adm-music-title").value.trim();
+            const pendingUrl = document.getElementById("adm-music-url").value.trim();
+            if (pendingUrl) {
+                if (!Array.isArray(appData.store.playlist)) {
+                    appData.store.playlist = [...getStorePlaylist()];
                 }
+                if (pendingEditIdx >= 0 && pendingEditIdx < appData.store.playlist.length) {
+                    appData.store.playlist[pendingEditIdx] = {
+                        title: pendingTitle || appData.store.playlist[pendingEditIdx].title || `เพลงที่ ${pendingEditIdx + 1}`,
+                        url: pendingUrl
+                    };
+                } else {
+                    appData.store.playlist.unshift({ title: pendingTitle || `เพลงที่ ${appData.store.playlist.length + 1}`, url: pendingUrl });
+                }
+                resetAdminMusicForm();
             }
+            const activeList = getStorePlaylist();
+            if (activeList.length > 0) {
+                appData.store.musicTitle = activeList[0].title;
+                appData.store.musicUrl = activeList[0].url;
+            }
+            appData.store.idRules = document.getElementById("adm-id-rules").value.trim();
             appData.store.btn1Label = document.getElementById("adm-btn1-label").value.trim();
             appData.store.btn1Url = document.getElementById("adm-btn1-url").value.trim();
             appData.store.btn2Label = document.getElementById("adm-btn2-label").value.trim();
@@ -2645,6 +3326,29 @@
         }
 
         function renderAdminLists() {
+            const playlistListEl = document.getElementById("adm-playlist-list");
+            if (playlistListEl) {
+                const tracks = getStorePlaylist();
+                playlistListEl.innerHTML = tracks.map((t, i) => {
+                    const isThisPlaying = isPlayingMusic && currentTrackIndex === i;
+                    return `
+                        <div class="bg-white/95 p-2.5 px-3 rounded-[1.35rem] flex flex-wrap items-center justify-between gap-2 border-2 border-white shadow-2xs">
+                            <div class="min-w-0 flex items-center gap-1.5 flex-1">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${i === 0 ? 'bg-candy-greenDark text-white' : 'bg-[#FFF2F6] text-candy-pinkDark'}">${i === 0 ? 'เพลงหลัก' : `#${i + 1}`}</span>
+                                <p class="text-xs font-medium text-candy-text truncate">${t.title}</p>
+                                <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-[#F6FBF2] text-candy-muted shrink-0 border border-white">${(t.url || '').startsWith('idb://') ? 'ไฟล์เครื่อง' : ((t.url || '').startsWith('builtin://') ? 'ในตัว' : (extractYouTubeVideoId(t.url) ? 'YouTube' : 'ลิงก์'))}</span>
+                            </div>
+                            <div class="flex items-center gap-1 shrink-0">
+                                <button type="button" onclick="previewAdminPlaylistTrack(${i})" class="px-2.5 py-1 rounded-full ${isThisPlaying ? 'bg-candy-pinkDark text-white' : 'bg-[#FFF8FA] text-candy-text'} text-[10px] font-medium border border-white">${isThisPlaying ? '❚❚ หยุด' : '▶ ฟัง'}</button>
+                                <button type="button" onclick="editAdminPlaylistTrack(${i})" class="px-2.5 py-1 rounded-full bg-[#EDF8E6] text-candy-greenDark text-[10px] font-medium border border-white">แก้ไข</button>
+                                ${i !== 0 ? `<button type="button" onclick="setAdminDefaultTrack(${i})" class="px-2.5 py-1 rounded-full bg-[#EDF8E6]/70 text-candy-text text-[10px] font-medium border border-white">ตั้งเป็นเพลงแรก</button>` : ''}
+                                <button type="button" onclick="deleteAdminPlaylistTrack(${i})" class="px-2.5 py-1 rounded-full bg-[#FFF2F6] text-candy-pinkDark text-[10px] font-medium border border-white">ลบ</button>
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+            }
+
             const appsListEl = document.getElementById("adm-apps-list");
             if (appsListEl) {
                 appsListEl.innerHTML = appData.premiumApps.map((rawApp, i) => {
@@ -2733,6 +3437,7 @@
         window.onload = function() {
             switchTab('home');
             renderAll();
+            preloadFirstStoreTrack();
             initKawaiiEffects();
 
             setTimeout(() => {
@@ -2753,3 +3458,4 @@
     </script>
 </body>
 </html>
+
