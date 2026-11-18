@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Care Store">
     <link id="pwa-manifest" rel="manifest" href="">
-    <link rel="apple-touch-icon" href="https://placehold.co/192x192/C8E8B3/3D4C3E?text=CS">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/RhbMCMrL/image.png">
     
     <!-- Google Fonts: Prompt & Mitr -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -233,7 +233,7 @@
             <section class="px-3 md:px-6 pt-1">
                 <div class="bg-white/95 rounded-[2.5rem] border-2 border-white shadow-soft overflow-hidden">
                     <div class="w-full h-40 md:h-52 banner-pattern relative border-b-2 border-white">
-                        <img id="home-banner" src="" alt="Banner" class="w-full h-full object-cover cursor-pointer" onclick="openLightbox(this.src)" onerror="this.style.display='none'">
+                        <img id="home-banner" src="https://i.postimg.cc/BvDthPrR/dawn-hold.jpg" alt="Banner" class="w-full h-full object-cover cursor-pointer" onclick="openLightbox(this.src)" onerror="this.style.display='none'">
                         
                         <div id="store-status-badge" class="absolute top-3 right-3 z-20 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-medium border-2 border-white bg-white/95 backdrop-blur-xs shadow-soft">
                             <span id="store-status-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -243,7 +243,7 @@
                     
                     <div class="px-5 md:px-8 pb-6 -mt-12 md:-mt-14 relative z-10 flex flex-col items-center text-center">
                         <div class="w-24 h-24 md:w-28 md:h-28 rounded-full p-1 bg-white shadow-soft border-2 border-white relative">
-                            <img id="home-avatar" src="" alt="Profile" class="w-full h-full rounded-full object-cover cursor-pointer" onclick="openLightbox(this.src)" onerror="this.src='https://placehold.co/200x200/C8E8B3/3D4C3E?text=CARE'">
+                            <img id="home-avatar" src="https://i.postimg.cc/RhbMCMrL/image.png" alt="Profile" class="w-full h-full rounded-full object-cover cursor-pointer" onclick="openLightbox(this.src)" onerror="this.src='https://placehold.co/200x200/C8E8B3/3D4C3E?text=CARE'">
                             <span class="absolute bottom-0.5 right-0.5 w-6 h-6 rounded-full bg-candy-greenDark text-white flex items-center justify-center text-[11px] font-bold border-2 border-white shadow-xs">✓</span>
                         </div>
                         
@@ -1055,8 +1055,8 @@
             store: {
                 name: "Care Official Store",
                 isOpen: true,
-                banner: "",
-                avatar: "https://placehold.co/200x200/C8E8B3/3D4C3E?text=CARE",
+                banner: "https://i.postimg.cc/BvDthPrR/dawn-hold.jpg",
+                avatar: "https://i.postimg.cc/RhbMCMrL/image.png",
                 desc: "ยินดีต้อนรับลูกค้าทุกท่านนะครับ ร้านแคร์ยินดีให้บริการ",
                 highlightDesc: "รับซื้อ-ขายไอดีเกม และแอพพรีเมียมราคาประหยัด เช็คเครดิตมั่นใจก่อนซื้อ ปลอดภัย ยินดีผ่านกลาง",
                 notice: "ส่องหน้าร้านแคร์ เช็คเครดิตมั่นใจแล้ว เลือกซื้อสินค้า สั่งซื้อ ต้องทักหาแคร์ เพื่อรับสินค้ากับแคร์ส่วนตัวทั้งหมดนะคะ\nหากตอบช้ากดโทรตามได้เลยค่ะ",
@@ -1164,7 +1164,7 @@
             ]
         };
 
-        const STORAGE_KEY = "care_storefront_candy_soft_v3";
+        const STORAGE_KEY = "care_storefront_candy_soft_v4";
         let appData = loadAppData();
         let selectedDayIndex = {};
         let selectedPlatforms = {};
@@ -1203,7 +1203,12 @@
                     const merged = {
                         ...DEFAULT_DATA,
                         ...parsed,
-                        store: { ...DEFAULT_DATA.store, ...(parsed.store || {}) },
+                        store: {
+                            ...DEFAULT_DATA.store,
+                            ...(parsed.store || {}),
+                            banner: (parsed.store && parsed.store.banner && parsed.store.banner.trim() !== "") ? parsed.store.banner : DEFAULT_DATA.store.banner,
+                            avatar: (parsed.store && parsed.store.avatar && parsed.store.avatar.trim() !== "") ? parsed.store.avatar : DEFAULT_DATA.store.avatar
+                        },
                         movies: parsed.movies || DEFAULT_DATA.movies,
                         banks: parsed.banks || DEFAULT_DATA.banks
                     };
